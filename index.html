@@ -30,6 +30,7 @@
       --gradient-primary: linear-gradient(135deg, #8b5cf6, #3b82f6);
       --gradient-accent: linear-gradient(135deg, #ec4899, #8b5cf6);
       --gradient-gold: linear-gradient(135deg, #f59e0b, #ef4444);
+      --gradient-danger: linear-gradient(135deg, #ef4444, #b91c1c);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
@@ -62,9 +63,7 @@
     #offline-banner {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 9999;
       background: var(--gradient-gold);
       color: #fff;
@@ -76,10 +75,6 @@
       box-shadow: var(--shadow-lg);
     }
     #offline-banner.show { display: block; }
-    @keyframes slideDown {
-      from { transform: translateY(-100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
 
     #top-header {
       position: sticky;
@@ -104,18 +99,10 @@
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .brand-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      object-fit: cover;
-      -webkit-text-fill-color: initial;
-      border: 2px solid var(--accent-purple);
-    }
-    .header-actions { display: flex; gap: 10px; }
+    .header-actions { display: flex; gap: 8px; }
     .icon-btn {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       border: 1px solid var(--border-color);
       background: var(--bg-card);
@@ -124,7 +111,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 15px;
       transition: var(--transition);
     }
     .icon-btn:hover { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); }
@@ -152,104 +139,46 @@
       position: relative;
       overflow: hidden;
     }
-    .auth-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-      animation: rotate 20s linear infinite;
-    }
-    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .auth-logo-img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 24px;
-      margin: 0 auto 20px;
-      box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
-      position: relative;
-      z-index: 1;
-    }
     .auth-title {
       font-weight: 900;
-      font-size: 32px;
+      font-size: 30px;
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      position: relative;
-      z-index: 1;
     }
     .auth-sub {
       color: var(--text-secondary);
-      font-size: 14px;
-      margin-top: 6px;
-      margin-bottom: 28px;
-      position: relative;
-      z-index: 1;
+      font-size: 13.5px;
+      margin-top: 4px;
+      margin-bottom: 24px;
     }
     .auth-tabs {
       display: flex;
       background: var(--bg-elevated);
       border-radius: var(--radius-full);
       padding: 4px;
-      margin-bottom: 24px;
-      position: relative;
-      z-index: 1;
+      margin-bottom: 20px;
     }
     .auth-tab {
       flex: 1;
-      padding: 12px;
+      padding: 10px;
       border: none;
       background: none;
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13.5px;
       border-radius: var(--radius-full);
       cursor: pointer;
       transition: var(--transition);
     }
-    .auth-tab.active {
-      background: var(--gradient-primary);
-      color: #fff;
-    }
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      text-align: right;
-      position: relative;
-      z-index: 1;
-    }
-    .auth-error {
-      color: var(--danger);
-      font-size: 13px;
-      min-height: 18px;
-      text-align: center;
-      font-weight: 600;
-    }
-    .auth-note {
-      margin-top: 20px;
-      font-size: 11px;
-      color: var(--text-muted);
-      line-height: 1.8;
-      position: relative;
-      z-index: 1;
-    }
+    .auth-tab.active { background: var(--gradient-primary); color: #fff; }
+    .auth-form { display: flex; flex-direction: column; gap: 14px; text-align: right; }
+    .auth-error { color: var(--danger); font-size: 13px; min-height: 18px; text-align: center; font-weight: 600; }
+    .auth-note { margin-top: 16px; font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 
-    .form-field label {
-      display: block;
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    .form-field input,
-    .form-field textarea,
-    .form-field select {
+    .form-field label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; }
+    .form-field input, .form-field textarea, .form-field select {
       width: 100%;
       background: var(--bg-elevated);
       border: 1px solid var(--border-color);
@@ -261,15 +190,13 @@
       transition: var(--transition);
     }
     .form-field textarea { min-height: 90px; resize: vertical; }
-    .form-field input:focus,
-    .form-field textarea:focus,
-    .form-field select:focus {
+    .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
       border-color: var(--accent-purple);
       box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
     }
     .primary-btn {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border-radius: var(--radius-md);
       border: none;
       background: var(--gradient-primary);
@@ -278,12 +205,9 @@
       font-size: 15px;
       cursor: pointer;
       transition: var(--transition);
-      position: relative;
-      overflow: hidden;
     }
     .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4); }
-    .primary-btn:active { transform: translateY(0); }
-    .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .primary-btn.danger { background: var(--gradient-danger); }
 
     .composer-teaser {
       display: flex;
@@ -292,21 +216,18 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      padding: 16px;
+      padding: 14px 16px;
       margin-bottom: 20px;
       cursor: pointer;
       transition: var(--transition);
     }
-    .composer-teaser:hover {
-      border-color: var(--accent-purple);
-      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
-    }
+    .composer-teaser:hover { border-color: var(--accent-purple); box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3); }
     .teaser-text { flex: 1; color: var(--text-muted); font-size: 14px; }
     .teaser-icon { font-size: 18px; color: var(--accent-purple); }
 
     .mini-avatar {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       flex-shrink: 0;
       overflow: hidden;
@@ -316,7 +237,7 @@
       background: var(--gradient-primary);
       color: #fff;
       font-weight: 800;
-      font-size: 18px;
+      font-size: 17px;
       border: 2px solid var(--accent-purple);
     }
     .mini-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -327,91 +248,83 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      padding: 18px;
+      padding: 16px;
       transition: var(--transition);
-      animation: fadeIn 0.4s ease;
     }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    .post-card:hover { border-color: rgba(139, 92, 246, 0.4); box-shadow: var(--shadow-md); }
-    .post-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .post-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
     .post-head-text { flex: 1; }
-    .post-author { font-weight: 800; font-size: 15px; color: var(--text-primary); }
-    .post-time { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-    .post-delete-btn { background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; padding: 4px; transition: var(--transition); }
+    .post-author { font-weight: 800; font-size: 14.5px; color: var(--text-primary); }
+    .post-time { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+    .post-delete-btn { background: none; border: none; color: var(--text-muted); font-size: 15px; cursor: pointer; padding: 4px; transition: var(--transition); }
     .post-delete-btn:hover { color: var(--danger); }
-    .post-content { font-size: 15px; line-height: 1.9; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; }
-    .post-image { margin-top: 14px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); max-height: 450px; }
+    .post-content { font-size: 14.5px; line-height: 1.8; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; }
+    .post-image { margin-top: 12px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); max-height: 400px; }
     .post-image img { width: 100%; height: 100%; object-fit: cover; }
-    .post-actions { display: flex; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border-light); }
+    .post-actions { display: flex; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-light); }
     .post-action {
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: var(--radius-full);
       border: none;
       background: var(--bg-elevated);
       color: var(--text-secondary);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
     }
     .post-action:hover { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
     .like-btn[data-liked="1"] { color: var(--accent-pink); background: rgba(236, 72, 153, 0.15); }
-    .comments-section { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
-    .comments-list { display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; margin-bottom: 12px; }
+    .comments-section { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border-color); }
+    .comments-list { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; margin-bottom: 10px; }
     .comment-row { display: flex; gap: 8px; align-items: flex-start; }
-    .comment-bubble { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 10px 14px; flex: 1; }
-    .comment-author { font-size: 12px; font-weight: 700; color: var(--accent-purple); }
-    .comment-text { font-size: 13px; color: var(--text-secondary); margin-top: 2px; line-height: 1.7; }
+    .comment-bubble { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 8px 12px; flex: 1; }
+    .comment-author { font-size: 11.5px; font-weight: 700; color: var(--accent-purple); }
+    .comment-text { font-size: 12.5px; color: var(--text-secondary); margin-top: 1px; line-height: 1.6; }
     .comment-form { display: flex; gap: 8px; }
     .comment-form input {
       flex: 1;
       background: var(--bg-elevated);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-full);
-      padding: 10px 16px;
+      padding: 8px 14px;
       color: var(--text-primary);
-      font-size: 13px;
+      font-size: 12.5px;
       outline: none;
     }
-    .comment-form input:focus { border-color: var(--accent-purple); }
     .comment-form button {
-      padding: 10px 20px;
+      padding: 8px 16px;
       border-radius: var(--radius-full);
       border: none;
       background: var(--gradient-primary);
       color: #fff;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: var(--transition);
     }
-    .comment-form button:hover { transform: translateY(-2px); }
 
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      font-size: 14px;
-      padding: 60px 20px;
+      font-size: 13.5px;
+      padding: 40px 20px;
       border: 2px dashed var(--border-color);
       border-radius: var(--radius-lg);
     }
 
-    .messages-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .messages-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
     .new-chat-btn {
-      padding: 10px 18px;
+      padding: 8px 16px;
       border-radius: var(--radius-full);
       border: 1px solid var(--accent-purple);
       background: rgba(139, 92, 246, 0.15);
       color: var(--accent-purple);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
-      transition: var(--transition);
     }
-    .new-chat-btn:hover { background: var(--accent-purple); color: #fff; }
     .convos-list { display: flex; flex-direction: column; gap: 10px; }
     .convo-row {
       display: flex;
@@ -420,333 +333,119 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
-      padding: 14px 16px;
+      padding: 12px 14px;
       cursor: pointer;
       transition: var(--transition);
     }
     .convo-row:hover { border-color: var(--accent-purple); background: var(--bg-elevated); }
     .convo-mid { flex: 1; min-width: 0; }
-    .convo-name { font-weight: 700; font-size: 14px; color: var(--text-primary); }
-    .convo-preview { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .convo-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
-    .search-results { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; max-height: 360px; overflow-y: auto; }
+    .convo-name { font-weight: 700; font-size: 13.5px; color: var(--text-primary); }
+    .convo-preview { font-size: 12px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .convo-time { font-size: 10.5px; color: var(--text-muted); flex-shrink: 0; }
+    .search-results { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; max-height: 300px; overflow-y: auto; }
 
     .chat-screen { display: flex; flex-direction: column; height: calc(100vh - 140px); margin: -16px -14px 0; }
-    .chat-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px;
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
-    }
+    .chat-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); }
     .chat-back-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-      transition: var(--transition);
+      width: 34px; height: 34px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border-color);
+      color: var(--text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer;
     }
-    .chat-back-btn:hover { background: var(--accent-purple); }
-    .chat-header-name { font-weight: 700; font-size: 15px; }
-    .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
     .chat-bubble-row { display: flex; }
     .chat-bubble-row.mine { justify-content: flex-end; }
     .chat-bubble-row.theirs { justify-content: flex-start; }
     .chat-bubble {
-      max-width: 75%;
-      padding: 12px 18px;
-      border-radius: 18px;
-      font-size: 14px;
-      line-height: 1.7;
-      word-break: break-word;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
+      max-width: 75%; padding: 10px 14px; border-radius: 16px; font-size: 13.5px; line-height: 1.6;
+      word-break: break-word; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary);
     }
-    .chat-bubble-row.mine .chat-bubble {
-      background: var(--gradient-primary);
-      border-color: transparent;
-      color: #fff;
-    }
-    .chat-input-form { display: flex; gap: 10px; padding: 16px; background: var(--bg-secondary); border-top: 1px solid var(--border-color); }
-    .chat-input-form input {
-      flex: 1;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-full);
-      padding: 12px 18px;
-      color: var(--text-primary);
-      font-size: 14px;
-      outline: none;
-    }
-    .chat-input-form input:focus { border-color: var(--accent-purple); }
-    .chat-input-form button {
-      padding: 12px 24px;
-      border-radius: var(--radius-full);
-      border: none;
-      background: var(--gradient-primary);
-      color: #fff;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .chat-input-form button:hover { transform: translateY(-2px); }
+    .chat-bubble-row.mine .chat-bubble { background: var(--gradient-primary); border-color: transparent; color: #fff; }
+    .chat-input-form { display: flex; gap: 8px; padding: 12px; background: var(--bg-secondary); border-top: 1px solid var(--border-color); }
+    .chat-input-form input { flex: 1; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-full); padding: 10px 16px; color: var(--text-primary); font-size: 13.5px; outline: none; }
+    .chat-input-form button { padding: 10px 20px; border-radius: var(--radius-full); border: none; background: var(--gradient-primary); color: #fff; font-weight: 700; cursor: pointer; }
 
-    .profile-card { text-align: center; padding: 24px 0 30px; }
+    .profile-card { text-align: center; padding: 16px 0 20px; }
     .profile-avatar-big {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin: 0 auto 16px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--gradient-primary);
-      color: #fff;
-      font-weight: 900;
-      font-size: 36px;
-      border: 4px solid var(--accent-purple);
-      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+      width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 12px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; background: var(--gradient-primary);
+      color: #fff; font-weight: 900; font-size: 32px; border: 3px solid var(--accent-purple); box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
     }
     .profile-avatar-big img { width: 100%; height: 100%; object-fit: cover; }
-    .profile-username { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
-    .profile-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 28px;
+    .profile-username { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+    .profile-form, .admin-card {
+      display: flex; flex-direction: column; gap: 14px; background: var(--bg-card);
+      border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 20px;
     }
-    .section-title {
-      font-weight: 800;
-      font-size: 16px;
-      margin-bottom: 14px;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .section-title { font-weight: 800; font-size: 15px; margin-bottom: 12px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
     .section-title i { color: var(--accent-purple); }
-    .logout-btn {
-      width: 100%;
-      margin-top: 24px;
-      padding: 14px;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--danger);
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-      transition: var(--transition);
+    .btn-row { display: flex; gap: 10px; margin-bottom: 16px; }
+    .secondary-btn {
+      flex: 1; padding: 11px; border-radius: var(--radius-md); border: 1px solid var(--border-color);
+      background: var(--bg-elevated); color: var(--text-primary); font-weight: 700; font-size: 13px; cursor: pointer; text-align: center;
     }
-    .logout-btn:hover { background: var(--danger); color: #fff; }
+    .secondary-btn:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
+
+    .logout-btn {
+      width: 100%; margin-top: 10px; padding: 12px; border-radius: var(--radius-md);
+      border: 1px solid rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.1);
+      color: var(--danger); font-weight: 800; font-size: 13.5px; cursor: pointer;
+    }
 
     .tab-bar {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 90;
-      display: flex;
-      padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
-      background: rgba(10, 14, 26, 0.95);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border-color);
-      max-width: 720px;
-      margin: 0 auto;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex;
+      padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); background: rgba(10, 14, 26, 0.95);
+      backdrop-filter: blur(20px); border-top: 1px solid var(--border-color); max-width: 720px; margin: 0 auto;
     }
     .tab-item {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 8px 2px;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: var(--radius-md);
-      transition: var(--transition);
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+      padding: 6px 2px; background: none; border: none; color: var(--text-muted); font-size: 10.5px; font-weight: 600; cursor: pointer;
     }
-    .tab-item .tab-ic { font-size: 22px; }
+    .tab-item .tab-ic { font-size: 20px; }
     .tab-item.active { color: var(--accent-purple); }
     .tab-item.compose-tab .tab-ic {
-      background: var(--gradient-primary);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      margin: -20px auto 0;
-      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
-      font-size: 20px;
+      background: var(--gradient-primary); width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: #fff; margin: -18px auto 0;
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5); font-size: 18px;
     }
 
     .modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      position: fixed; inset: 0; z-index: 200; background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px); display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
     @media(min-width: 640px) { .modal-overlay { align-items: center; padding: 20px; } }
     .modal-overlay.show { opacity: 1; pointer-events: all; }
     .modal {
-      width: 100%;
-      max-width: 520px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 24px 24px 0 0;
-      padding: 28px 24px 32px;
-      position: relative;
-      transform: translateY(40px);
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      max-height: 90vh;
-      overflow-y: auto;
+      width: 100%; max-width: 500px; background: var(--bg-secondary); border: 1px solid var(--border-color);
+      border-radius: 20px 20px 0 0; padding: 24px 20px 28px; position: relative;
+      transform: translateY(30px); transition: transform 0.3s ease; max-height: 85vh; overflow-y: auto;
     }
-    @media(min-width: 640px) { .modal { border-radius: 24px; transform: translateY(20px) scale(0.95); } }
-    .modal-overlay.show .modal { transform: translateY(0) scale(1); }
+    @media(min-width: 640px) { .modal { border-radius: 20px; transform: translateY(0); } }
+    .modal-overlay.show .modal { transform: translateY(0); }
     .modal-close {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-      transition: var(--transition);
+      position: absolute; top: 14px; left: 14px; width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary);
+      display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px;
     }
-    .modal-close:hover { background: var(--danger); color: #fff; }
-    .modal-title {
-      text-align: center;
-      font-family: 'Cairo', sans-serif;
-      font-weight: 800;
-      font-size: 20px;
-      margin-bottom: 22px;
-      color: var(--accent-purple);
-    }
-    .composer-form { display: flex; flex-direction: column; gap: 16px; }
-    #composer-content { min-height: 120px; }
-    .composer-preview {
-      display: none;
-      width: 100%;
-      border-radius: var(--radius-md);
-      margin-top: 6px;
-      max-height: 240px;
-      object-fit: cover;
-      border: 1px solid var(--border-color);
-    }
+    .modal-title { text-align: center; font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 18px; color: var(--accent-purple); }
 
     .toast {
-      position: fixed;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--bg-elevated);
-      border: 1px solid var(--accent-purple);
-      color: var(--text-primary);
-      padding: 14px 22px;
-      border-radius: var(--radius-full);
-      font-size: 14px;
-      z-index: 300;
-      opacity: 0;
-      transition: all 0.3s ease;
-      pointer-events: none;
-      text-align: center;
-      max-width: 90vw;
-      box-shadow: var(--shadow-lg);
-      font-weight: 600;
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--bg-elevated); border: 1px solid var(--accent-purple); color: var(--text-primary);
+      padding: 12px 20px; border-radius: var(--radius-full); font-size: 13.5px; z-index: 300;
+      opacity: 0; transition: all 0.3s ease; pointer-events: none; text-align: center; max-width: 90vw; box-shadow: var(--shadow-lg); font-weight: 600;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .friends-section { margin-bottom: 24px; }
-    .friend-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      margin-bottom: 8px;
-      transition: var(--transition);
-    }
-    .friend-row:hover { border-color: var(--accent-purple); }
+    .friend-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 8px; }
     .friend-info { flex: 1; }
-    .friend-name { font-weight: 700; font-size: 14px; }
-    .friend-username { font-size: 12px; color: var(--text-muted); }
-    .message-friend-btn {
-      padding: 8px 16px;
-      border-radius: var(--radius-full);
-      border: 1px solid var(--accent-purple);
-      background: rgba(139, 92, 246, 0.15);
-      color: var(--accent-purple);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .message-friend-btn:hover { background: var(--accent-purple); color: #fff; }
-
-    .search-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-full);
-      padding: 12px 18px;
-      margin-bottom: 20px;
-    }
-    .search-bar input {
-      flex: 1;
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      font-size: 14px;
-      outline: none;
-    }
-    .search-bar i { color: var(--text-muted); }
+    .friend-name { font-weight: 700; font-size: 13.5px; }
+    .friend-username { font-size: 11.5px; color: var(--text-muted); }
+    .message-friend-btn { padding: 7px 14px; border-radius: var(--radius-full); border: 1px solid var(--accent-purple); background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); font-size: 12px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
 
-<div id="offline-banner">
-  <i class="fas fa-wifi"></i> أنت غير متصل بالإنترنت — سيتم الحفظ محلياً والمزامنة عند عودة الاتصال
-</div>
-
+<div id="offline-banner"><i class="fas fa-wifi"></i> أنت غير متصل بالإنترنت — تحقق من الاتصال</div>
 <div id="app"></div>
 
 <nav class="tab-bar" id="main-tabbar" style="display:none;">
@@ -757,34 +456,65 @@
   <button class="tab-item" data-tab="profile"><span class="tab-ic">👤</span>حسابي</button>
 </nav>
 
+<!-- Modal: المنشورات -->
 <div class="modal-overlay" id="composer-modal">
   <div class="modal">
     <div class="modal-close" data-close>✕</div>
     <div class="modal-title">إنشاء منشور جديد</div>
-    <form id="composer-form" class="composer-form">
-      <div class="form-field">
-        <textarea id="composer-content" placeholder="بم تفكر الآن؟" maxlength="1000"></textarea>
-      </div>
-      <div class="form-field">
-        <label>رابط صورة (اختياري)</label>
-        <input type="text" id="composer-image-url" placeholder="https://...">
-        <img id="composer-preview" class="composer-preview">
-      </div>
-      <button type="submit" class="primary-btn" id="composer-submit-btn">
-        <i class="fas fa-paper-plane"></i> نشر
-      </button>
+    <form id="composer-form" style="display:flex; flex-direction:column; gap:14px;">
+      <div class="form-field"><textarea id="composer-content" placeholder="بم تفكر الآن؟" maxlength="1000"></textarea></div>
+      <div class="form-field"><label>رابط صورة (اختياري)</label><input type="text" id="composer-image-url" placeholder="https://..."></div>
+      <button type="submit" class="primary-btn" id="composer-submit-btn"><i class="fas fa-paper-plane"></i> نشر</button>
     </form>
   </div>
 </div>
 
+<!-- Modal: محادثة جديدة -->
 <div class="modal-overlay" id="new-chat-modal">
   <div class="modal">
     <div class="modal-close" data-close>✕</div>
     <div class="modal-title">محادثة جديدة</div>
-    <div class="form-field">
-      <input type="text" id="search-username-input" placeholder="ابحث باسم المستخدم...">
-    </div>
+    <div class="form-field"><input type="text" id="search-username-input" placeholder="ابحث باسم المستخدم..."></div>
     <div id="search-results" class="search-results"></div>
+  </div>
+</div>
+
+<!-- Modal: الإبلاغ عن مشكلة / التواصل مع المطور -->
+<div class="modal-overlay" id="support-modal">
+  <div class="modal">
+    <div class="modal-close" data-close>✕</div>
+    <div class="modal-title" id="support-modal-title">التواصل والإبلاغ</div>
+    <form id="support-form" style="display:flex; flex-direction:column; gap:14px;">
+      <div class="form-field">
+        <label>نوع الرسالة</label>
+        <select id="support-type">
+          <option value="problem">إبلاغ عن مشكلة / خافية</option>
+          <option value="developer">تواصل مباشر مع المطور</option>
+          <option value="suggestion">اقتراح ميزة جديدة</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>تفاصيل الرسالة</label>
+        <textarea id="support-content" placeholder="اكتب الاستفسار أو تفاصيل المشكلة هنا..." required></textarea>
+      </div>
+      <button type="submit" class="primary-btn" id="support-submit-btn"><i class="fas fa-paper-plane"></i> إرسال إلى المطور</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: لوحة تحكم المطور (Banning Users) -->
+<div class="modal-overlay" id="admin-modal">
+  <div class="modal">
+    <div class="modal-close" data-close>✕</div>
+    <div class="modal-title" style="color:var(--danger);"><i class="fas fa-user-shield"></i> لوحة المطور - طرد مستخدم</div>
+    <div class="admin-card">
+      <div class="form-field">
+        <label>معرّف المستخدم (UID)</label>
+        <input type="text" id="admin-target-uid" placeholder="أدخل UID المستخدم هنا">
+      </div>
+      <button type="button" class="primary-btn danger" id="admin-ban-btn"><i class="fas fa-ban"></i> حظر وطرد المستخدم</button>
+      <button type="button" class="secondary-btn" id="admin-unban-btn" style="margin-top:6px;">إلغاء حظر المستخدم</button>
+    </div>
   </div>
 </div>
 
@@ -793,7 +523,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, deleteDoc, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp, where, getDocs, startAt, endAt, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, deleteDoc, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCfPtxGjvMhlR0vOILq1PXajM3V5Xgnxsc",
@@ -808,13 +538,22 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  const WEB_ICON = "data:image/jpeg;base64,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";
+  // قائمة الكلمات المسيئة لمنعها تلقائياً
+  const BAD_WORDS = ["احمق", "غبي", "كلب", "حمار", "وسخ", "قذر", "شتيمة", "fool", "dog", "stupid"];
+  function filterProfanity(text) {
+    if (!text) return "";
+    let cleaned = text;
+    BAD_WORDS.forEach(word => {
+      const regex = new RegExp(word, "gi");
+      cleaned = cleaned.replace(regex, "***");
+    });
+    return cleaned;
+  }
 
   let currentUser = null;
   let currentProfile = null;
   let feedUnsub = null;
   let currentTab = "feed";
-  let composerImagePreview = "";
   let convosUnsub = null;
   let messagesUnsub = null;
   let currentChat = null;
@@ -825,13 +564,10 @@
   function $id(id) { return document.getElementById(id); }
   function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
   function escapeHtml(s) { return (s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
-  function timeAgo(ts) { if (!ts) return "الآن"; const date = ts.toDate ? ts.toDate() : new Date(ts); const diff = Math.floor((Date.now() - date.getTime()) / 1000); if (diff < 60) return "الآن"; if (diff < 3600) return `منذ ${Math.floor(diff / 60)} د`; if (diff < 86400) return `منذ ${Math.floor(diff / 3600)} س`; if (diff < 2592000) return `منذ ${Math.floor(diff / 86400)} يوم`; return date.toLocaleDateString("ar-EG"); }
+  function timeAgo(ts) { if (!ts) return "الآن"; const date = ts.toDate ? ts.toDate() : new Date(ts); const diff = Math.floor((Date.now() - date.getTime()) / 1000); if (diff < 60) return "الآن"; if (diff < 3600) return `منذ ${Math.floor(diff / 60)} د`; if (diff < 86400) return `منذ ${Math.floor(diff / 3600)} س`; return date.toLocaleDateString("ar-EG"); }
   function showToast(msg) { const t = $id("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(showToast._t); showToast._t = setTimeout(() => t.classList.remove("show"), 3000); }
   function setLoading(btn, loading, labelDefault) { if (loading) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = "..."; } else { btn.disabled = false; btn.textContent = labelDefault || btn.dataset.label || btn.textContent; } }
   function avatarFallback(name) { return (name || "؟").trim().charAt(0).toUpperCase(); }
-  function updateOnlineBanner() { const b = $id("offline-banner"); if (!navigator.onLine) { b.classList.add("show"); } else { b.classList.remove("show"); } }
-  window.addEventListener("online", updateOnlineBanner);
-  window.addEventListener("offline", updateOnlineBanner);
 
   let authMode = "login";
   function renderAuthScreen() {
@@ -839,7 +575,6 @@
     root.innerHTML = `
       <div class="auth-wrap">
         <div class="auth-card">
-          <img class="auth-logo-img" src="${WEB_ICON}" alt="Modz Web">
           <h1 class="auth-title">Modz Web</h1>
           <p class="auth-sub">منصة التواصل الاجتماعي والتسوق</p>
           <div class="auth-tabs">
@@ -862,7 +597,7 @@
             <p class="auth-error" id="auth-error"></p>
             <button type="submit" class="primary-btn" id="auth-submit-btn">${authMode === "login" ? "دخول" : "إنشاء الحساب"}</button>
           </form>
-          <p class="auth-note">بالمتابعة أنت توافق على الالتزام بآداب المجتمع داخل المنصة.</p>
+          <p class="auth-note">بالمتابعة أنت توافق على الالتزام بآداب المجتمع وشروط الخدمة.</p>
         </div>
       </div>
     `;
@@ -875,60 +610,50 @@
       const errBox = $id("auth-error");
       const btn = $id("auth-submit-btn");
       errBox.textContent = "";
-      if (!navigator.onLine) { errBox.textContent = "لا يوجد اتصال بالإنترنت — يرجى تفعيل الإنترنت والمحاولة مجددًا."; return; }
       setLoading(btn, true);
       try {
         if (authMode === "signup") {
-          if (!username || username.length < 3) throw { message: "اسم المستخدم لازم يكون 3 حروف على الأقل." };
-          const q = query(collection(db, "users"), where("username", "==", username));
-          const existing = await getDocs(q);
-          if (!existing.empty) throw { message: "اسم المستخدم ده مستخدم بالفعل." };
+          if (!username || username.length < 3) throw { message: "اسم المستخدم يجب أن يتكون من 3 حروف على الأقل." };
           const cred = await createUserWithEmailAndPassword(auth, email, password);
           await updateProfile(cred.user, { displayName: username });
-          await setDoc(doc(db, "users", cred.user.uid), { username, displayName: username, avatarUrl: "", bio: "", friends: [], createdAt: serverTimestamp() });
+          
+          // الحفظ في قاعدة البيانات بعد النجاح
+          await setDoc(doc(db, "users", cred.user.uid), {
+            username,
+            displayName: username,
+            avatarUrl: "",
+            bio: "",
+            isBanned: false,
+            isAdmin: false,
+            createdAt: serverTimestamp()
+          });
           showToast("تم إنشاء الحساب بنجاح 🎉");
         } else {
           await signInWithEmailAndPassword(auth, email, password);
           showToast("أهلاً بعودتك 👋");
         }
       } catch (err) {
-        errBox.textContent = translateAuthError(err);
+        errBox.textContent = err.message || "حدث خطأ أثناء الدخول، يرجى المحاولة لاحقاً.";
         setLoading(btn, false, authMode === "login" ? "دخول" : "إنشاء الحساب");
       }
     });
-  }
-
-  function translateAuthError(err) {
-    const msg = (err && err.message) || "";
-    if (msg) return msg;
-    const code = err && err.code;
-    const map = {
-      "auth/email-already-in-use": "هذا البريد الإلكتروني مستخدم بالفعل.",
-      "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
-      "auth/weak-password": "كلمة المرور ضعيفة، يجب أن تكون 6 أحرف على الأقل.",
-      "auth/user-not-found": "لا يوجد حساب بهذا البريد الإلكتروني.",
-      "auth/wrong-password": "كلمة المرور غير صحيحة.",
-      "auth/invalid-credential": "بيانات الدخول غير صحيحة.",
-      "auth/network-request-failed": "تعذر الاتصال — تأكد أن الإنترنت مفعّل لديك."
-    };
-    return map[code] || "حدث خطأ غير متوقع، حاول مرة أخرى.";
   }
 
   function renderShell() {
     const root = $id("app");
     root.innerHTML = `
       <div id="top-header">
-        <div class="brand"><img class="brand-icon" src="${WEB_ICON}" alt="Modz Web">Modz Web</div>
+        <div class="brand"><i class="fas fa-globe"></i> Modz Web</div>
         <div class="header-actions">
-          <button id="header-search-btn" class="icon-btn" title="بحث"><i class="fas fa-search"></i></button>
-          <button id="header-notice-btn" class="icon-btn" title="الشبكة"><i class="fas fa-wifi"></i></button>
+          <button id="header-support-btn" class="icon-btn" title="تواصل وتسهيلات / إبلاغ"><i class="fas fa-headset"></i></button>
+          <button id="header-notice-btn" class="icon-btn" title="حالة الاتصال"><i class="fas fa-wifi"></i></button>
         </div>
       </div>
       <div id="screen-body"></div>
     `;
     paintTab(currentTab);
-    $id("header-notice-btn").addEventListener("click", () => { showToast(navigator.onLine ? "أنت متصل بالإنترنت ✅" : "لا يوجد اتصال بالإنترنت حالياً 📶"); });
-    $id("header-search-btn").addEventListener("click", () => { showToast("خاصية البحث قادمة قريباً 🔍"); });
+    $id("header-support-btn").addEventListener("click", () => openModal("support-modal"));
+    $id("header-notice-btn").addEventListener("click", () => { showToast(navigator.onLine ? "أنت متصل بالإنترنت ✅" : "لا يوجد اتصال بالإنترنت 📶"); });
   }
 
   function paintTab(tab) {
@@ -942,6 +667,7 @@
     if (convosUnsub) { convosUnsub(); convosUnsub = null; }
     if (messagesUnsub) { messagesUnsub(); messagesUnsub = null; }
     if (friendsUnsub) { friendsUnsub(); friendsUnsub = null; }
+
     if (tab === "feed") body.appendChild(renderFeedScreen());
     else if (tab === "profile") body.appendChild(renderProfileScreen());
     else if (tab === "messages") body.appendChild(renderMessagesScreen());
@@ -959,10 +685,6 @@
   function renderFeedScreen() {
     const wrap = el("div", "feed-screen");
     wrap.innerHTML = `
-      <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" id="feed-search-input" placeholder="ابحث عن منشورات...">
-      </div>
       <div class="composer-teaser" id="composer-teaser">
         <div class="mini-avatar">${currentProfile && currentProfile.avatarUrl ? `<img src="${escapeHtml(currentProfile.avatarUrl)}">` : avatarFallback(currentProfile && currentProfile.displayName)}</div>
         <div class="teaser-text">بم تفكر الآن؟</div>
@@ -974,20 +696,19 @@
     wrap.querySelector("#composer-teaser").addEventListener("click", openComposer);
     const listEl = wrap.querySelector("#posts-list");
     const emptyEl = wrap.querySelector("#feed-empty");
-    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(60));
+    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(50));
     feedUnsub = onSnapshot(q, (snap) => {
       listEl.innerHTML = "";
       if (snap.empty) { emptyEl.style.display = "block"; return; }
       emptyEl.style.display = "none";
       snap.forEach(docSnap => listEl.appendChild(renderPostCard(docSnap.id, docSnap.data())));
-    }, (err) => { console.error(err); emptyEl.style.display = "block"; emptyEl.textContent = "تعذر تحميل المنشورات — تأكد من اتصالك بالإنترنت."; });
+    }, (err) => { emptyEl.style.display = "block"; emptyEl.textContent = "لا توجد منشورات بعد."; });
     return wrap;
   }
 
   function renderPostCard(postId, post) {
     const card = el("div", "post-card");
-    card.dataset.postId = postId;
-    const isOwner = currentUser && post.uid === currentUser.uid;
+    const isOwner = currentUser && (post.uid === currentUser.uid || (currentProfile && currentProfile.isAdmin));
     card.innerHTML = `
       <div class="post-head">
         <div class="mini-avatar">${post.authorAvatar ? `<img src="${escapeHtml(post.authorAvatar)}">` : avatarFallback(post.authorName)}</div>
@@ -997,7 +718,7 @@
         </div>
         ${isOwner ? `<button class="post-delete-btn" title="حذف"><i class="fas fa-trash"></i></button>` : ""}
       </div>
-      <div class="post-content">${escapeHtml(post.content || "")}</div>
+      <div class="post-content">${escapeHtml(filterProfanity(post.content || ""))}</div>
       ${post.imageUrl ? `<div class="post-image"><img src="${escapeHtml(post.imageUrl)}" loading="lazy"></div>` : ""}
       <div class="post-actions">
         <button class="post-action like-btn"><span class="like-ic">🤍</span><span class="like-count">0</span></button>
@@ -1006,7 +727,7 @@
       <div class="comments-section" style="display:none;">
         <div class="comments-list"></div>
         <form class="comment-form">
-          <input type="text" placeholder="اكتب تعليقاً..." class="comment-input" maxlength="300">
+          <input type="text" placeholder="اكتب تعليقاً (تمنع الكلمات المسيئة)..." class="comment-input" maxlength="300">
           <button type="submit"><i class="fas fa-paper-plane"></i></button>
         </form>
       </div>
@@ -1015,7 +736,7 @@
       card.querySelector(".post-delete-btn").addEventListener("click", async () => {
         if (confirm("هل تريد حذف هذا المنشور؟")) {
           try { await deleteDoc(doc(db, "posts", postId)); showToast("تم حذف المنشور"); }
-          catch (e) { showToast("تعذر الحذف — تحقق من الإنترنت."); }
+          catch (e) { showToast("تعذر الحذف."); }
         }
       });
     }
@@ -1030,20 +751,19 @@
       likeBtn.dataset.liked = likedByMe ? "1" : "0";
     });
     likeBtn.addEventListener("click", async () => {
-      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت للتفاعل 📶"); return; }
       const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
       try {
         if (likeBtn.dataset.liked === "1") await deleteDoc(likeRef);
         else await setDoc(likeRef, { createdAt: serverTimestamp() });
-      } catch (e) { showToast("تعذر تسجيل الإعجاب."); }
+      } catch (e) { showToast("تعذر التفاعل."); }
     });
+
     const commentsCol = collection(db, "posts", postId, "comments");
     const commentCountEl = card.querySelector(".comment-count");
     const commentsSection = card.querySelector(".comments-section");
     const commentsListEl = card.querySelector(".comments-list");
-    const cq = query(commentsCol, orderBy("createdAt", "asc"), limit(200));
     let commentsOpen = false;
-    onSnapshot(cq, (snap) => {
+    onSnapshot(query(commentsCol, orderBy("createdAt", "asc")), (snap) => {
       commentCountEl.textContent = snap.size;
       if (commentsOpen) {
         commentsListEl.innerHTML = "";
@@ -1054,12 +774,11 @@
             <div class="mini-avatar small">${cd.authorAvatar ? `<img src="${escapeHtml(cd.authorAvatar)}">` : avatarFallback(cd.authorName)}</div>
             <div class="comment-bubble">
               <div class="comment-author">${escapeHtml(cd.authorName || "مستخدم")}</div>
-              <div class="comment-text">${escapeHtml(cd.content || "")}</div>
+              <div class="comment-text">${escapeHtml(filterProfanity(cd.content || ""))}</div>
             </div>
           `;
           commentsListEl.appendChild(row);
         });
-        commentsListEl.scrollTop = commentsListEl.scrollHeight;
       }
     });
     card.querySelector(".comment-btn").addEventListener("click", () => {
@@ -1068,9 +787,8 @@
     });
     card.querySelector(".comment-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لإرسال التعليق 📶"); return; }
       const input = card.querySelector(".comment-input");
-      const text = input.value.trim();
+      const text = filterProfanity(input.value.trim());
       if (!text) return;
       input.value = "";
       try {
@@ -1087,25 +805,15 @@
   }
 
   function openComposer() {
-    composerImagePreview = "";
     $id("composer-content").value = "";
     $id("composer-image-url").value = "";
-    $id("composer-preview").style.display = "none";
     openModal("composer-modal");
-    setTimeout(() => $id("composer-content").focus(), 200);
   }
 
   function wireComposer() {
-    $id("composer-image-url").addEventListener("input", (e) => {
-      const val = e.target.value.trim();
-      const prev = $id("composer-preview");
-      if (val) { prev.src = val; prev.style.display = "block"; }
-      else prev.style.display = "none";
-    });
     $id("composer-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لنشر المنشور 📶"); return; }
-      const content = $id("composer-content").value.trim();
+      const content = filterProfanity($id("composer-content").value.trim());
       const imageUrl = $id("composer-image-url").value.trim();
       if (!content && !imageUrl) { showToast("اكتب شيئاً أولاً ✍️"); return; }
       const btn = $id("composer-submit-btn");
@@ -1120,7 +828,7 @@
         });
         closeModal("composer-modal");
         showToast("تم النشر بنجاح ✅");
-      } catch (err) { showToast("تعذر النشر — تحقق من الإنترنت."); }
+      } catch (err) { showToast("تعذر النشر."); }
       setLoading(btn, false, "نشر");
     });
   }
@@ -1133,18 +841,22 @@
         <button class="new-chat-btn" id="new-chat-btn"><i class="fas fa-plus"></i> محادثة جديدة</button>
       </div>
       <div id="convos-list" class="convos-list"></div>
-      <div id="convos-empty" class="empty-state" style="display:none;">لا توجد محادثات بعد — ابدأ محادثة جديدة ✉️</div>
+      <div id="convos-empty" class="empty-state" style="display:none;">لا توجد محادثات بعد ✉️</div>
     `;
-    wrap.querySelector("#new-chat-btn").addEventListener("click", openNewChatModal);
+    wrap.querySelector("#new-chat-btn").addEventListener("click", () => openModal("new-chat-modal"));
     const listEl = wrap.querySelector("#convos-list");
     const emptyEl = wrap.querySelector("#convos-empty");
-    const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid), orderBy("lastMessageAt", "desc"), limit(50));
+
+    const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid));
     convosUnsub = onSnapshot(q, (snap) => {
       listEl.innerHTML = "";
       if (snap.empty) { emptyEl.style.display = "block"; return; }
       emptyEl.style.display = "none";
-      snap.forEach(docSnap => {
-        const conv = docSnap.data();
+
+      let docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      docs.sort((a, b) => (b.lastMessageAt?.seconds || 0) - (a.lastMessageAt?.seconds || 0));
+
+      docs.forEach(conv => {
         const otherUid = conv.participants.find(p => p !== currentUser.uid);
         if (!otherUid) return;
         const otherName = (conv.participantNames && conv.participantNames[otherUid]) || "مستخدم";
@@ -1154,77 +866,15 @@
           <div class="mini-avatar">${otherAvatar ? `<img src="${escapeHtml(otherAvatar)}">` : avatarFallback(otherName)}</div>
           <div class="convo-mid">
             <div class="convo-name">${escapeHtml(otherName)}</div>
-            <div class="convo-preview">${escapeHtml(conv.lastMessage || "")}</div>
+            <div class="convo-preview">${escapeHtml(filterProfanity(conv.lastMessage || ""))}</div>
           </div>
           <div class="convo-time">${timeAgo(conv.lastMessageAt)}</div>
         `;
-        row.addEventListener("click", () => openChat(docSnap.id, { uid: otherUid, displayName: otherName, avatarUrl: otherAvatar }));
+        row.addEventListener("click", () => openChat(conv.id, { uid: otherUid, displayName: otherName, avatarUrl: otherAvatar }));
         listEl.appendChild(row);
       });
-    }, (err) => { console.error(err); emptyEl.style.display = "block"; emptyEl.textContent = "تعذر تحميل المحادثات."; });
+    }, (err) => { emptyEl.style.display = "block"; emptyEl.textContent = "لا توجد محادثات."; });
     return wrap;
-  }
-
-  function openNewChatModal() {
-    $id("search-username-input").value = "";
-    $id("search-results").innerHTML = "";
-    openModal("new-chat-modal");
-    setTimeout(() => $id("search-username-input").focus(), 200);
-  }
-
-  function wireNewChatModal() {
-    const input = $id("search-username-input");
-    const results = $id("search-results");
-    let searchTimer = null;
-    input.addEventListener("input", () => {
-      clearTimeout(searchTimer);
-      const term = input.value.trim().toLowerCase();
-      if (!term) { results.innerHTML = ""; return; }
-      if (!navigator.onLine) { results.innerHTML = `<div class="empty-state">محتاج اتصال بالإنترنت للبحث 📶</div>`; return; }
-      searchTimer = setTimeout(async () => {
-        results.innerHTML = `<div class="empty-state">جارِ البحث...</div>`;
-        try {
-          const q = query(collection(db, "users"), orderBy("username"), startAt(term), endAt(term + "\uf8ff"), limit(15));
-          const snap = await getDocs(q);
-          results.innerHTML = "";
-          const matches = snap.docs.filter(d => d.id !== currentUser.uid);
-          if (matches.length === 0) { results.innerHTML = `<div class="empty-state">لا يوجد مستخدم بهذا الاسم.</div>`; return; }
-          matches.forEach(d => {
-            const u = d.data();
-            const row = el("div", "convo-row");
-            row.innerHTML = `
-              <div class="mini-avatar">${u.avatarUrl ? `<img src="${escapeHtml(u.avatarUrl)}">` : avatarFallback(u.displayName)}</div>
-              <div class="convo-mid">
-                <div class="convo-name">${escapeHtml(u.displayName || u.username)}</div>
-                <div class="convo-preview">@${escapeHtml(u.username)}</div>
-              </div>
-            `;
-            row.addEventListener("click", async () => {
-              closeModal("new-chat-modal");
-              await startOrOpenChat({ uid: d.id, displayName: u.displayName || u.username, avatarUrl: u.avatarUrl || "", username: u.username });
-            });
-            results.appendChild(row);
-          });
-        } catch (err) { results.innerHTML = `<div class="empty-state">تعذر البحث — حاول مجدداً.</div>`; }
-      }, 350);
-    });
-  }
-
-  async function startOrOpenChat(otherUser) {
-    const convId = conversationIdFor(currentUser.uid, otherUser.uid);
-    const convRef = doc(db, "conversations", convId);
-    try {
-      const snap = await getDoc(convRef);
-      if (!snap.exists()) {
-        await setDoc(convRef, {
-          participants: [currentUser.uid, otherUser.uid],
-          participantNames: { [currentUser.uid]: currentProfile.displayName || currentProfile.username, [otherUser.uid]: otherUser.displayName },
-          participantAvatars: { [currentUser.uid]: currentProfile.avatarUrl || "", [otherUser.uid]: otherUser.avatarUrl || "" },
-          lastMessage: "", lastMessageAt: serverTimestamp(), createdAt: serverTimestamp()
-        });
-      }
-      openChat(convId, otherUser);
-    } catch (err) { showToast("تعذر بدء المحادثة — تحقق من الإنترنت."); }
   }
 
   function openChat(conversationId, otherUser) {
@@ -1234,8 +884,6 @@
     body.innerHTML = "";
     body.appendChild(renderChatScreen(conversationId, otherUser));
   }
-
-  function closeChat() { currentChat = null; paintTab("messages"); }
 
   function renderChatScreen(conversationId, otherUser) {
     const wrap = el("div", "chat-screen");
@@ -1251,25 +899,24 @@
         <button type="submit"><i class="fas fa-paper-plane"></i></button>
       </form>
     `;
-    wrap.querySelector("#chat-back-btn").addEventListener("click", closeChat);
+    wrap.querySelector("#chat-back-btn").addEventListener("click", () => paintTab("messages"));
     const msgsEl = wrap.querySelector("#chat-messages");
-    const mq = query(collection(db, "conversations", conversationId, "messages"), orderBy("createdAt", "asc"), limit(500));
+    const mq = query(collection(db, "conversations", conversationId, "messages"), orderBy("createdAt", "asc"));
     messagesUnsub = onSnapshot(mq, (snap) => {
       msgsEl.innerHTML = "";
       snap.forEach(d => {
         const m = d.data();
         const mine = m.senderId === currentUser.uid;
         const bubble = el("div", "chat-bubble-row " + (mine ? "mine" : "theirs"));
-        bubble.innerHTML = `<div class="chat-bubble">${escapeHtml(m.text)}</div>`;
+        bubble.innerHTML = `<div class="chat-bubble">${escapeHtml(filterProfanity(m.text))}</div>`;
         msgsEl.appendChild(bubble);
       });
       msgsEl.scrollTop = msgsEl.scrollHeight;
-    }, (err) => { console.error(err); msgsEl.innerHTML = `<div class="empty-state">تعذر تحميل الرسائل.</div>`; });
+    });
     wrap.querySelector("#chat-input-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لإرسال الرسالة 📶"); return; }
       const input = wrap.querySelector("#chat-input");
-      const text = input.value.trim();
+      const text = filterProfanity(input.value.trim());
       if (!text) return;
       input.value = "";
       try {
@@ -1283,16 +930,15 @@
   function renderFriendsScreen() {
     const wrap = el("div", "friends-screen");
     wrap.innerHTML = `
-      <div class="section-title"><i class="fas fa-users"></i> الأصدقاء</div>
+      <div class="section-title"><i class="fas fa-users"></i> الأصدقاء والجمهور</div>
       <div id="friends-list" class="friends-list"></div>
-      <div id="friends-empty" class="empty-state" style="display:none;">لا يوجد أصدقاء بعد — جميع المستخدمين يظهرون تلقائياً كأصدقاء.</div>
+      <div id="friends-empty" class="empty-state" style="display:none;">لا يوجد مستخدمون متوفرون حالياً.</div>
     `;
     const listEl = wrap.querySelector("#friends-list");
     const emptyEl = wrap.querySelector("#friends-empty");
-    const q = query(collection(db, "users"), limit(100));
-    friendsUnsub = onSnapshot(q, (snap) => {
+    friendsUnsub = onSnapshot(collection(db, "users"), (snap) => {
       listEl.innerHTML = "";
-      const users = snap.docs.filter(d => d.id !== currentUser.uid);
+      const users = snap.docs.filter(d => d.id !== currentUser.uid && !d.data().isBanned);
       if (users.length === 0) { emptyEl.style.display = "block"; return; }
       emptyEl.style.display = "none";
       users.forEach(d => {
@@ -1307,55 +953,68 @@
           <button class="message-friend-btn"><i class="fas fa-comment"></i> مراسلة</button>
         `;
         row.querySelector(".message-friend-btn").addEventListener("click", async () => {
-          await startOrOpenChat({ uid: d.id, displayName: u.displayName || u.username, avatarUrl: u.avatarUrl || "", username: u.username });
+          const convId = conversationIdFor(currentUser.uid, d.id);
+          const convRef = doc(db, "conversations", convId);
+          const snapC = await getDoc(convRef);
+          if (!snapC.exists()) {
+            await setDoc(convRef, {
+              participants: [currentUser.uid, d.id],
+              participantNames: { [currentUser.uid]: currentProfile.displayName || currentProfile.username, [d.id]: u.displayName || u.username },
+              participantAvatars: { [currentUser.uid]: currentProfile.avatarUrl || "", [d.id]: u.avatarUrl || "" },
+              lastMessage: "", lastMessageAt: serverTimestamp(), createdAt: serverTimestamp()
+            });
+          }
+          openChat(convId, { uid: d.id, displayName: u.displayName || u.username, avatarUrl: u.avatarUrl || "" });
         });
         listEl.appendChild(row);
       });
-    }, (err) => { console.error(err); emptyEl.style.display = "block"; emptyEl.textContent = "تعذر تحميل الأصدقاء."; });
+    });
     return wrap;
   }
 
   function renderProfileScreen() {
     const wrap = el("div", "profile-screen");
+    const isAdmin = currentProfile && currentProfile.isAdmin;
     wrap.innerHTML = `
       <div class="profile-card">
         <div class="profile-avatar-big">${currentProfile.avatarUrl ? `<img src="${escapeHtml(currentProfile.avatarUrl)}">` : avatarFallback(currentProfile.displayName)}</div>
         <div class="profile-username">@${escapeHtml(currentProfile.username || "")}</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">UID: ${currentUser.uid}</div>
       </div>
+      <div class="btn-row">
+        <button class="secondary-btn" id="prof-support-btn"><i class="fas fa-bug"></i> الإبلاغ عن مشكلة</button>
+        <button class="secondary-btn" id="prof-dev-btn"><i class="fas fa-code"></i> المطور</button>
+      </div>
+      ${isAdmin ? `<button class="primary-btn danger" id="prof-admin-btn" style="margin-bottom:16px;"><i class="fas fa-user-shield"></i> لوحة طرد / حظر مستخدم</button>` : ""}
       <form id="profile-form" class="profile-form">
         <div class="form-field"><label>الاسم الظاهر</label><input type="text" id="pf-display-name" value="${escapeHtml(currentProfile.displayName || "")}" maxlength="40"></div>
         <div class="form-field"><label>رابط الصورة الشخصية</label><input type="text" id="pf-avatar" value="${escapeHtml(currentProfile.avatarUrl || "")}" placeholder="https://..."></div>
         <div class="form-field"><label>نبذة عنك</label><textarea id="pf-bio" maxlength="160">${escapeHtml(currentProfile.bio || "")}</textarea></div>
         <button type="submit" class="primary-btn" id="pf-save-btn"><i class="fas fa-save"></i> حفظ التعديلات</button>
       </form>
-      <div class="section-title"><i class="fas fa-file-alt"></i> منشوراتي</div>
-      <div id="my-posts-list" class="posts-list"></div>
       <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
     `;
+    wrap.querySelector("#prof-support-btn").addEventListener("click", () => openModal("support-modal"));
+    wrap.querySelector("#prof-dev-btn").addEventListener("click", () => openModal("support-modal"));
+    if (isAdmin) {
+      wrap.querySelector("#prof-admin-btn").addEventListener("click", () => openModal("admin-modal"));
+    }
     wrap.querySelector("#profile-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لحفظ التعديلات 📶"); return; }
       const btn = $id("pf-save-btn");
       setLoading(btn, true);
-      const displayName = $id("pf-display-name").value.trim() || currentProfile.username;
+      const displayName = filterProfanity($id("pf-display-name").value.trim()) || currentProfile.username;
       const avatarUrl = $id("pf-avatar").value.trim();
-      const bio = $id("pf-bio").value.trim();
+      const bio = filterProfanity($id("pf-bio").value.trim());
       try {
         await updateDoc(doc(db, "users", currentUser.uid), { displayName, avatarUrl, bio });
         currentProfile = { ...currentProfile, displayName, avatarUrl, bio };
         showToast("تم حفظ الملف الشخصي ✅");
         paintTab("profile");
-      } catch (err) { showToast("تعذر الحفظ — تحقق من الإنترنت."); setLoading(btn, false, "حفظ التعديلات"); }
+      } catch (err) { showToast("تعذر الحفظ."); setLoading(btn, false, "حفظ التعديلات"); }
     });
     wrap.querySelector("#logout-btn").addEventListener("click", async () => {
       if (confirm("هل تريد تسجيل الخروج؟")) await signOut(auth);
-    });
-    const myListEl = wrap.querySelector("#my-posts-list");
-    const mq = query(collection(db, "posts"), where("uid", "==", currentUser.uid), orderBy("createdAt", "desc"), limit(50));
-    onSnapshot(mq, (snap) => {
-      myListEl.innerHTML = "";
-      if (snap.empty) { myListEl.innerHTML = `<div class="empty-state">لم تنشر أي شيء بعد.</div>`; return; }
-      snap.forEach(docSnap => myListEl.appendChild(renderPostCard(docSnap.id, docSnap.data())));
     });
     return wrap;
   }
@@ -1369,6 +1028,43 @@
     document.querySelectorAll(".modal-overlay").forEach(ov => {
       ov.addEventListener("click", e => { if (e.target === ov) ov.classList.remove("show"); });
     });
+
+    $id("support-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const type = $id("support-type").value;
+      const content = $id("support-content").value.trim();
+      const btn = $id("support-submit-btn");
+      setLoading(btn, true);
+      try {
+        await addDoc(collection(db, "reports"), {
+          uid: currentUser ? currentUser.uid : "anonymous",
+          type, content, createdAt: serverTimestamp()
+        });
+        closeModal("support-modal");
+        $id("support-content").value = "";
+        showToast("تم إرسال رسالتك للمطور بنجاح 📨");
+      } catch (err) { showToast("تعذر الإرسال، حاول مجدداً."); }
+      setLoading(btn, false, "إرسال إلى المطور");
+    });
+
+    $id("admin-ban-btn").addEventListener("click", async () => {
+      const targetUid = $id("admin-target-uid").value.trim();
+      if (!targetUid) { showToast("أدخل UID المستخدم أولاً"); return; }
+      try {
+        await updateDoc(doc(db, "users", targetUid), { isBanned: true });
+        showToast("تم حظر وطرد المستخدم بنجاح 🚫");
+        closeModal("admin-modal");
+      } catch (err) { showToast("خطأ: تعذر الحظر."); }
+    });
+    $id("admin-unban-btn").addEventListener("click", async () => {
+      const targetUid = $id("admin-target-uid").value.trim();
+      if (!targetUid) { showToast("أدخل UID المستخدم أولاً"); return; }
+      try {
+        await updateDoc(doc(db, "users", targetUid), { isBanned: false });
+        showToast("تم إلغاء الحظر بنجاح ✅");
+        closeModal("admin-modal");
+      } catch (err) { showToast("خطأ: تعذر إلغاء الحظر."); }
+    });
   }
 
   onAuthStateChanged(auth, async (user) => {
@@ -1381,20 +1077,37 @@
       return;
     }
     try {
-      const snap = await getDoc(doc(db, "users", user.uid));
-      if (snap.exists()) currentProfile = snap.data();
-      else currentProfile = { username: user.displayName || "user", displayName: user.displayName || "مستخدم", avatarUrl: "", bio: "", friends: [] };
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+      if (snap.exists()) {
+        currentProfile = snap.data();
+        if (currentProfile.isBanned) {
+          alert("تم طردك وحظرك من استخدام التطبيق لسوء الاستخدام.");
+          await signOut(auth);
+          return;
+        }
+      } else {
+        // إنشاء ملف المستند تلقائياً إذا كانت القاعدة فارغة جديدة
+        currentProfile = {
+          username: user.displayName || user.email.split('@')[0],
+          displayName: user.displayName || "مستخدم جديد",
+          avatarUrl: "",
+          bio: "",
+          isBanned: false,
+          isAdmin: false,
+          createdAt: serverTimestamp()
+        };
+        await setDoc(userRef, currentProfile);
+      }
     } catch (e) {
-      currentProfile = { username: user.displayName || "user", displayName: user.displayName || "مستخدم", avatarUrl: "", bio: "", friends: [] };
+      currentProfile = { username: user.displayName || "user", displayName: user.displayName || "مستخدم", avatarUrl: "", bio: "", isBanned: false, isAdmin: false };
     }
     document.body.classList.add("app-active");
     renderShell();
   });
 
-  updateOnlineBanner();
   wireComposer();
   wireModals();
-  wireNewChatModal();
 </script>
 
 <script>
