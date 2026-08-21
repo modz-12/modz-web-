@@ -30,7 +30,6 @@
       --gradient-primary: linear-gradient(135deg, #8b5cf6, #3b82f6);
       --gradient-accent: linear-gradient(135deg, #ec4899, #8b5cf6);
       --gradient-gold: linear-gradient(135deg, #f59e0b, #ef4444);
-      --gradient-danger: linear-gradient(135deg, #ef4444, #b91c1c);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
@@ -63,7 +62,9 @@
     #offline-banner {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 9999;
       background: var(--gradient-gold);
       color: #fff;
@@ -75,6 +76,10 @@
       box-shadow: var(--shadow-lg);
     }
     #offline-banner.show { display: block; }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
 
     #top-header {
       position: sticky;
@@ -99,10 +104,18 @@
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .header-actions { display: flex; gap: 8px; }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
+      -webkit-text-fill-color: initial;
+      border: 2px solid var(--accent-purple);
+    }
+    .header-actions { display: flex; gap: 10px; }
     .icon-btn {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 1px solid var(--border-color);
       background: var(--bg-card);
@@ -111,7 +124,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 16px;
       transition: var(--transition);
     }
     .icon-btn:hover { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); }
@@ -139,46 +152,104 @@
       position: relative;
       overflow: hidden;
     }
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .auth-logo-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 24px;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
+      position: relative;
+      z-index: 1;
+    }
     .auth-title {
       font-weight: 900;
-      font-size: 30px;
+      font-size: 32px;
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      position: relative;
+      z-index: 1;
     }
     .auth-sub {
       color: var(--text-secondary);
-      font-size: 13.5px;
-      margin-top: 4px;
-      margin-bottom: 24px;
+      font-size: 14px;
+      margin-top: 6px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
     }
     .auth-tabs {
       display: flex;
       background: var(--bg-elevated);
       border-radius: var(--radius-full);
       padding: 4px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
     }
     .auth-tab {
       flex: 1;
-      padding: 10px;
+      padding: 12px;
       border: none;
       background: none;
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 13.5px;
+      font-size: 14px;
       border-radius: var(--radius-full);
       cursor: pointer;
       transition: var(--transition);
     }
-    .auth-tab.active { background: var(--gradient-primary); color: #fff; }
-    .auth-form { display: flex; flex-direction: column; gap: 14px; text-align: right; }
-    .auth-error { color: var(--danger); font-size: 13px; min-height: 18px; text-align: center; font-weight: 600; }
-    .auth-note { margin-top: 16px; font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+    .auth-tab.active {
+      background: var(--gradient-primary);
+      color: #fff;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: right;
+      position: relative;
+      z-index: 1;
+    }
+    .auth-error {
+      color: var(--danger);
+      font-size: 13px;
+      min-height: 18px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .auth-note {
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
 
-    .form-field label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; }
-    .form-field input, .form-field textarea, .form-field select {
+    .form-field label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .form-field input,
+    .form-field textarea,
+    .form-field select {
       width: 100%;
       background: var(--bg-elevated);
       border: 1px solid var(--border-color);
@@ -190,13 +261,15 @@
       transition: var(--transition);
     }
     .form-field textarea { min-height: 90px; resize: vertical; }
-    .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+    .form-field input:focus,
+    .form-field textarea:focus,
+    .form-field select:focus {
       border-color: var(--accent-purple);
       box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
     }
     .primary-btn {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       border-radius: var(--radius-md);
       border: none;
       background: var(--gradient-primary);
@@ -205,9 +278,12 @@
       font-size: 15px;
       cursor: pointer;
       transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
     .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4); }
-    .primary-btn.danger { background: var(--gradient-danger); }
+    .primary-btn:active { transform: translateY(0); }
+    .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .composer-teaser {
       display: flex;
@@ -216,18 +292,21 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      padding: 14px 16px;
+      padding: 16px;
       margin-bottom: 20px;
       cursor: pointer;
       transition: var(--transition);
     }
-    .composer-teaser:hover { border-color: var(--accent-purple); box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3); }
+    .composer-teaser:hover {
+      border-color: var(--accent-purple);
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+    }
     .teaser-text { flex: 1; color: var(--text-muted); font-size: 14px; }
     .teaser-icon { font-size: 18px; color: var(--accent-purple); }
 
     .mini-avatar {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       flex-shrink: 0;
       overflow: hidden;
@@ -237,7 +316,7 @@
       background: var(--gradient-primary);
       color: #fff;
       font-weight: 800;
-      font-size: 17px;
+      font-size: 18px;
       border: 2px solid var(--accent-purple);
     }
     .mini-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -248,83 +327,91 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      padding: 16px;
+      padding: 18px;
       transition: var(--transition);
+      animation: fadeIn 0.4s ease;
     }
-    .post-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .post-card:hover { border-color: rgba(139, 92, 246, 0.4); box-shadow: var(--shadow-md); }
+    .post-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
     .post-head-text { flex: 1; }
-    .post-author { font-weight: 800; font-size: 14.5px; color: var(--text-primary); }
-    .post-time { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
-    .post-delete-btn { background: none; border: none; color: var(--text-muted); font-size: 15px; cursor: pointer; padding: 4px; transition: var(--transition); }
+    .post-author { font-weight: 800; font-size: 15px; color: var(--text-primary); }
+    .post-time { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .post-delete-btn { background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; padding: 4px; transition: var(--transition); }
     .post-delete-btn:hover { color: var(--danger); }
-    .post-content { font-size: 14.5px; line-height: 1.8; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; }
-    .post-image { margin-top: 12px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); max-height: 400px; }
+    .post-content { font-size: 15px; line-height: 1.9; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; }
+    .post-image { margin-top: 14px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); max-height: 450px; }
     .post-image img { width: 100%; height: 100%; object-fit: cover; }
-    .post-actions { display: flex; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-light); }
+    .post-actions { display: flex; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border-light); }
     .post-action {
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 14px;
+      padding: 8px 16px;
       border-radius: var(--radius-full);
       border: none;
       background: var(--bg-elevated);
       color: var(--text-secondary);
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
     }
     .post-action:hover { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
     .like-btn[data-liked="1"] { color: var(--accent-pink); background: rgba(236, 72, 153, 0.15); }
-    .comments-section { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border-color); }
-    .comments-list { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; margin-bottom: 10px; }
+    .comments-section { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
+    .comments-list { display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; margin-bottom: 12px; }
     .comment-row { display: flex; gap: 8px; align-items: flex-start; }
-    .comment-bubble { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 8px 12px; flex: 1; }
-    .comment-author { font-size: 11.5px; font-weight: 700; color: var(--accent-purple); }
-    .comment-text { font-size: 12.5px; color: var(--text-secondary); margin-top: 1px; line-height: 1.6; }
+    .comment-bubble { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 10px 14px; flex: 1; }
+    .comment-author { font-size: 12px; font-weight: 700; color: var(--accent-purple); }
+    .comment-text { font-size: 13px; color: var(--text-secondary); margin-top: 2px; line-height: 1.7; }
     .comment-form { display: flex; gap: 8px; }
     .comment-form input {
       flex: 1;
       background: var(--bg-elevated);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-full);
-      padding: 8px 14px;
+      padding: 10px 16px;
       color: var(--text-primary);
-      font-size: 12.5px;
+      font-size: 13px;
       outline: none;
     }
+    .comment-form input:focus { border-color: var(--accent-purple); }
     .comment-form button {
-      padding: 8px 16px;
+      padding: 10px 20px;
       border-radius: var(--radius-full);
       border: none;
       background: var(--gradient-primary);
       color: #fff;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
+      transition: var(--transition);
     }
+    .comment-form button:hover { transform: translateY(-2px); }
 
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      font-size: 13.5px;
-      padding: 40px 20px;
+      font-size: 14px;
+      padding: 60px 20px;
       border: 2px dashed var(--border-color);
       border-radius: var(--radius-lg);
     }
 
-    .messages-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .messages-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .new-chat-btn {
-      padding: 8px 16px;
+      padding: 10px 18px;
       border-radius: var(--radius-full);
       border: 1px solid var(--accent-purple);
       background: rgba(139, 92, 246, 0.15);
       color: var(--accent-purple);
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
+      transition: var(--transition);
     }
+    .new-chat-btn:hover { background: var(--accent-purple); color: #fff; }
     .convos-list { display: flex; flex-direction: column; gap: 10px; }
     .convo-row {
       display: flex;
@@ -333,119 +420,931 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
-      padding: 12px 14px;
+      padding: 14px 16px;
       cursor: pointer;
       transition: var(--transition);
     }
     .convo-row:hover { border-color: var(--accent-purple); background: var(--bg-elevated); }
     .convo-mid { flex: 1; min-width: 0; }
-    .convo-name { font-weight: 700; font-size: 13.5px; color: var(--text-primary); }
-    .convo-preview { font-size: 12px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .convo-time { font-size: 10.5px; color: var(--text-muted); flex-shrink: 0; }
-    .search-results { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; max-height: 300px; overflow-y: auto; }
+    .convo-name { font-weight: 700; font-size: 14px; color: var(--text-primary); }
+    .convo-preview { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .convo-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+    .search-results { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; max-height: 360px; overflow-y: auto; }
 
-    .chat-screen { display: flex; flex-direction: column; height: calc(100vh - 140px); margin: -16px -14px 0; }
-    .chat-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); }
-    .chat-back-btn {
-      width: 34px; height: 34px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border-color);
-      color: var(--text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer;
+
+
+    .notice-btn{position:relative}.notification-badge{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 5px;border-radius:20px;background:var(--danger);color:#fff;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-primary)}
+    .notice-panel{position:fixed;top:68px;right:12px;left:12px;max-width:420px;margin-left:auto;z-index:250;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:18px;box-shadow:var(--shadow-lg);overflow:hidden;display:none}.notice-panel.show{display:block;animation:fadeIn .2s ease}.notice-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border-color)}.notice-list{max-height:55vh;overflow:auto}.notice-item{display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border-light);cursor:pointer}.notice-item.unread{background:rgba(139,92,246,.08)}.notice-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-purple);margin-top:7px;flex:none}.notice-text{flex:1;font-size:13px;line-height:1.6}.notice-time{font-size:10px;color:var(--text-muted)}
+    .attach-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);cursor:pointer}.attach-btn:hover{color:#fff;background:var(--accent-purple)}.chat-file-name{font-size:11px;color:var(--text-muted);padding:0 8px}.chat-file-card{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.07);margin-bottom:5px}.chat-file-card a{color:#fff;text-decoration:underline;overflow-wrap:anywhere}.message-tools{display:flex;gap:5px;margin-top:3px;opacity:.75}.message-tool{border:0;background:transparent;color:inherit;cursor:pointer;font-size:10px;padding:2px 5px}.message-tool:hover{color:#fff}.editing-banner{display:none;padding:7px 12px;background:rgba(139,92,246,.12);color:var(--accent-purple);font-size:11px;border-top:1px solid var(--border-color)}.editing-banner.show{display:flex;justify-content:space-between}.presence-online{color:var(--accent-green)!important}.presence-offline{color:var(--text-muted)!important}.request-actions{display:flex;gap:6px}.request-actions button{border:0;border-radius:20px;padding:7px 10px;font-weight:800;cursor:pointer}.accept-request{background:var(--accent-green);color:#fff}.reject-request{background:rgba(239,68,68,.15);color:var(--danger)}
+
+    /* ===== Modz Web Pro Chat ===== */
+    .chat-screen {
+      display:flex;
+      flex-direction:column;
+      height:calc(100dvh - 140px);
+      min-height:420px;
+      margin:-16px -14px 0;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(139,92,246,.10), transparent 30%),
+        radial-gradient(circle at 90% 90%, rgba(59,130,246,.08), transparent 28%),
+        var(--bg-primary);
     }
-    .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .chat-header {
+      position:sticky;
+      top:0;
+      z-index:5;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+      background:rgba(17,24,39,.92);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border-color);
+    }
+    .chat-header-info{flex:1;min-width:0}
+    .chat-header-name{font-weight:800;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .chat-header-status{font-size:11px;color:var(--accent-green);margin-top:1px}
+    .chat-header-actions{display:flex;gap:6px}
+    .chat-head-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);cursor:pointer}
+    .chat-head-btn:hover{background:var(--accent-purple);color:#fff}
+    .chat-messages{
+      flex:1;overflow-y:auto;padding:18px 14px 24px;
+      display:flex;flex-direction:column;gap:8px;
+      overscroll-behavior:contain;
+      scroll-behavior:smooth;
+    }
+    .chat-day{
+      align-self:center;padding:5px 12px;border-radius:var(--radius-full);
+      background:rgba(255,255,255,.06);border:1px solid var(--border-light);
+      color:var(--text-muted);font-size:10px;margin:8px 0;
+    }
+    .chat-bubble-row{display:flex;align-items:flex-end;gap:6px}
+    .chat-bubble-row.mine{justify-content:flex-end}
+    .chat-bubble-row.theirs{justify-content:flex-start}
+    .chat-bubble-wrap{max-width:min(82%,520px)}
+    .chat-bubble{
+      padding:9px 12px 7px;border-radius:17px;
+      font-size:14px;line-height:1.65;word-break:break-word;
+      box-shadow:0 3px 12px rgba(0,0,0,.12);
+    }
+    .chat-bubble-row.mine .chat-bubble{background:var(--gradient-primary);color:#fff;border-bottom-right-radius:5px}
+    .chat-bubble-row.theirs .chat-bubble{background:var(--bg-card);border:1px solid var(--border-color);border-bottom-left-radius:5px}
+    .chat-meta{display:flex;align-items:center;justify-content:flex-end;gap:5px;font-size:9px;margin-top:3px;opacity:.72}
+    .chat-bubble-row.mine .chat-meta{color:#fff}
+    .chat-bubble-row.theirs .chat-meta{color:var(--text-muted)}
+    .chat-status{font-weight:900}
+    .chat-status.read{color:#67e8f9}
+    .chat-image{display:block;max-width:100%;max-height:300px;border-radius:13px;margin-bottom:5px}
+    .chat-link{color:#bfdbfe;text-decoration:underline;overflow-wrap:anywhere}
+    .chat-empty{margin:auto;text-align:center;color:var(--text-muted);padding:30px}
+    .chat-typing{min-height:18px;padding:0 18px;color:var(--text-muted);font-size:11px}
+    .chat-input-form{
+      display:flex;align-items:flex-end;gap:8px;padding:9px;
+      background:rgba(17,24,39,.96);border-top:1px solid var(--border-color);
+      padding-bottom:calc(9px + env(safe-area-inset-bottom));
+    }
+    .chat-input-wrap{flex:1;position:relative}
+    .chat-input-form textarea{
+      width:100%;min-height:44px;max-height:130px;resize:none;
+      background:var(--bg-elevated);border:1px solid var(--border-color);
+      border-radius:18px;padding:11px 14px;color:var(--text-primary);
+      font-size:14px;outline:none;line-height:1.5;
+    }
+    .chat-input-form textarea:focus{border-color:var(--accent-purple);box-shadow:0 0 0 3px rgba(139,92,246,.13)}
+    .chat-send-btn{
+      width:44px;height:44px;flex-shrink:0;border-radius:50%;border:none;
+      background:var(--gradient-primary);color:#fff;cursor:pointer;
+      box-shadow:0 5px 18px rgba(139,92,246,.35);transition:var(--transition)
+    }
+    .chat-send-btn:hover{transform:translateY(-2px)}
+    .chat-send-btn:disabled{opacity:.55;transform:none}
+    .convo-row{position:relative}
+    .convo-unread{
+      min-width:20px;height:20px;padding:0 6px;border-radius:20px;
+      background:var(--accent-purple);color:#fff;display:flex;align-items:center;justify-content:center;
+      font-size:10px;font-weight:900
+    }
+    .convo-row.unread .convo-name{color:#fff}
+    .convo-row.unread .convo-preview{color:var(--text-secondary)}
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .chat-back-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: var(--transition);
+    }
+    .chat-back-btn:hover { background: var(--accent-purple); }
+    .chat-header-name { font-weight: 700; font-size: 15px; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
     .chat-bubble-row { display: flex; }
     .chat-bubble-row.mine { justify-content: flex-end; }
     .chat-bubble-row.theirs { justify-content: flex-start; }
     .chat-bubble {
-      max-width: 75%; padding: 10px 14px; border-radius: 16px; font-size: 13.5px; line-height: 1.6;
-      word-break: break-word; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary);
+      max-width: 75%;
+      padding: 12px 18px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.7;
+      word-break: break-word;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
     }
-    .chat-bubble-row.mine .chat-bubble { background: var(--gradient-primary); border-color: transparent; color: #fff; }
-    .chat-input-form { display: flex; gap: 8px; padding: 12px; background: var(--bg-secondary); border-top: 1px solid var(--border-color); }
-    .chat-input-form input { flex: 1; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-full); padding: 10px 16px; color: var(--text-primary); font-size: 13.5px; outline: none; }
-    .chat-input-form button { padding: 10px 20px; border-radius: var(--radius-full); border: none; background: var(--gradient-primary); color: #fff; font-weight: 700; cursor: pointer; }
+    .chat-bubble-row.mine .chat-bubble {
+      background: var(--gradient-primary);
+      border-color: transparent;
+      color: #fff;
+    }
+    .chat-input-form { display: flex; gap: 10px; padding: 16px; background: var(--bg-secondary); border-top: 1px solid var(--border-color); }
+    .chat-input-form input {
+      flex: 1;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 12px 18px;
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+    }
+    .chat-input-form input:focus { border-color: var(--accent-purple); }
+    .chat-input-form button {
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .chat-input-form button:hover { transform: translateY(-2px); }
 
-    .profile-card { text-align: center; padding: 16px 0 20px; }
+    .profile-card { text-align: center; padding: 24px 0 30px; }
     .profile-avatar-big {
-      width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 12px; overflow: hidden;
-      display: flex; align-items: center; justify-content: center; background: var(--gradient-primary);
-      color: #fff; font-weight: 900; font-size: 32px; border: 3px solid var(--accent-purple); box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-weight: 900;
+      font-size: 36px;
+      border: 4px solid var(--accent-purple);
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
     }
     .profile-avatar-big img { width: 100%; height: 100%; object-fit: cover; }
-    .profile-username { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
-    .profile-form, .admin-card {
-      display: flex; flex-direction: column; gap: 14px; background: var(--bg-card);
-      border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 20px;
+    .profile-username { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+    .profile-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 28px;
     }
-    .section-title { font-weight: 800; font-size: 15px; margin-bottom: 12px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+    .section-title {
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .section-title i { color: var(--accent-purple); }
-    .btn-row { display: flex; gap: 10px; margin-bottom: 16px; }
-    .secondary-btn {
-      flex: 1; padding: 11px; border-radius: var(--radius-md); border: 1px solid var(--border-color);
-      background: var(--bg-elevated); color: var(--text-primary); font-weight: 700; font-size: 13px; cursor: pointer; text-align: center;
-    }
-    .secondary-btn:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
-
     .logout-btn {
-      width: 100%; margin-top: 10px; padding: 12px; border-radius: var(--radius-md);
-      border: 1px solid rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.1);
-      color: var(--danger); font-weight: 800; font-size: 13.5px; cursor: pointer;
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
     }
+    .logout-btn:hover { background: var(--danger); color: #fff; }
 
     .tab-bar {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex;
-      padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); background: rgba(10, 14, 26, 0.95);
-      backdrop-filter: blur(20px); border-top: 1px solid var(--border-color); max-width: 720px; margin: 0 auto;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 90;
+      display: flex;
+      padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+      background: rgba(10, 14, 26, 0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-color);
+      max-width: 720px;
+      margin: 0 auto;
     }
     .tab-item {
-      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-      padding: 6px 2px; background: none; border: none; color: var(--text-muted); font-size: 10.5px; font-weight: 600; cursor: pointer;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 2px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
     }
-    .tab-item .tab-ic { font-size: 20px; }
+    .tab-item .tab-ic { font-size: 22px; }
     .tab-item.active { color: var(--accent-purple); }
     .tab-item.compose-tab .tab-ic {
-      background: var(--gradient-primary); width: 42px; height: 42px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; color: #fff; margin: -18px auto 0;
-      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5); font-size: 18px;
+      background: var(--gradient-primary);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      margin: -20px auto 0;
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+      font-size: 20px;
     }
 
     .modal-overlay {
-      position: fixed; inset: 0; z-index: 200; background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px); display: flex; align-items: flex-end; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
     }
     @media(min-width: 640px) { .modal-overlay { align-items: center; padding: 20px; } }
     .modal-overlay.show { opacity: 1; pointer-events: all; }
     .modal {
-      width: 100%; max-width: 500px; background: var(--bg-secondary); border: 1px solid var(--border-color);
-      border-radius: 20px 20px 0 0; padding: 24px 20px 28px; position: relative;
-      transform: translateY(30px); transition: transform 0.3s ease; max-height: 85vh; overflow-y: auto;
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 24px 24px 0 0;
+      padding: 28px 24px 32px;
+      position: relative;
+      transform: translateY(40px);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 90vh;
+      overflow-y: auto;
     }
-    @media(min-width: 640px) { .modal { border-radius: 20px; transform: translateY(0); } }
-    .modal-overlay.show .modal { transform: translateY(0); }
+    @media(min-width: 640px) { .modal { border-radius: 24px; transform: translateY(20px) scale(0.95); } }
+    .modal-overlay.show .modal { transform: translateY(0) scale(1); }
     .modal-close {
-      position: absolute; top: 14px; left: 14px; width: 32px; height: 32px; border-radius: 50%;
-      background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary);
-      display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px;
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: var(--transition);
     }
-    .modal-title { text-align: center; font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 18px; color: var(--accent-purple); }
+    .modal-close:hover { background: var(--danger); color: #fff; }
+    .modal-title {
+      text-align: center;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 22px;
+      color: var(--accent-purple);
+    }
+    .composer-form { display: flex; flex-direction: column; gap: 16px; }
+    #composer-content { min-height: 120px; }
+    .composer-preview {
+      display: none;
+      width: 100%;
+      border-radius: var(--radius-md);
+      margin-top: 6px;
+      max-height: 240px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
 
     .toast {
-      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: var(--bg-elevated); border: 1px solid var(--accent-purple); color: var(--text-primary);
-      padding: 12px 20px; border-radius: var(--radius-full); font-size: 13.5px; z-index: 300;
-      opacity: 0; transition: all 0.3s ease; pointer-events: none; text-align: center; max-width: 90vw; box-shadow: var(--shadow-lg); font-weight: 600;
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-elevated);
+      border: 1px solid var(--accent-purple);
+      color: var(--text-primary);
+      padding: 14px 22px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      z-index: 300;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      text-align: center;
+      max-width: 90vw;
+      box-shadow: var(--shadow-lg);
+      font-weight: 600;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .friend-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 8px; }
+    .friends-section { margin-bottom: 24px; }
+    .friend-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      transition: var(--transition);
+    }
+    .friend-row:hover { border-color: var(--accent-purple); }
     .friend-info { flex: 1; }
-    .friend-name { font-weight: 700; font-size: 13.5px; }
-    .friend-username { font-size: 11.5px; color: var(--text-muted); }
-    .message-friend-btn { padding: 7px 14px; border-radius: var(--radius-full); border: 1px solid var(--accent-purple); background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .friend-name { font-weight: 700; font-size: 14px; }
+    .friend-username { font-size: 12px; color: var(--text-muted); }
+    .message-friend-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--accent-purple);
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--accent-purple);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .message-friend-btn:hover { background: var(--accent-purple); color: #fff; }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+    }
+    .search-bar input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+    }
+    .search-bar i { color: var(--text-muted); }
+  
+    /* ================================================================
+       MODZ WEB PRO MAX — ADVANCED SINGLE FILE UI LAYER
+       ================================================================ */
+    :root {
+      --pro-glass: rgba(17, 24, 39, .82);
+      --pro-glass-2: rgba(31, 42, 63, .72);
+      --pro-line: rgba(255,255,255,.08);
+      --pro-success: #22c55e;
+      --pro-warning: #fbbf24;
+      --pro-info: #38bdf8;
+      --pro-purple: #a78bfa;
+      --pro-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+    body.pro-compact { --radius-md: 10px; --radius-lg: 14px; }
+    body.pro-light {
+      --bg-primary: #f5f7fb;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-elevated: #eef2ff;
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --text-muted: #6b7280;
+      --border-color: rgba(17,24,39,.10);
+      --border-light: rgba(17,24,39,.06);
+      --shadow-sm: 0 2px 8px rgba(17,24,39,.08);
+      --shadow-md: 0 8px 24px rgba(17,24,39,.10);
+      --shadow-lg: 0 18px 50px rgba(17,24,39,.15);
+    }
+    body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after {
+      animation-duration: .001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .001ms !important;
+      scroll-behavior: auto !important;
+    }
+    .pro-panel {
+      position: fixed;
+      inset: 0;
+      z-index: 12000;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(0,0,0,.64);
+      backdrop-filter: blur(8px);
+    }
+    .pro-panel.show { display: flex; }
+    .pro-sheet {
+      width: min(760px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      background: var(--bg-secondary);
+      border: 1px solid var(--pro-line);
+      border-radius: 26px 26px 0 0;
+      box-shadow: var(--pro-shadow);
+      padding: 20px;
+      animation: proSheetIn .24s ease;
+    }
+    @keyframes proSheetIn {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .pro-panel-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+      position: sticky;
+      top: -20px;
+      z-index: 2;
+      background: var(--bg-secondary);
+      padding: 4px 0 16px;
+      border-bottom: 1px solid var(--pro-line);
+      margin-bottom: 16px;
+    }
+    .pro-panel-title {
+      font-size: 19px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .pro-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--pro-line);
+      border-radius: 50%;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 17px;
+    }
+    .pro-section {
+      margin: 14px 0;
+      padding: 14px;
+      border: 1px solid var(--pro-line);
+      border-radius: 16px;
+      background: var(--pro-glass);
+    }
+    .pro-section-title {
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      color: var(--accent-purple);
+    }
+    .pro-setting {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--pro-line);
+    }
+    .pro-setting:last-child { border-bottom: 0; }
+    .pro-setting-main { flex: 1; min-width: 0; }
+    .pro-setting-title { font-weight: 800; font-size: 14px; }
+    .pro-setting-desc { color: var(--text-muted); font-size: 11px; margin-top: 3px; }
+    .pro-switch {
+      width: 48px;
+      height: 28px;
+      border: 0;
+      border-radius: 99px;
+      background: #374151;
+      padding: 3px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pro-switch span {
+      display: block;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      transition: var(--transition);
+    }
+    .pro-switch.on { background: var(--accent-purple); }
+    .pro-switch.on span { transform: translateX(20px); }
+    .pro-action {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 14px;
+      border: 1px solid var(--pro-line);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-radius: 13px;
+      margin-top: 8px;
+      cursor: pointer;
+      font-weight: 800;
+      text-align: right;
+    }
+    .pro-action:hover { border-color: var(--accent-purple); transform: translateY(-1px); }
+    .pro-search-results {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 60vh;
+      overflow: auto;
+    }
+    .pro-search-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--pro-line);
+      border-radius: 14px;
+      background: var(--bg-card);
+      cursor: pointer;
+    }
+    .pro-search-item:hover { border-color: var(--accent-blue); }
+    .pro-search-meta { flex: 1; min-width: 0; }
+    .pro-search-name { font-weight: 900; }
+    .pro-search-sub { color: var(--text-muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pro-floating {
+      position: fixed;
+      left: 16px;
+      bottom: 92px;
+      z-index: 5000;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      align-items: flex-start;
+    }
+    .pro-float-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--pro-line);
+      background: var(--gradient-primary);
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(0,0,0,.28);
+      cursor: pointer;
+      font-size: 17px;
+    }
+    .pro-float-btn.secondary { background: var(--bg-card); color: var(--text-primary); }
+    .pro-counter {
+      min-width: 19px;
+      height: 19px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5px;
+      border-radius: 20px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 900;
+    }
+    .pro-status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+      background: #6b7280;
+      box-shadow: 0 0 0 3px rgba(107,114,128,.12);
+    }
+    .pro-status-dot.online { background: var(--pro-success); box-shadow: 0 0 0 3px rgba(34,197,94,.13); }
+    .pro-status-dot.away { background: var(--pro-warning); }
+    .pro-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+    .pro-stat {
+      padding: 13px 8px;
+      border: 1px solid var(--pro-line);
+      border-radius: 14px;
+      background: var(--bg-card);
+      text-align: center;
+    }
+    .pro-stat-value { font-size: 20px; font-weight: 900; }
+    .pro-stat-label { color: var(--text-muted); font-size: 10px; margin-top: 3px; }
+    .pro-progress {
+      height: 7px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.07);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .pro-progress > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--gradient-primary);
+      border-radius: inherit;
+      transition: width .5s ease;
+    }
+    .pro-toast-stack {
+      position: fixed;
+      right: 14px;
+      bottom: 88px;
+      z-index: 14000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: min(360px, calc(100vw - 28px));
+      pointer-events: none;
+    }
+    .pro-live-toast {
+      pointer-events: auto;
+      padding: 12px 14px;
+      border: 1px solid var(--pro-line);
+      border-radius: 15px;
+      background: var(--pro-glass);
+      backdrop-filter: blur(15px);
+      box-shadow: var(--pro-shadow);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      animation: proToastIn .25s ease;
+    }
+    @keyframes proToastIn {
+      from { transform: translateX(30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .pro-live-toast-icon { font-size: 18px; }
+    .pro-live-toast-body { flex: 1; font-size: 12px; }
+    .pro-live-toast-title { font-weight: 900; margin-bottom: 2px; }
+    .pro-live-toast-text { color: var(--text-secondary); }
+    .chat-search-box {
+      padding: 8px 12px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--pro-line);
+    }
+    .chat-search-box input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      color: var(--text-primary);
+      padding: 7px;
+    }
+    .chat-search-box button {
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .typing-line {
+      min-height: 18px;
+      padding: 0 16px;
+      color: var(--accent-purple);
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .reply-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 12px;
+      border-top: 1px solid var(--pro-line);
+      background: rgba(139,92,246,.08);
+      font-size: 11px;
+    }
+    .reply-banner.show { display: flex; }
+    .reply-banner span { color: var(--text-muted); margin-right: 5px; }
+    .quoted-message {
+      border-right: 3px solid var(--accent-purple);
+      padding: 5px 8px;
+      margin-bottom: 7px;
+      background: rgba(139,92,246,.08);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-size: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .quoted-message span { color: var(--accent-purple); margin-left: 5px; }
+    .reaction-row {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+    .reaction-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-primary);
+      padding: 2px 4px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .reaction-btn:hover, .reaction-btn.active { border-color: var(--accent-purple); background: rgba(139,92,246,.12); }
+    .reaction-btn small { font-size: 8px; color: var(--text-muted); margin-right: 2px; }
+    .advanced-message-tools { opacity: .35; transition: opacity .2s ease; }
+    .chat-bubble-wrap:hover .advanced-message-tools { opacity: 1; }
+    .chat-image-link { display: block; }
+    .chat-video { max-width: min(280px, 75vw); border-radius: 12px; margin: 2px 0 5px; }
+    .deleted-message { color: var(--text-muted); font-style: italic; }
+    .chat-bubble.is-deleted { opacity: .75; }
+    .chat-media-url {
+      width: 100%;
+      margin-top: 5px;
+      border: 1px solid var(--pro-line);
+      background: rgba(0,0,0,.08);
+      color: var(--text-primary);
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-size: 10px;
+      outline: none;
+    }
+    .chat-hint {
+      padding: 4px 12px 7px;
+      color: var(--text-muted);
+      font-size: 9px;
+      text-align: center;
+      background: var(--bg-card);
+    }
+    .pro-post-tools {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      border-top: 1px solid var(--pro-line);
+      padding-top: 8px;
+    }
+    .pro-post-tool {
+      border: 1px solid var(--pro-line);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border-radius: 9px;
+      padding: 6px 9px;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .pro-post-tool:hover { color: var(--text-primary); border-color: var(--accent-purple); }
+    .pro-bookmarked { color: var(--accent-gold) !important; border-color: var(--accent-gold) !important; }
+    .pro-profile-banner {
+      position: relative;
+      min-height: 125px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--gradient-primary);
+      margin-bottom: -34px;
+    }
+    .pro-profile-banner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 15% 20%, rgba(255,255,255,.18), transparent 28%), radial-gradient(circle at 80% 60%, rgba(255,255,255,.12), transparent 25%);
+    }
+    .pro-profile-avatar-wrap { position: relative; z-index: 2; padding: 0 20px; }
+    .pro-profile-avatar {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 5px solid var(--bg-primary);
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 30px;
+      font-weight: 900;
+    }
+    .pro-profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .pro-profile-info { padding: 10px 20px 15px; }
+    .pro-profile-name { font-size: 20px; font-weight: 900; }
+    .pro-profile-handle { color: var(--text-muted); font-size: 12px; }
+    .pro-profile-bio { color: var(--text-secondary); font-size: 12px; margin-top: 8px; }
+    .pro-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+    .pro-chip { border: 1px solid var(--pro-line); border-radius: 30px; padding: 5px 9px; color: var(--text-secondary); font-size: 9px; background: var(--bg-card); }
+    .pro-help-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .pro-help-card { border: 1px solid var(--pro-line); border-radius: 14px; padding: 13px; background: var(--bg-card); }
+    .pro-help-card b { display: block; margin-bottom: 5px; }
+    .pro-help-card span { color: var(--text-muted); font-size: 10px; line-height: 1.7; }
+    .pro-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    .pro-table th, .pro-table td { border-bottom: 1px solid var(--pro-line); padding: 8px 5px; text-align: right; }
+    .pro-table th { color: var(--accent-purple); }
+    .pro-danger { color: var(--danger) !important; }
+    .pro-success { color: var(--pro-success) !important; }
+    .pro-muted { color: var(--text-muted) !important; }
+    .pro-inline { display: inline-flex; align-items: center; gap: 5px; }
+    .pro-hidden { display: none !important; }
+    .pro-empty { padding: 25px 15px; text-align: center; color: var(--text-muted); border: 1px dashed var(--pro-line); border-radius: 14px; }
+    .pro-skeleton { border-radius: 10px; min-height: 16px; background: linear-gradient(90deg, rgba(255,255,255,.03), rgba(255,255,255,.09), rgba(255,255,255,.03)); background-size: 200% 100%; animation: proShimmer 1.2s linear infinite; }
+    @keyframes proShimmer { to { background-position: -200% 0; } }
+    .pro-command-box { display: flex; gap: 8px; align-items: center; border: 1px solid var(--pro-line); background: var(--bg-card); border-radius: 13px; padding: 9px 11px; }
+    .pro-command-box input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--text-primary); }
+    .pro-command-box kbd { border: 1px solid var(--pro-line); border-radius: 6px; padding: 2px 5px; color: var(--text-muted); font-size: 9px; }
+    .pro-notice-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px; border-bottom: 1px solid var(--pro-line); cursor: pointer; }
+    .pro-notice-item:hover { background: rgba(139,92,246,.06); }
+    .pro-notice-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(139,92,246,.13); }
+    .pro-notice-body { flex: 1; min-width: 0; }
+    .pro-notice-text { font-size: 11px; line-height: 1.6; }
+    .pro-notice-time { color: var(--text-muted); font-size: 9px; margin-top: 2px; }
+    .pro-unread-line { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-purple); margin-top: 7px; }
+    .pro-modal-input, .pro-modal-textarea, .pro-modal-select {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--pro-line);
+      border-radius: 11px;
+      color: var(--text-primary);
+      padding: 10px;
+      outline: none;
+    }
+    .pro-modal-input:focus, .pro-modal-textarea:focus, .pro-modal-select:focus { border-color: var(--accent-purple); }
+    .pro-modal-textarea { min-height: 110px; resize: vertical; }
+    .pro-button-row { display: flex; gap: 8px; margin-top: 12px; }
+    .pro-button { flex: 1; border: 1px solid var(--pro-line); background: var(--bg-card); color: var(--text-primary); border-radius: 11px; padding: 10px; font-weight: 900; cursor: pointer; }
+    .pro-button.primary { background: var(--gradient-primary); border: 0; color: #fff; }
+    .pro-button.danger { background: rgba(239,68,68,.12); color: #f87171; border-color: rgba(239,68,68,.25); }
+    .pro-footer { text-align: center; color: var(--text-muted); font-size: 9px; padding: 25px 10px 110px; }
+    .pro-footer strong { color: var(--accent-purple); }
+    .pro-online-list { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 10px; scrollbar-width: none; }
+    .pro-online-list::-webkit-scrollbar { display: none; }
+    .pro-online-user { min-width: 58px; max-width: 70px; text-align: center; cursor: pointer; }
+    .pro-online-avatar { width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 4px; border: 2px solid var(--pro-success); padding: 2px; background: var(--bg-card); overflow: hidden; }
+    .pro-online-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .pro-online-name { font-size: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pro-feed-tools { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 8px; }
+    .pro-feed-tool { flex: 0 0 auto; border: 1px solid var(--pro-line); background: var(--bg-card); color: var(--text-secondary); border-radius: 30px; padding: 7px 11px; font-size: 10px; cursor: pointer; }
+    .pro-feed-tool.active { color: #fff; background: var(--gradient-primary); border-color: transparent; }
+    .pro-attachment-preview { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; margin-top: 8px; }
+    .pro-attachment-preview img { width: 100%; height: 110px; object-fit: cover; border-radius: 10px; border: 1px solid var(--pro-line); }
+    .pro-link-preview { display: none; border: 1px solid var(--pro-line); border-radius: 11px; padding: 9px; margin-top: 8px; background: var(--bg-card); }
+    .pro-link-preview.show { display: block; }
+    .pro-link-preview a { color: var(--accent-info, #38bdf8); word-break: break-all; font-size: 10px; }
+    .pro-pulse { animation: proPulse 1.8s ease infinite; }
+    @keyframes proPulse { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+    .pro-highlight { outline: 2px solid var(--accent-purple); outline-offset: 2px; animation: proHighlight 1.3s ease; }
+    @keyframes proHighlight { 0% { box-shadow: 0 0 0 0 rgba(139,92,246,.45); } 100% { box-shadow: 0 0 0 20px rgba(139,92,246,0); } }
+    @media (min-width: 800px) {
+      .pro-sheet { border-radius: 22px; margin-bottom: 30px; }
+      .pro-panel { align-items: center; }
+      .pro-floating { left: 28px; bottom: 30px; }
+    }
+    @media (max-width: 520px) {
+      .pro-stat-grid { grid-template-columns: repeat(3, 1fr); }
+      .pro-help-grid { grid-template-columns: 1fr; }
+      .pro-sheet { padding: 15px; }
+      .pro-panel-head { top: -15px; }
+      .advanced-message-tools { opacity: .75; }
+    }
+
   </style>
 </head>
 <body>
 
-<div id="offline-banner"><i class="fas fa-wifi"></i> أنت غير متصل بالإنترنت — تحقق من الاتصال</div>
+<div id="offline-banner">
+  <i class="fas fa-wifi"></i> أنت غير متصل بالإنترنت — سيتم الحفظ محلياً والمزامنة عند عودة الاتصال
+</div>
+
 <div id="app"></div>
 
 <nav class="tab-bar" id="main-tabbar" style="display:none;">
@@ -456,65 +1355,34 @@
   <button class="tab-item" data-tab="profile"><span class="tab-ic">👤</span>حسابي</button>
 </nav>
 
-<!-- Modal: المنشورات -->
 <div class="modal-overlay" id="composer-modal">
   <div class="modal">
     <div class="modal-close" data-close>✕</div>
     <div class="modal-title">إنشاء منشور جديد</div>
-    <form id="composer-form" style="display:flex; flex-direction:column; gap:14px;">
-      <div class="form-field"><textarea id="composer-content" placeholder="بم تفكر الآن؟" maxlength="1000"></textarea></div>
-      <div class="form-field"><label>رابط صورة (اختياري)</label><input type="text" id="composer-image-url" placeholder="https://..."></div>
-      <button type="submit" class="primary-btn" id="composer-submit-btn"><i class="fas fa-paper-plane"></i> نشر</button>
+    <form id="composer-form" class="composer-form">
+      <div class="form-field">
+        <textarea id="composer-content" placeholder="بم تفكر الآن؟" maxlength="1000"></textarea>
+      </div>
+      <div class="form-field">
+        <label>رابط صورة (اختياري)</label>
+        <input type="text" id="composer-image-url" placeholder="https://...">
+        <img id="composer-preview" class="composer-preview">
+      </div>
+      <button type="submit" class="primary-btn" id="composer-submit-btn">
+        <i class="fas fa-paper-plane"></i> نشر
+      </button>
     </form>
   </div>
 </div>
 
-<!-- Modal: محادثة جديدة -->
 <div class="modal-overlay" id="new-chat-modal">
   <div class="modal">
     <div class="modal-close" data-close>✕</div>
     <div class="modal-title">محادثة جديدة</div>
-    <div class="form-field"><input type="text" id="search-username-input" placeholder="ابحث باسم المستخدم..."></div>
-    <div id="search-results" class="search-results"></div>
-  </div>
-</div>
-
-<!-- Modal: الإبلاغ عن مشكلة / التواصل مع المطور -->
-<div class="modal-overlay" id="support-modal">
-  <div class="modal">
-    <div class="modal-close" data-close>✕</div>
-    <div class="modal-title" id="support-modal-title">التواصل والإبلاغ</div>
-    <form id="support-form" style="display:flex; flex-direction:column; gap:14px;">
-      <div class="form-field">
-        <label>نوع الرسالة</label>
-        <select id="support-type">
-          <option value="problem">إبلاغ عن مشكلة / خافية</option>
-          <option value="developer">تواصل مباشر مع المطور</option>
-          <option value="suggestion">اقتراح ميزة جديدة</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label>تفاصيل الرسالة</label>
-        <textarea id="support-content" placeholder="اكتب الاستفسار أو تفاصيل المشكلة هنا..." required></textarea>
-      </div>
-      <button type="submit" class="primary-btn" id="support-submit-btn"><i class="fas fa-paper-plane"></i> إرسال إلى المطور</button>
-    </form>
-  </div>
-</div>
-
-<!-- Modal: لوحة تحكم المطور (Banning Users) -->
-<div class="modal-overlay" id="admin-modal">
-  <div class="modal">
-    <div class="modal-close" data-close>✕</div>
-    <div class="modal-title" style="color:var(--danger);"><i class="fas fa-user-shield"></i> لوحة المطور - طرد مستخدم</div>
-    <div class="admin-card">
-      <div class="form-field">
-        <label>معرّف المستخدم (UID)</label>
-        <input type="text" id="admin-target-uid" placeholder="أدخل UID المستخدم هنا">
-      </div>
-      <button type="button" class="primary-btn danger" id="admin-ban-btn"><i class="fas fa-ban"></i> حظر وطرد المستخدم</button>
-      <button type="button" class="secondary-btn" id="admin-unban-btn" style="margin-top:6px;">إلغاء حظر المستخدم</button>
+    <div class="form-field">
+      <input type="text" id="search-username-input" placeholder="ابحث باسم المستخدم...">
     </div>
+    <div id="search-results" class="search-results"></div>
   </div>
 </div>
 
@@ -523,7 +1391,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, deleteDoc, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, deleteDoc, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp, where, getDocs, startAt, endAt, arrayUnion, arrayRemove, writeBatch, increment, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCfPtxGjvMhlR0vOILq1PXajM3V5Xgnxsc",
@@ -538,36 +1406,50 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // قائمة الكلمات المسيئة لمنعها تلقائياً
-  const BAD_WORDS = ["احمق", "غبي", "كلب", "حمار", "وسخ", "قذر", "شتيمة", "fool", "dog", "stupid"];
-  function filterProfanity(text) {
-    if (!text) return "";
-    let cleaned = text;
-    BAD_WORDS.forEach(word => {
-      const regex = new RegExp(word, "gi");
-      cleaned = cleaned.replace(regex, "***");
-    });
-    return cleaned;
-  }
+  // Firestore local cache: the app remains usable during short connection drops
+  // and queued writes are synchronized automatically when the connection returns.
+  enableIndexedDbPersistence(db).catch((err) => {
+    if (err && err.code !== "failed-precondition" && err.code !== "unimplemented") {
+      console.warn("Firestore offline cache:", err);
+    }
+  });
+
+  const WEB_ICON = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCACQAKADASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAAAAECBQYHBAMI/8QAPRAAAQMCBAMGAwcDAwUAAAAAAQACAwQRBRIhMQZBURMiYXGBkQcUFRYyQlKhscEjM2KS0fAIJDRDcpLw/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAIEAgMGAQf/xAAsEQACAgEEAQMDBAMBAAAAAAAAAQIDEQQSITFBEyJRBWFxFDKBoSNCwRUz/9oADAMBAAIRAxEAPwDgX0VlZdtNhlRVOBghe8u1s0L5gq8W6pvlcm/b8tup0WlrH7nA8nQ1SweNY4AAAAAA5ADkPFcM0ljcHVX/AA7g+pp2uZXU8cgG5do4+QdquGo4FweRxdFNLTTE3yF+UA82+39x7rpKz6NffFPR2JvtZ8fY6T9JC64rH36KcF54pwb0GGajqqxzaxgDmwE6AciPO6hWFuF4hmNRG9jW2Oe1m/U6rjcX4dwqoqHOgmcQ3R5Juc3LRfS0z1Ea4vVw2s7W/p1F2ntr0b3TgspcZ+5T8yUFRuJ0ggqR2ZzNduCCvDLbcnXsVZ3Lwcmk12dDmkBeRK6pKGoZhzK1zOzhe4tYHHV9tyB0/mygXGynCammn5ITr3JtHdG4C9ySeQ5+i9XU8sUDJjG8RSOs1xaQHHw6qNXRJV1E8baWWWWSFhA7N7iWt62C8c3nBZrgpRcpSwdLIi5smZ7W5G5nbnrbTxXR8o0WzVVK02vYvAPsSowG+WS19bA+17rlcQNlKMMrDML74w3RrfB0yQlrrAh/Qt1t7r2jjhkiyNt2gO5O5/io+aQ5bcl5NnLSCDqNijr2mLp2s7pGCN/ZSZQ61nH7j6dVN8Q8PzYbBBPTTNrIZWgiWIXuehUCGgnn5cioyS9yLX0rR6XV6rbqJ7PD+5HOOt0J0wIlIKIRU1aTmvJLUK4YI9uUNc0gOFtxYKM4ShZXVUUc0kcbW3JLha4GsrfVLL5/D3SYVQy4hVR1TQR9eq/ufBZ2d0pStppjhtgLLZ9r6r0hY+WojijF3ucGtHUnQL5ktKLTtx2XQ9i89F1wXBBX11NFlqXBxsWwsBcB1PL1srXNwthcM0QqcRqo3yGzWZmm/kQLKdwDDYIqaplw+LIzOXQM1JeyM6X6k/WW1z+8HL0eylaxjXxCR9WM8YF7NdsSejWj6xUldZbKc5t/wAFy3URexJYWEcnE/BuK4SJpHs7WijJa2pZqwg+J0a7+Qe1lrKpvE3BsmHYPR11JLC9lU9zHxvLQ9p/Di3Jzfn8D4mz4wKepON09RLL2cczRIxpAzjJtc/usvFQ8SROpXU8dNQQ09OW04bC3RrCO9cnUnQ6kEqlHUOU05L3Z4M6dS4w2rrKf3Kt2s1mWle0X3BIuvb6rcCPqDfLZLw9iFZhHncnDm8gsOPGuE3uT++q5mh4pcS0X1Cv3O6qjT10cSUP8Av3ycojq7JvPlHFWN3lNOmlyHUDZzSdP3Uc9hvyVz4ZqZ6qu+k11TUxtY1v0+fOC2Mgns2baa5jcHc781TJJXyyZXaAcgLLcpqUko+RdRGptJ5a7Q5KSO14r0SErE8LDTYjV1dQwxSSVYaxrdA5rRc/ounCMcxLDnj5Odz4370rmAi/kf0PyPJQRlN+puvMl55+ZXbVEeJx+e3CZe8nrn6q+anLMvO7j5Kz1b8x/PX5LNWUmB4qA6eN+F1B/1R5r+0f3b5W2KgMZwmqoagQzvZK17M8E7LmOVvIg9eRB2IUcmucUx3ioNqBSSn5eSWrDc1iW3F7df7bWPkFTdS3OUXyjW6fc3F8P8A4dPZqYhHnPZWepxSLCa2sbR0dFLT1Gq8doxQ9USmZYLIamwyOOesjjkcRGXXeW78tiT6C6nqmvkqpgxrWwwNblghYLNY3oB4/qpBdE0c9HDT19NUNkf2kXauNwHbtNvIc1ecUxWseKXDPk6aF4cZtTlO7RzZYz1/xK4YudSTK7KbyFGoNSnnzY29fk0ZctjE5mW2W4aTmtu4BcW3B3C7YI8Kmc4sdUFgY4i7Wg3Db9fDVcRgGXPnH9oSe4J3+i6KPHsVrCLxMY57M12s1N9l0Nn0yFqU5JrnPP2Ox+seGv4LBgPEM2E4E+hkL6unmAMkUxsYyNQWO5eW3Lmra3jqKMxQYpI7IDmZizR3r/3CPzDmPqt4LKGU+KOJkb3sxvpsP+N9V7R01c5oOW5Jub+Pp0WP/AInSXOFsLZpJcPw/t+3k0WfXa2motnLvj8d/s9Yu9B8tlqPoVz4jJ9OlayCQslxOVrLKgyU9W4iN0mpde/IWHMjoo/H8SxB0ctM+ZzSWZZYt7a3Avz1ufVQc1Q6SpdJNI+Rx0c5xuTpy3S1dU6qfmde/IKlrfpl8LXU84xwv9+f2L+gvqq0kZRj7pY5+PyQ7n73XPI6xuFF1MhJ3XK+UnY2W9doLSR1z1A2H2vNcb3OJ5rzLvNMz+JS7MejrEwaRfnsvGWUuN9lzFyM/hoVsk8wA6XRdslY6qjDCCAwZQOg5BeLCHN9ETkZtQ0S1NICmIL2hzbXAB2X0D8MsMw6g4ZoDSUzpZqiNkstW9lh2hFzkv+UEgAjcC6+e4g6WXK3cuAHmV9XUmCsoMLp6GKV7hGzLncdXHm7zOq0t8E1wb2KrA4syY46tcL3cTbL1CylQeC4jX0cL+zg+WaSXujsNbWtlGo6p7C2J0jnufI7NII2WaTyN7/ovT5iFtY2pbLO+Rx7NlU/S9r3OXkAP+SsUm2EpbURJQhC2GEkymYQUIWZgNt1QbhKEqxR7kyWFLnFg4loFyNbBQ8bhNUKGoQhKgQhCFgRHeo6pEIRiw5+lkeHoUIo5MNuRhd5pEKJ7tY2bJCBqqnHXmXcmjcnz0X1J8NqyrxHgzCa/FIx81NBlm6vDXFrXnzAB8boQtMl7TbB8HHmYyAsZmj1c+V+r3W69QAuxzGvq3OaXtMTcgLRbw16iyELKL6IvyNSIQhBkT/2Q==";
 
   let currentUser = null;
   let currentProfile = null;
   let feedUnsub = null;
   let currentTab = "feed";
+  let composerImagePreview = "";
   let convosUnsub = null;
   let messagesUnsub = null;
   let currentChat = null;
   let friendsUnsub = null;
+  let notificationsUnsub = null;
+  let presenceTimer = null;
+  let editingMessageId = null;
 
   function conversationIdFor(uidA, uidB) { return [uidA, uidB].sort().join("_"); }
   function $(sel) { return document.querySelector(sel); }
   function $id(id) { return document.getElementById(id); }
   function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
   function escapeHtml(s) { return (s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
-  function timeAgo(ts) { if (!ts) return "الآن"; const date = ts.toDate ? ts.toDate() : new Date(ts); const diff = Math.floor((Date.now() - date.getTime()) / 1000); if (diff < 60) return "الآن"; if (diff < 3600) return `منذ ${Math.floor(diff / 60)} د`; if (diff < 86400) return `منذ ${Math.floor(diff / 3600)} س`; return date.toLocaleDateString("ar-EG"); }
+  function timeAgo(ts) { if (!ts) return "الآن"; const date = ts.toDate ? ts.toDate() : new Date(ts); const diff = Math.floor((Date.now() - date.getTime()) / 1000); if (diff < 60) return "الآن"; if (diff < 3600) return `منذ ${Math.floor(diff / 60)} د`; if (diff < 86400) return `منذ ${Math.floor(diff / 3600)} س`; if (diff < 2592000) return `منذ ${Math.floor(diff / 86400)} يوم`; return date.toLocaleDateString("ar-EG"); }
   function showToast(msg) { const t = $id("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(showToast._t); showToast._t = setTimeout(() => t.classList.remove("show"), 3000); }
   function setLoading(btn, loading, labelDefault) { if (loading) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = "..."; } else { btn.disabled = false; btn.textContent = labelDefault || btn.dataset.label || btn.textContent; } }
   function avatarFallback(name) { return (name || "؟").trim().charAt(0).toUpperCase(); }
+  function updateOnlineBanner() {
+    const b = $id("offline-banner");
+    if (!navigator.onLine) {
+      b.classList.add("show");
+      b.innerHTML = '<i class="fas fa-cloud-arrow-down"></i> وضع عدم الاتصال — بيانات Firestore المخزنة محلياً ستظل ظاهرة وستتم مزامنة التغييرات عند عودة الاتصال';
+    } else {
+      b.classList.remove("show");
+      b.innerHTML = '<i class="fas fa-wifi"></i> متصل بالإنترنت';
+    }
+  }
+  window.addEventListener("online", updateOnlineBanner);
+  window.addEventListener("offline", updateOnlineBanner);
 
   let authMode = "login";
   function renderAuthScreen() {
@@ -575,6 +1457,7 @@
     root.innerHTML = `
       <div class="auth-wrap">
         <div class="auth-card">
+          <img class="auth-logo-img" src="${WEB_ICON}" alt="Modz Web">
           <h1 class="auth-title">Modz Web</h1>
           <p class="auth-sub">منصة التواصل الاجتماعي والتسوق</p>
           <div class="auth-tabs">
@@ -597,7 +1480,7 @@
             <p class="auth-error" id="auth-error"></p>
             <button type="submit" class="primary-btn" id="auth-submit-btn">${authMode === "login" ? "دخول" : "إنشاء الحساب"}</button>
           </form>
-          <p class="auth-note">بالمتابعة أنت توافق على الالتزام بآداب المجتمع وشروط الخدمة.</p>
+          <p class="auth-note">بالمتابعة أنت توافق على الالتزام بآداب المجتمع داخل المنصة.</p>
         </div>
       </div>
     `;
@@ -610,50 +1493,62 @@
       const errBox = $id("auth-error");
       const btn = $id("auth-submit-btn");
       errBox.textContent = "";
+      if (!navigator.onLine) { errBox.textContent = "لا يوجد اتصال بالإنترنت — يرجى تفعيل الإنترنت والمحاولة مجددًا."; return; }
       setLoading(btn, true);
       try {
         if (authMode === "signup") {
-          if (!username || username.length < 3) throw { message: "اسم المستخدم يجب أن يتكون من 3 حروف على الأقل." };
+          if (!username || username.length < 3) throw { message: "اسم المستخدم لازم يكون 3 حروف على الأقل." };
+          const q = query(collection(db, "users"), where("username", "==", username));
+          const existing = await getDocs(q);
+          if (!existing.empty) throw { message: "اسم المستخدم ده مستخدم بالفعل." };
           const cred = await createUserWithEmailAndPassword(auth, email, password);
           await updateProfile(cred.user, { displayName: username });
-          
-          // الحفظ في قاعدة البيانات بعد النجاح
-          await setDoc(doc(db, "users", cred.user.uid), {
-            username,
-            displayName: username,
-            avatarUrl: "",
-            bio: "",
-            isBanned: false,
-            isAdmin: false,
-            createdAt: serverTimestamp()
-          });
+          await setDoc(doc(db, "users", cred.user.uid), { username, displayName: username, avatarUrl: "", bio: "", friends: [], createdAt: serverTimestamp(), online:false, lastSeen:serverTimestamp() });
           showToast("تم إنشاء الحساب بنجاح 🎉");
         } else {
           await signInWithEmailAndPassword(auth, email, password);
           showToast("أهلاً بعودتك 👋");
         }
       } catch (err) {
-        errBox.textContent = err.message || "حدث خطأ أثناء الدخول، يرجى المحاولة لاحقاً.";
+        errBox.textContent = translateAuthError(err);
         setLoading(btn, false, authMode === "login" ? "دخول" : "إنشاء الحساب");
       }
     });
+  }
+
+  function translateAuthError(err) {
+    const msg = (err && err.message) || "";
+    if (msg) return msg;
+    const code = err && err.code;
+    const map = {
+      "auth/email-already-in-use": "هذا البريد الإلكتروني مستخدم بالفعل.",
+      "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
+      "auth/weak-password": "كلمة المرور ضعيفة، يجب أن تكون 6 أحرف على الأقل.",
+      "auth/user-not-found": "لا يوجد حساب بهذا البريد الإلكتروني.",
+      "auth/wrong-password": "كلمة المرور غير صحيحة.",
+      "auth/invalid-credential": "بيانات الدخول غير صحيحة.",
+      "auth/network-request-failed": "تعذر الاتصال — تأكد أن الإنترنت مفعّل لديك."
+    };
+    return map[code] || "حدث خطأ غير متوقع، حاول مرة أخرى.";
   }
 
   function renderShell() {
     const root = $id("app");
     root.innerHTML = `
       <div id="top-header">
-        <div class="brand"><i class="fas fa-globe"></i> Modz Web</div>
+        <div class="brand"><img class="brand-icon" src="${WEB_ICON}" alt="Modz Web">Modz Web</div>
         <div class="header-actions">
-          <button id="header-support-btn" class="icon-btn" title="تواصل وتسهيلات / إبلاغ"><i class="fas fa-headset"></i></button>
-          <button id="header-notice-btn" class="icon-btn" title="حالة الاتصال"><i class="fas fa-wifi"></i></button>
+          <button id="header-search-btn" class="icon-btn" title="بحث"><i class="fas fa-search"></i></button>
+          <button id="header-notice-btn" class="icon-btn" title="حالة الاتصال"><i class="fas fa-wifi"></i></button><button id="header-notifications-btn" class="icon-btn notice-btn" title="الإشعارات"><i class="fas fa-bell"></i><span id="notification-badge" class="notification-badge" style="display:none">0</span></button>
         </div>
       </div>
       <div id="screen-body"></div>
     `;
     paintTab(currentTab);
-    $id("header-support-btn").addEventListener("click", () => openModal("support-modal"));
-    $id("header-notice-btn").addEventListener("click", () => { showToast(navigator.onLine ? "أنت متصل بالإنترنت ✅" : "لا يوجد اتصال بالإنترنت 📶"); });
+    $id("header-notice-btn").addEventListener("click", () => { showToast(navigator.onLine ? "أنت متصل بالإنترنت ✅" : "لا يوجد اتصال بالإنترنت حالياً 📶"); });
+    $id("header-search-btn").addEventListener("click", () => { showToast("خاصية البحث قادمة قريباً 🔍"); });
+    $id("header-notifications-btn").addEventListener("click", openNotificationsPanel);
+    startNotificationsListener();
   }
 
   function paintTab(tab) {
@@ -667,7 +1562,6 @@
     if (convosUnsub) { convosUnsub(); convosUnsub = null; }
     if (messagesUnsub) { messagesUnsub(); messagesUnsub = null; }
     if (friendsUnsub) { friendsUnsub(); friendsUnsub = null; }
-
     if (tab === "feed") body.appendChild(renderFeedScreen());
     else if (tab === "profile") body.appendChild(renderProfileScreen());
     else if (tab === "messages") body.appendChild(renderMessagesScreen());
@@ -685,6 +1579,10 @@
   function renderFeedScreen() {
     const wrap = el("div", "feed-screen");
     wrap.innerHTML = `
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="feed-search-input" placeholder="ابحث عن منشورات...">
+      </div>
       <div class="composer-teaser" id="composer-teaser">
         <div class="mini-avatar">${currentProfile && currentProfile.avatarUrl ? `<img src="${escapeHtml(currentProfile.avatarUrl)}">` : avatarFallback(currentProfile && currentProfile.displayName)}</div>
         <div class="teaser-text">بم تفكر الآن؟</div>
@@ -696,19 +1594,20 @@
     wrap.querySelector("#composer-teaser").addEventListener("click", openComposer);
     const listEl = wrap.querySelector("#posts-list");
     const emptyEl = wrap.querySelector("#feed-empty");
-    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(50));
+    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(60));
     feedUnsub = onSnapshot(q, (snap) => {
       listEl.innerHTML = "";
       if (snap.empty) { emptyEl.style.display = "block"; return; }
       emptyEl.style.display = "none";
       snap.forEach(docSnap => listEl.appendChild(renderPostCard(docSnap.id, docSnap.data())));
-    }, (err) => { emptyEl.style.display = "block"; emptyEl.textContent = "لا توجد منشورات بعد."; });
+    }, (err) => { console.error(err); emptyEl.style.display = "block"; emptyEl.textContent = "تعذر تحميل المنشورات — تأكد من اتصالك بالإنترنت."; });
     return wrap;
   }
 
   function renderPostCard(postId, post) {
     const card = el("div", "post-card");
-    const isOwner = currentUser && (post.uid === currentUser.uid || (currentProfile && currentProfile.isAdmin));
+    card.dataset.postId = postId;
+    const isOwner = currentUser && post.uid === currentUser.uid;
     card.innerHTML = `
       <div class="post-head">
         <div class="mini-avatar">${post.authorAvatar ? `<img src="${escapeHtml(post.authorAvatar)}">` : avatarFallback(post.authorName)}</div>
@@ -718,7 +1617,7 @@
         </div>
         ${isOwner ? `<button class="post-delete-btn" title="حذف"><i class="fas fa-trash"></i></button>` : ""}
       </div>
-      <div class="post-content">${escapeHtml(filterProfanity(post.content || ""))}</div>
+      <div class="post-content">${escapeHtml(post.content || "")}</div>
       ${post.imageUrl ? `<div class="post-image"><img src="${escapeHtml(post.imageUrl)}" loading="lazy"></div>` : ""}
       <div class="post-actions">
         <button class="post-action like-btn"><span class="like-ic">🤍</span><span class="like-count">0</span></button>
@@ -727,7 +1626,7 @@
       <div class="comments-section" style="display:none;">
         <div class="comments-list"></div>
         <form class="comment-form">
-          <input type="text" placeholder="اكتب تعليقاً (تمنع الكلمات المسيئة)..." class="comment-input" maxlength="300">
+          <input type="text" placeholder="اكتب تعليقاً..." class="comment-input" maxlength="300">
           <button type="submit"><i class="fas fa-paper-plane"></i></button>
         </form>
       </div>
@@ -736,7 +1635,7 @@
       card.querySelector(".post-delete-btn").addEventListener("click", async () => {
         if (confirm("هل تريد حذف هذا المنشور؟")) {
           try { await deleteDoc(doc(db, "posts", postId)); showToast("تم حذف المنشور"); }
-          catch (e) { showToast("تعذر الحذف."); }
+          catch (e) { showToast("تعذر الحذف — تحقق من الإنترنت."); }
         }
       });
     }
@@ -751,19 +1650,20 @@
       likeBtn.dataset.liked = likedByMe ? "1" : "0";
     });
     likeBtn.addEventListener("click", async () => {
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت للتفاعل 📶"); return; }
       const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
       try {
         if (likeBtn.dataset.liked === "1") await deleteDoc(likeRef);
-        else await setDoc(likeRef, { createdAt: serverTimestamp() });
-      } catch (e) { showToast("تعذر التفاعل."); }
+        else { await setDoc(likeRef, { createdAt: serverTimestamp() }); await createNotification(post.uid, "like", `${currentProfile.displayName || currentProfile.username} أعجب بمنشورك`, postId); }
+      } catch (e) { showToast("تعذر تسجيل الإعجاب."); }
     });
-
     const commentsCol = collection(db, "posts", postId, "comments");
     const commentCountEl = card.querySelector(".comment-count");
     const commentsSection = card.querySelector(".comments-section");
     const commentsListEl = card.querySelector(".comments-list");
+    const cq = query(commentsCol, orderBy("createdAt", "asc"), limit(200));
     let commentsOpen = false;
-    onSnapshot(query(commentsCol, orderBy("createdAt", "asc")), (snap) => {
+    onSnapshot(cq, (snap) => {
       commentCountEl.textContent = snap.size;
       if (commentsOpen) {
         commentsListEl.innerHTML = "";
@@ -774,11 +1674,12 @@
             <div class="mini-avatar small">${cd.authorAvatar ? `<img src="${escapeHtml(cd.authorAvatar)}">` : avatarFallback(cd.authorName)}</div>
             <div class="comment-bubble">
               <div class="comment-author">${escapeHtml(cd.authorName || "مستخدم")}</div>
-              <div class="comment-text">${escapeHtml(filterProfanity(cd.content || ""))}</div>
+              <div class="comment-text">${escapeHtml(cd.content || "")}</div>
             </div>
           `;
           commentsListEl.appendChild(row);
         });
+        commentsListEl.scrollTop = commentsListEl.scrollHeight;
       }
     });
     card.querySelector(".comment-btn").addEventListener("click", () => {
@@ -787,8 +1688,9 @@
     });
     card.querySelector(".comment-form").addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لإرسال التعليق 📶"); return; }
       const input = card.querySelector(".comment-input");
-      const text = filterProfanity(input.value.trim());
+      const text = input.value.trim();
       if (!text) return;
       input.value = "";
       try {
@@ -799,21 +1701,32 @@
           content: text,
           createdAt: serverTimestamp()
         });
+        await createNotification(post.uid, "comment", `${currentProfile.displayName || currentProfile.username} علّق على منشورك`, postId);
       } catch (err) { showToast("تعذر إرسال التعليق."); }
     });
     return card;
   }
 
   function openComposer() {
+    composerImagePreview = "";
     $id("composer-content").value = "";
     $id("composer-image-url").value = "";
+    $id("composer-preview").style.display = "none";
     openModal("composer-modal");
+    setTimeout(() => $id("composer-content").focus(), 200);
   }
 
   function wireComposer() {
+    $id("composer-image-url").addEventListener("input", (e) => {
+      const val = e.target.value.trim();
+      const prev = $id("composer-preview");
+      if (val) { prev.src = val; prev.style.display = "block"; }
+      else prev.style.display = "none";
+    });
     $id("composer-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const content = filterProfanity($id("composer-content").value.trim());
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لنشر المنشور 📶"); return; }
+      const content = $id("composer-content").value.trim();
       const imageUrl = $id("composer-image-url").value.trim();
       if (!content && !imageUrl) { showToast("اكتب شيئاً أولاً ✍️"); return; }
       const btn = $id("composer-submit-btn");
@@ -828,7 +1741,7 @@
         });
         closeModal("composer-modal");
         showToast("تم النشر بنجاح ✅");
-      } catch (err) { showToast("تعذر النشر."); }
+      } catch (err) { showToast("تعذر النشر — تحقق من الإنترنت."); }
       setLoading(btn, false, "نشر");
     });
   }
@@ -841,180 +1754,682 @@
         <button class="new-chat-btn" id="new-chat-btn"><i class="fas fa-plus"></i> محادثة جديدة</button>
       </div>
       <div id="convos-list" class="convos-list"></div>
-      <div id="convos-empty" class="empty-state" style="display:none;">لا توجد محادثات بعد ✉️</div>
+      <div id="convos-empty" class="empty-state" style="display:none;">لا توجد محادثات بعد — ابدأ محادثة جديدة ✉️</div>
     `;
-    wrap.querySelector("#new-chat-btn").addEventListener("click", () => openModal("new-chat-modal"));
+    wrap.querySelector("#new-chat-btn").addEventListener("click", openNewChatModal);
     const listEl = wrap.querySelector("#convos-list");
     const emptyEl = wrap.querySelector("#convos-empty");
-
-    const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid));
+    const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid), orderBy("lastMessageAt", "desc"), limit(50));
     convosUnsub = onSnapshot(q, (snap) => {
       listEl.innerHTML = "";
       if (snap.empty) { emptyEl.style.display = "block"; return; }
       emptyEl.style.display = "none";
-
-      let docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      docs.sort((a, b) => (b.lastMessageAt?.seconds || 0) - (a.lastMessageAt?.seconds || 0));
-
-      docs.forEach(conv => {
+      snap.forEach(docSnap => {
+        const conv = docSnap.data();
         const otherUid = conv.participants.find(p => p !== currentUser.uid);
         if (!otherUid) return;
         const otherName = (conv.participantNames && conv.participantNames[otherUid]) || "مستخدم";
         const otherAvatar = (conv.participantAvatars && conv.participantAvatars[otherUid]) || "";
-        const row = el("div", "convo-row");
+        const unread = Number(conv.unread && conv.unread[currentUser.uid] || 0);
+        const row = el("div", "convo-row" + (unread ? " unread" : ""));
         row.innerHTML = `
           <div class="mini-avatar">${otherAvatar ? `<img src="${escapeHtml(otherAvatar)}">` : avatarFallback(otherName)}</div>
           <div class="convo-mid">
             <div class="convo-name">${escapeHtml(otherName)}</div>
-            <div class="convo-preview">${escapeHtml(filterProfanity(conv.lastMessage || ""))}</div>
+            <div class="convo-preview">${escapeHtml(conv.lastMessage || "ابدأ المحادثة الآن")}</div>
           </div>
+          ${unread ? `<div class="convo-unread">${unread > 99 ? "99+" : unread}</div>` : ""}
           <div class="convo-time">${timeAgo(conv.lastMessageAt)}</div>
         `;
-        row.addEventListener("click", () => openChat(conv.id, { uid: otherUid, displayName: otherName, avatarUrl: otherAvatar }));
+        row.addEventListener("click", () => openChat(docSnap.id, { uid: otherUid, displayName: otherName, avatarUrl: otherAvatar }));
         listEl.appendChild(row);
       });
-    }, (err) => { emptyEl.style.display = "block"; emptyEl.textContent = "لا توجد محادثات."; });
+    }, (err) => { console.error(err); emptyEl.style.display = "block"; emptyEl.textContent = "تعذر تحميل المحادثات."; });
     return wrap;
   }
 
-  function openChat(conversationId, otherUser) {
-    currentChat = { conversationId, otherUser };
+  function openNewChatModal() {
+    $id("search-username-input").value = "";
+    $id("search-results").innerHTML = "";
+    openModal("new-chat-modal");
+    setTimeout(() => $id("search-username-input").focus(), 200);
+  }
+
+  function wireNewChatModal() {
+    const input = $id("search-username-input");
+    const results = $id("search-results");
+    let searchTimer = null;
+    input.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      const term = input.value.trim().toLowerCase();
+      if (!term) { results.innerHTML = ""; return; }
+      if (!navigator.onLine) { results.innerHTML = `<div class="empty-state">محتاج اتصال بالإنترنت للبحث 📶</div>`; return; }
+      searchTimer = setTimeout(async () => {
+        results.innerHTML = `<div class="empty-state">جارِ البحث...</div>`;
+        try {
+          const q = query(collection(db, "users"), orderBy("username"), startAt(term), endAt(term + "\uf8ff"), limit(15));
+          const snap = await getDocs(q);
+          results.innerHTML = "";
+          const matches = snap.docs.filter(d => d.id !== currentUser.uid);
+          if (matches.length === 0) { results.innerHTML = `<div class="empty-state">لا يوجد مستخدم بهذا الاسم.</div>`; return; }
+          matches.forEach(d => {
+            const u = d.data();
+            const row = el("div", "convo-row");
+            row.innerHTML = `
+              <div class="mini-avatar">${u.avatarUrl ? `<img src="${escapeHtml(u.avatarUrl)}">` : avatarFallback(u.displayName)}</div>
+              <div class="convo-mid">
+                <div class="convo-name">${escapeHtml(u.displayName || u.username)}</div>
+                <div class="convo-preview">@${escapeHtml(u.username)}</div>
+              </div>
+            `;
+            row.addEventListener("click", async () => {
+              closeModal("new-chat-modal");
+              await startOrOpenChat({ uid: d.id, displayName: u.displayName || u.username, avatarUrl: u.avatarUrl || "", username: u.username });
+            });
+            results.appendChild(row);
+          });
+        } catch (err) { results.innerHTML = `<div class="empty-state">تعذر البحث — حاول مجدداً.</div>`; }
+      }, 350);
+    });
+  }
+
+  async function startOrOpenChat(otherUser) {
+    const convId = conversationIdFor(currentUser.uid, otherUser.uid);
+    const convRef = doc(db, "conversations", convId);
+    try {
+      const snap = await getDoc(convRef);
+      if (!snap.exists()) {
+        await setDoc(convRef, {
+          participants: [currentUser.uid, otherUser.uid],
+          participantNames: { [currentUser.uid]: currentProfile.displayName || currentProfile.username, [otherUser.uid]: otherUser.displayName },
+          participantAvatars: { [currentUser.uid]: currentProfile.avatarUrl || "", [otherUser.uid]: otherUser.avatarUrl || "" },
+          lastMessage: "", lastMessageAt: serverTimestamp(), createdAt: serverTimestamp(),
+          lastSenderId: "", unread: { [currentUser.uid]: 0, [otherUser.uid]: 0 }
+        });
+      }
+      openChat(convId, otherUser);
+    } catch (err) { showToast("تعذر بدء المحادثة — تحقق من الإنترنت."); }
+  }
+
+  async function openChat(conversationId, otherUser) {
+    currentChat = { conversationId, otherUser, unread: 0 };
     if (convosUnsub) { convosUnsub(); convosUnsub = null; }
     const body = $id("screen-body");
     body.innerHTML = "";
     body.appendChild(renderChatScreen(conversationId, otherUser));
+
+    try {
+      await updateDoc(doc(db, "conversations", conversationId), {
+        [`unread.${currentUser.uid}`]: 0
+      });
+    } catch (_) {}
+  }
+
+  function closeChat() { currentChat = null; paintTab("messages"); }
+
+  function formatChatTime(ts) {
+    if (!ts) return "الآن";
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function sameDay(a, b) {
+    if (!a || !b) return false;
+    const da = a.toDate ? a.toDate() : new Date(a);
+    const dbb = b.toDate ? b.toDate() : new Date(b);
+    return da.toDateString() === dbb.toDateString();
+  }
+
+  function safeMessageHtml(text) {
+    const escaped = escapeHtml(text || "");
+    const urlPattern = /(https?:\/\/[^\s<]+)/g;
+    return escaped.replace(urlPattern, (url) => {
+      const clean = url.replace(/[),.!؟،]+$/g, "");
+      return `<a class="chat-link" href="${clean}" target="_blank" rel="noopener noreferrer">${clean}</a>`;
+    });
+  }
+
+  function chatDateLabel(ts) {
+    if (!ts) return "اليوم";
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    const now = new Date();
+    if (d.toDateString() === now.toDateString()) return "اليوم";
+    const y = new Date(now); y.setDate(now.getDate() - 1);
+    if (d.toDateString() === y.toDateString()) return "أمس";
+    return d.toLocaleDateString("ar-EG", { day: "numeric", month: "long", year: "numeric" });
   }
 
   function renderChatScreen(conversationId, otherUser) {
-    const wrap = el("div", "chat-screen");
+    const wrap = el("div", "chat-screen pro-chat-screen");
     wrap.innerHTML = `
-      <div class="chat-header">
+      <div class="chat-header pro-chat-header">
         <button class="chat-back-btn" id="chat-back-btn"><i class="fas fa-arrow-right"></i></button>
-        <div class="mini-avatar">${otherUser.avatarUrl ? `<img src="${escapeHtml(otherUser.avatarUrl)}">` : avatarFallback(otherUser.displayName)}</div>
-        <div class="chat-header-name">${escapeHtml(otherUser.displayName)}</div>
+        <div class="mini-avatar chat-avatar">${otherUser.avatarUrl ? `<img src="${escapeHtml(otherUser.avatarUrl)}">` : avatarFallback(otherUser.displayName)}</div>
+        <div class="chat-header-info">
+          <div class="chat-header-name">${escapeHtml(otherUser.displayName || otherUser.username || "مستخدم")}</div>
+          <div class="chat-header-status" id="chat-presence">جارِ التحقق...</div>
+        </div>
+        <div class="chat-head-tools">
+          <button class="chat-head-btn" id="chat-search-btn" title="بحث داخل المحادثة"><i class="fas fa-search"></i></button>
+          <button class="chat-head-btn" id="chat-pin-btn" title="تثبيت المحادثة"><i class="fas fa-thumbtack"></i></button>
+          <button class="chat-head-btn" id="chat-refresh-btn" title="تحديث"><i class="fas fa-rotate"></i></button>
+        </div>
       </div>
-      <div class="chat-messages" id="chat-messages"></div>
-      <form class="chat-input-form" id="chat-input-form">
-        <input type="text" id="chat-input" placeholder="اكتب رسالة..." maxlength="1000" autocomplete="off">
-        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+      <div class="chat-search-box" id="chat-search-box" hidden>
+        <i class="fas fa-search"></i>
+        <input id="chat-message-search" type="search" placeholder="ابحث داخل الرسائل...">
+        <button type="button" id="chat-search-close">✕</button>
+      </div>
+      <div class="typing-line" id="typing-line"></div>
+      <div class="chat-messages" id="chat-messages"><div class="chat-empty"><i class="fas fa-spinner fa-spin"></i><br>جارِ تحميل الرسائل...</div></div>
+      <div class="reply-banner" id="reply-banner">
+        <div><b>رد على رسالة</b><span id="reply-preview"></span></div>
+        <button type="button" id="cancel-reply" class="message-tool">✕</button>
+      </div>
+      <div class="editing-banner" id="editing-banner"><span>تعديل الرسالة</span><button type="button" class="message-tool" id="cancel-edit">إلغاء</button></div>
+      <form class="chat-input-form pro-chat-form" id="chat-input-form">
+        <input type="file" id="chat-file-input" hidden accept="image/*">
+        <button type="button" class="attach-btn" id="chat-attach-btn" title="صورة صغيرة"><i class="fas fa-image"></i></button>
+        <div class="chat-input-wrap">
+          <textarea id="chat-input" placeholder="اكتب رسالة..." maxlength="2000" rows="1"></textarea>
+          <input type="url" id="chat-media-url" class="chat-media-url" placeholder="رابط صورة/فيديو/ملف (اختياري)" autocomplete="off">
+          <div class="chat-file-name" id="chat-file-name"></div>
+        </div>
+        <button type="submit" class="chat-send-btn" id="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
       </form>
-    `;
-    wrap.querySelector("#chat-back-btn").addEventListener("click", () => paintTab("messages"));
+      <div class="chat-hint">بدون Storage: الصور الصغيرة تُحفظ داخل Firestore، والفيديوهات والملفات الكبيرة تُرسل كرابط مباشر.</div>`;
+
+    wrap.querySelector("#chat-back-btn").onclick = closeChat;
+    wrap.querySelector("#chat-refresh-btn").onclick = () => showToast("المحادثة تتحدث تلقائياً ⚡");
+
     const msgsEl = wrap.querySelector("#chat-messages");
-    const mq = query(collection(db, "conversations", conversationId, "messages"), orderBy("createdAt", "asc"));
-    messagesUnsub = onSnapshot(mq, (snap) => {
-      msgsEl.innerHTML = "";
-      snap.forEach(d => {
-        const m = d.data();
-        const mine = m.senderId === currentUser.uid;
-        const bubble = el("div", "chat-bubble-row " + (mine ? "mine" : "theirs"));
-        bubble.innerHTML = `<div class="chat-bubble">${escapeHtml(filterProfanity(m.text))}</div>`;
-        msgsEl.appendChild(bubble);
-      });
-      msgsEl.scrollTop = msgsEl.scrollHeight;
-    });
-    wrap.querySelector("#chat-input-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const input = wrap.querySelector("#chat-input");
-      const text = filterProfanity(input.value.trim());
-      if (!text) return;
+    const input = wrap.querySelector("#chat-input");
+    const sendBtn = wrap.querySelector("#chat-send-btn");
+    const fileInput = wrap.querySelector("#chat-file-input");
+    const fileNameEl = wrap.querySelector("#chat-file-name");
+    const mediaUrlInput = wrap.querySelector("#chat-media-url");
+    const editBanner = wrap.querySelector("#editing-banner");
+    const replyBanner = wrap.querySelector("#reply-banner");
+    const replyPreview = wrap.querySelector("#reply-preview");
+    const searchBox = wrap.querySelector("#chat-search-box");
+    const searchInput = wrap.querySelector("#chat-message-search");
+    const typingLine = wrap.querySelector("#typing-line");
+    let selectedImage = null;
+    let replyTo = null;
+    let messageDocs = [];
+    let typingTimer = null;
+    let stopConversationListener = null;
+
+    wrap.querySelector("#chat-attach-btn").onclick = () => fileInput.click();
+    fileInput.onchange = () => {
+      selectedImage = fileInput.files[0] || null;
+      if (!selectedImage) {
+        fileNameEl.textContent = "";
+        return;
+      }
+      if (!selectedImage.type.startsWith("image/")) {
+        selectedImage = null;
+        fileInput.value = "";
+        showToast("المرفق المحلي المسموح به هنا هو صورة صغيرة فقط.");
+        return;
+      }
+      if (selectedImage.size > 650 * 1024) {
+        selectedImage = null;
+        fileInput.value = "";
+        showToast("الصورة كبيرة. اختر صورة أقل من 650KB أو استخدم رابطاً مباشراً.");
+        return;
+      }
+      fileNameEl.textContent = `🖼️ ${selectedImage.name}`;
+    };
+
+    wrap.querySelector("#cancel-edit").onclick = () => {
+      editingMessageId = null;
+      editBanner.classList.remove("show");
       input.value = "";
+      mediaUrlInput.value = "";
+    };
+
+    wrap.querySelector("#cancel-reply").onclick = () => {
+      replyTo = null;
+      replyBanner.classList.remove("show");
+    };
+
+    wrap.querySelector("#chat-search-btn").onclick = () => {
+      searchBox.hidden = !searchBox.hidden;
+      if (!searchBox.hidden) searchInput.focus();
+    };
+    wrap.querySelector("#chat-search-close").onclick = () => {
+      searchBox.hidden = true;
+      searchInput.value = "";
+      filterRenderedMessages("");
+    };
+    searchInput.addEventListener("input", () => filterRenderedMessages(searchInput.value.trim().toLowerCase()));
+
+    wrap.querySelector("#chat-pin-btn").onclick = async () => {
       try {
-        await addDoc(collection(db, "conversations", conversationId, "messages"), { senderId: currentUser.uid, text, createdAt: serverTimestamp() });
-        await updateDoc(doc(db, "conversations", conversationId), { lastMessage: text, lastMessageAt: serverTimestamp() });
-      } catch (err) { showToast("تعذر إرسال الرسالة."); }
+        const ref = doc(db, "conversations", conversationId);
+        const snap = await getDoc(ref);
+        const data = snap.exists() ? snap.data() : {};
+        const pinned = Array.isArray(data.pinnedFor) ? data.pinnedFor : [];
+        const mine = pinned.includes(currentUser.uid);
+        await updateDoc(ref, { pinnedFor: mine ? arrayRemove(currentUser.uid) : arrayUnion(currentUser.uid) });
+        showToast(mine ? "تم إلغاء تثبيت المحادثة" : "تم تثبيت المحادثة 📌");
+      } catch (e) {
+        showToast("تعذر تثبيت المحادثة");
+      }
+    };
+
+    function filterRenderedMessages(term) {
+      wrap.querySelectorAll(".chat-bubble-row").forEach(row => {
+        if (!term) {
+          row.style.display = "";
+          return;
+        }
+        row.style.display = row.textContent.toLowerCase().includes(term) ? "" : "none";
+      });
+    }
+
+    function readTimestamp(ts) {
+      if (!ts) return new Date();
+      return ts.toDate ? ts.toDate() : new Date(ts);
+    }
+
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function messagePreview(m) {
+      const text = (m.text || "").trim();
+      if (text) return text.slice(0, 120);
+      if ((m.fileType || "").startsWith("image/")) return "🖼️ صورة";
+      if (m.fileUrl) return "📎 مرفق";
+      return "رسالة";
+    }
+
+    function reactionCount(reactions) {
+      return Object.keys(reactions || {}).length;
+    }
+
+    function reactionHtml(id, m) {
+      const reactions = m.reactions || {};
+      const mine = reactions[currentUser.uid] || "";
+      const emojis = ["❤️", "👍", "😂", "😮", "😢", "🔥"];
+      return `<div class="reaction-row">${emojis.map(emoji => {
+        const count = Object.values(reactions).filter(v => v === emoji).length;
+        return `<button type="button" class="reaction-btn ${mine === emoji ? "active" : ""}" data-message-id="${id}" data-reaction="${emoji}">${emoji}${count ? `<small>${count}</small>` : ""}</button>`;
+      }).join("")}</div>`;
+    }
+
+    function buildMessageRow(d) {
+      const m = d.data();
+      const mine = m.senderId === currentUser.uid;
+      const ts = m.createdAt;
+      const row = el("div", `chat-bubble-row ${mine ? "mine" : "theirs"}`);
+      row.dataset.messageId = d.id;
+      row.dataset.searchText = `${m.text || ""} ${m.fileName || ""}`.toLowerCase();
+      const bw = el("div", "chat-bubble-wrap");
+      let body = "";
+
+      if (m.replyTo && m.replyTo.preview) {
+        body += `<div class="quoted-message"><span>↩</span>${escapeHtml(m.replyTo.preview)}</div>`;
+      }
+
+      if (m.fileUrl && (m.fileType || "").startsWith("image/")) {
+        body += `<a class="chat-image-link" href="${escapeHtml(m.fileUrl)}" target="_blank" rel="noopener"><img class="chat-image" src="${escapeHtml(m.fileUrl)}" loading="lazy" alt="صورة"></a>`;
+      } else if (m.fileUrl && (m.fileType || "").startsWith("video/")) {
+        body += `<video class="chat-video" src="${escapeHtml(m.fileUrl)}" controls preload="metadata"></video>`;
+      } else if (m.fileUrl) {
+        body += `<div class="chat-file-card"><i class="fas fa-file-arrow-down"></i><a href="${escapeHtml(m.fileUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(m.fileName || "فتح الملف")}</a></div>`;
+      }
+
+      if (m.text) body += `<div class="message-text">${safeMessageHtml(m.text)}</div>`;
+
+      const read = mine && m.readAt;
+      const status = mine ? `<span class="chat-status ${read ? "read" : ""}">${read ? "✓✓" : "✓"}</span>` : "";
+      const edited = m.editedAt ? " · تم التعديل" : "";
+      const deleted = m.deleted === true;
+      if (deleted) body = `<div class="deleted-message">تم حذف هذه الرسالة</div>`;
+
+      bw.innerHTML = `
+        <div class="chat-bubble ${deleted ? "is-deleted" : ""}">${body || "رسالة"}</div>
+        <div class="chat-meta"><span>${formatChatTime(ts)}${edited}</span>${status}</div>
+        ${deleted ? "" : reactionHtml(d.id, m)}
+        <div class="message-tools advanced-message-tools">
+          <button type="button" class="message-tool reply-message">↩ رد</button>
+          <button type="button" class="message-tool copy-message">نسخ</button>
+          ${mine && !deleted ? `<button type="button" class="message-tool edit-message">تعديل</button><button type="button" class="message-tool delete-message">حذف</button>` : ""}
+        </div>`;
+
+      row.appendChild(bw);
+
+      const replyBtn = row.querySelector(".reply-message");
+      if (replyBtn) {
+        replyBtn.onclick = () => {
+          replyTo = { id: d.id, preview: messagePreview(m), senderId: m.senderId };
+          replyPreview.textContent = ` — ${messagePreview(m)}`;
+          replyBanner.classList.add("show");
+          input.focus();
+        };
+      }
+
+      const copyBtn = row.querySelector(".copy-message");
+      if (copyBtn) {
+        copyBtn.onclick = async () => {
+          const value = m.text || m.fileUrl || "";
+          if (!value) {
+            showToast("لا يوجد نص لنسخه");
+            return;
+          }
+          try {
+            await navigator.clipboard.writeText(value);
+            showToast("تم النسخ 📋");
+          } catch (_) {
+            showToast("تعذر النسخ من الجهاز");
+          }
+        };
+      }
+
+      const editBtn = row.querySelector(".edit-message");
+      if (editBtn) {
+        editBtn.onclick = () => {
+          editingMessageId = d.id;
+          input.value = m.text || "";
+          mediaUrlInput.value = m.fileUrl || "";
+          editBanner.classList.add("show");
+          replyTo = null;
+          replyBanner.classList.remove("show");
+          input.focus();
+        };
+      }
+
+      const deleteBtn = row.querySelector(".delete-message");
+      if (deleteBtn) {
+        deleteBtn.onclick = async () => {
+          const hard = confirm("حذف الرسالة نهائياً؟\nاضغط إلغاء لإخفائها فقط.");
+          try {
+            const ref = doc(db, "conversations", conversationId, "messages", d.id);
+            if (hard) {
+              await deleteDoc(ref);
+            } else {
+              await updateDoc(ref, { deleted: true, text: "", fileUrl: "", fileName: "", fileType: "", deletedAt: serverTimestamp() });
+            }
+            showToast("تم حذف الرسالة 🗑️");
+          } catch (e) {
+            showToast("تعذر حذف الرسالة");
+          }
+        };
+      }
+
+      row.querySelectorAll(".reaction-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const messageId = btn.dataset.messageId;
+          const emoji = btn.dataset.reaction;
+          const ref = doc(db, "conversations", conversationId, "messages", messageId);
+          try {
+            const snap = await getDoc(ref);
+            if (!snap.exists()) return;
+            const data = snap.data();
+            const reactions = { ...(data.reactions || {}) };
+            if (reactions[currentUser.uid] === emoji) delete reactions[currentUser.uid];
+            else reactions[currentUser.uid] = emoji;
+            await updateDoc(ref, { reactions });
+          } catch (e) {
+            showToast("تعذر إضافة التفاعل");
+          }
+        };
+      });
+
+      return row;
+    }
+
+    const mq = query(
+      collection(db, "conversations", conversationId, "messages"),
+      orderBy("createdAt", "desc"),
+      limit(200)
+    );
+
+    messagesUnsub = onSnapshot(mq, snap => {
+      messageDocs = [...snap.docs].reverse();
+      msgsEl.innerHTML = "";
+      let prevDate = null;
+
+      if (!messageDocs.length) {
+        msgsEl.innerHTML = '<div class="chat-empty"><div style="font-size:42px">💬</div><b>ابدأ المحادثة</b><br>أرسل أول رسالة الآن</div>';
+        return;
+      }
+
+      messageDocs.forEach(d => {
+        const m = d.data();
+        const date = readTimestamp(m.createdAt);
+        if (!prevDate || prevDate.toDateString() !== date.toDateString()) {
+          const day = el("div", "chat-day", chatDateLabel(m.createdAt));
+          msgsEl.appendChild(day);
+        }
+        prevDate = date;
+        msgsEl.appendChild(buildMessageRow(d));
+      });
+
+      filterRenderedMessages(searchInput.value.trim().toLowerCase());
+      requestAnimationFrame(() => {
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+      });
+
+      messageDocs
+        .filter(d => {
+          const m = d.data();
+          return m.senderId !== currentUser.uid && !m.readAt;
+        })
+        .slice(-50)
+        .forEach(d => {
+          updateDoc(doc(db, "conversations", conversationId, "messages", d.id), {
+            readAt: serverTimestamp()
+          }).catch(() => {});
+        });
+    }, err => {
+      console.error(err);
+      msgsEl.innerHTML = '<div class="chat-empty">تعذر تحميل الرسائل. تحقق من قواعد Firestore.</div>';
     });
+
+    stopConversationListener = onSnapshot(doc(db, "conversations", conversationId), snap => {
+      if (!snap.exists()) return;
+      const c = snap.data();
+      const otherTyping = c.typing && c.typing[otherUser.uid];
+      if (otherTyping) {
+        const t = otherTyping.toDate ? otherTyping.toDate() : new Date(otherTyping);
+        if (Date.now() - t.getTime() < 5000) {
+          typingLine.textContent = `${otherUser.displayName || "مستخدم"} يكتب الآن...`;
+          return;
+        }
+      }
+      typingLine.textContent = "";
+    });
+
+    onSnapshot(doc(db, "users", otherUser.uid), snap => {
+      const u = snap.exists() ? snap.data() : otherUser;
+      const online = isOnlineUser(u);
+      const pe = wrap.querySelector("#chat-presence");
+      if (pe) {
+        pe.textContent = online ? "● متصل الآن" : presenceLabel(u);
+        pe.className = "chat-header-status " + (online ? "presence-online" : "presence-offline");
+      }
+    });
+
+    input.oninput = () => {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 130) + "px";
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        updateDoc(doc(db, "conversations", conversationId), {
+          [`typing.${currentUser.uid}`]: serverTimestamp()
+        }).catch(() => {});
+      }, 250);
+    };
+
+    input.onkeydown = e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        wrap.querySelector("#chat-input-form").requestSubmit();
+      }
+    };
+
+    wrap.querySelector("#chat-input-form").onsubmit = async e => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const text = input.value.trim();
+      const remoteUrl = mediaUrlInput.value.trim();
+      if (!text && !selectedImage && !remoteUrl && !editingMessageId) return;
+
+      sendBtn.disabled = true;
+      input.disabled = true;
+
+      try {
+        if (editingMessageId) {
+          await updateDoc(doc(db, "conversations", conversationId, "messages", editingMessageId), {
+            text,
+            fileUrl: remoteUrl || "",
+            fileName: remoteUrl ? "مرفق" : "",
+            fileType: remoteUrl ? detectMediaType(remoteUrl) : "",
+            editedAt: serverTimestamp()
+          });
+          editingMessageId = null;
+          editBanner.classList.remove("show");
+          input.value = "";
+          mediaUrlInput.value = "";
+          showToast("تم تعديل الرسالة ✅");
+        } else {
+          let fileUrl = remoteUrl;
+          let fileName = remoteUrl ? "مرفق" : "";
+          let fileType = remoteUrl ? detectMediaType(remoteUrl) : "";
+
+          if (selectedImage) {
+            fileUrl = await fileToDataUrl(selectedImage);
+            fileName = selectedImage.name;
+            fileType = selectedImage.type || "image/jpeg";
+          }
+
+          const convRef = doc(db, "conversations", conversationId);
+          const msgRef = doc(collection(db, "conversations", conversationId, "messages"));
+          const batch = writeBatch(db);
+          const preview = fileName ? (text ? `${text} 📎` : `📎 ${fileName}`) : (text.length > 120 ? text.slice(0, 120) + "…" : text);
+
+          batch.set(msgRef, {
+            senderId: currentUser.uid,
+            text,
+            fileUrl,
+            fileName,
+            fileType,
+            createdAt: serverTimestamp(),
+            readAt: null,
+            editedAt: null,
+            deleted: false,
+            reactions: {},
+            replyTo: replyTo || null
+          });
+
+          batch.update(convRef, {
+            lastMessage: preview,
+            lastMessageAt: serverTimestamp(),
+            lastSenderId: currentUser.uid,
+            [`unread.${otherUser.uid}`]: increment(1),
+            [`typing.${currentUser.uid}`]: null
+          });
+
+          await batch.commit();
+
+          input.value = "";
+          mediaUrlInput.value = "";
+          selectedImage = null;
+          fileInput.value = "";
+          fileNameEl.textContent = "";
+          replyTo = null;
+          replyBanner.classList.remove("show");
+        }
+
+        input.style.height = "auto";
+        requestAnimationFrame(() => {
+          msgsEl.scrollTop = msgsEl.scrollHeight;
+        });
+      } catch (err) {
+        console.error(err);
+        showToast(err.message || "تعذر إرسال الرسالة");
+      } finally {
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+      }
+    };
+
     return wrap;
+  }
+
+  function detectMediaType(url) {
+    const clean = (url || "").split("?")[0].toLowerCase();
+    if (/\.(jpg|jpeg|png|gif|webp|bmp|svg)$/.test(clean)) return "image/*";
+    if (/\.(mp4|webm|ogg|mov|m4v)$/.test(clean)) return "video/*";
+    if (/\.(mp3|wav|m4a|aac|ogg)$/.test(clean)) return "audio/*";
+    return "application/octet-stream";
   }
 
   function renderFriendsScreen() {
-    const wrap = el("div", "friends-screen");
-    wrap.innerHTML = `
-      <div class="section-title"><i class="fas fa-users"></i> الأصدقاء والجمهور</div>
-      <div id="friends-list" class="friends-list"></div>
-      <div id="friends-empty" class="empty-state" style="display:none;">لا يوجد مستخدمون متوفرون حالياً.</div>
-    `;
-    const listEl = wrap.querySelector("#friends-list");
-    const emptyEl = wrap.querySelector("#friends-empty");
-    friendsUnsub = onSnapshot(collection(db, "users"), (snap) => {
-      listEl.innerHTML = "";
-      const users = snap.docs.filter(d => d.id !== currentUser.uid && !d.data().isBanned);
-      if (users.length === 0) { emptyEl.style.display = "block"; return; }
-      emptyEl.style.display = "none";
-      users.forEach(d => {
-        const u = d.data();
-        const row = el("div", "friend-row");
-        row.innerHTML = `
-          <div class="mini-avatar">${u.avatarUrl ? `<img src="${escapeHtml(u.avatarUrl)}">` : avatarFallback(u.displayName)}</div>
-          <div class="friend-info">
-            <div class="friend-name">${escapeHtml(u.displayName || u.username)}</div>
-            <div class="friend-username">@${escapeHtml(u.username)}</div>
-          </div>
-          <button class="message-friend-btn"><i class="fas fa-comment"></i> مراسلة</button>
-        `;
-        row.querySelector(".message-friend-btn").addEventListener("click", async () => {
-          const convId = conversationIdFor(currentUser.uid, d.id);
-          const convRef = doc(db, "conversations", convId);
-          const snapC = await getDoc(convRef);
-          if (!snapC.exists()) {
-            await setDoc(convRef, {
-              participants: [currentUser.uid, d.id],
-              participantNames: { [currentUser.uid]: currentProfile.displayName || currentProfile.username, [d.id]: u.displayName || u.username },
-              participantAvatars: { [currentUser.uid]: currentProfile.avatarUrl || "", [d.id]: u.avatarUrl || "" },
-              lastMessage: "", lastMessageAt: serverTimestamp(), createdAt: serverTimestamp()
-            });
-          }
-          openChat(convId, { uid: d.id, displayName: u.displayName || u.username, avatarUrl: u.avatarUrl || "" });
-        });
-        listEl.appendChild(row);
-      });
-    });
-    return wrap;
+    const wrap=el("div","friends-screen");
+    wrap.innerHTML=`<div class="section-title"><i class="fas fa-user-plus"></i> طلبات الصداقة</div><div id="requests-list"></div><div class="section-title" style="margin-top:24px"><i class="fas fa-users"></i> المستخدمون</div><div id="friends-list" class="friends-list"></div>`;
+    const reqEl=wrap.querySelector("#requests-list"),listEl=wrap.querySelector("#friends-list");
+    const rq=query(collection(db,"friendRequests"),where("to","==",currentUser.uid),limit(50));
+    const uq=query(collection(db,"users"),limit(100));
+    const reqUnsub=onSnapshot(rq,async snap=>{reqEl.innerHTML="";if(snap.empty){reqEl.innerHTML='<div class="empty-state" style="padding:25px">لا توجد طلبات جديدة.</div>';return}snap.docs.filter(d=>d.data().status==="pending").forEach(async d=>{const r=d.data();let u={displayName:r.fromName,username:r.fromUsername,avatarUrl:r.fromAvatar};try{const us=await getDoc(doc(db,"users",r.from));if(us.exists())u={...u,...us.data()}}catch(_){}const row=el("div","friend-row");row.innerHTML=`<div class="mini-avatar">${u.avatarUrl?`<img src="${escapeHtml(u.avatarUrl)}">`:avatarFallback(u.displayName)}</div><div class="friend-info"><div class="friend-name">${escapeHtml(u.displayName||u.username)}</div><div class="friend-username">@${escapeHtml(u.username||"")}</div></div><div class="request-actions"><button class="accept-request">قبول</button><button class="reject-request">رفض</button></div>`;row.querySelector(".accept-request").onclick=()=>handleFriendRequest(d.id,r,"accepted");row.querySelector(".reject-request").onclick=()=>handleFriendRequest(d.id,r,"rejected");reqEl.appendChild(row)})});
+    const userUnsub=onSnapshot(uq,snap=>{listEl.innerHTML="";snap.docs.filter(d=>d.id!==currentUser.uid).forEach(d=>{const u=d.data(),friend=(currentProfile.friends||[]).includes(d.id);const row=el("div","friend-row");row.innerHTML=`<div class="mini-avatar">${u.avatarUrl?`<img src="${escapeHtml(u.avatarUrl)}">`:avatarFallback(u.displayName)}</div><div class="friend-info"><div class="friend-name">${escapeHtml(u.displayName||u.username)}</div><div class="friend-username">@${escapeHtml(u.username||"")} · <span class="${isOnlineUser(u)?"presence-online":"presence-offline"}">${presenceLabel(u)}</span></div></div><button class="message-friend-btn">${friend?"مراسلة":"إضافة صديق"}</button>`;row.querySelector("button").onclick=()=>friend?startOrOpenChat({uid:d.id,displayName:u.displayName||u.username,avatarUrl:u.avatarUrl||"",username:u.username}):sendFriendRequest(d.id,u);listEl.appendChild(row)})});
+    friendsUnsub=()=>{reqUnsub();userUnsub()}; return wrap;
   }
+  async function sendFriendRequest(to,u){try{const q=query(collection(db,"friendRequests"),where("from","==",currentUser.uid),where("to","==",to),where("status","==","pending"));if(!(await getDocs(q)).empty){showToast("الطلب موجود بالفعل");return}await addDoc(collection(db,"friendRequests"),{from:currentUser.uid,to,status:"pending",fromName:currentProfile.displayName||currentProfile.username,fromUsername:currentProfile.username,fromAvatar:currentProfile.avatarUrl||"",createdAt:serverTimestamp()});await createNotification(to,"friend_request",`${currentProfile.displayName||currentProfile.username} أرسل لك طلب صداقة`);showToast("تم إرسال طلب الصداقة 🤝")}catch(e){showToast("تعذر إرسال الطلب")}}
+  async function handleFriendRequest(id,r,status){try{await updateDoc(doc(db,"friendRequests",id),{status,respondedAt:serverTimestamp()});if(status==="accepted"){const batch=writeBatch(db);batch.update(doc(db,"users",currentUser.uid),{friends:arrayUnion(r.from)});batch.update(doc(db,"users",r.from),{friends:arrayUnion(currentUser.uid)});await batch.commit();await createNotification(r.from,"friend_accept",`${currentProfile.displayName||currentProfile.username} قبل طلب صداقتك`);showToast("تمت إضافة الصديق 🎉")}else showToast("تم رفض الطلب")}catch(e){showToast("تعذر تنفيذ الطلب")}}
 
   function renderProfileScreen() {
     const wrap = el("div", "profile-screen");
-    const isAdmin = currentProfile && currentProfile.isAdmin;
     wrap.innerHTML = `
       <div class="profile-card">
         <div class="profile-avatar-big">${currentProfile.avatarUrl ? `<img src="${escapeHtml(currentProfile.avatarUrl)}">` : avatarFallback(currentProfile.displayName)}</div>
         <div class="profile-username">@${escapeHtml(currentProfile.username || "")}</div>
-        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">UID: ${currentUser.uid}</div>
       </div>
-      <div class="btn-row">
-        <button class="secondary-btn" id="prof-support-btn"><i class="fas fa-bug"></i> الإبلاغ عن مشكلة</button>
-        <button class="secondary-btn" id="prof-dev-btn"><i class="fas fa-code"></i> المطور</button>
-      </div>
-      ${isAdmin ? `<button class="primary-btn danger" id="prof-admin-btn" style="margin-bottom:16px;"><i class="fas fa-user-shield"></i> لوحة طرد / حظر مستخدم</button>` : ""}
       <form id="profile-form" class="profile-form">
         <div class="form-field"><label>الاسم الظاهر</label><input type="text" id="pf-display-name" value="${escapeHtml(currentProfile.displayName || "")}" maxlength="40"></div>
         <div class="form-field"><label>رابط الصورة الشخصية</label><input type="text" id="pf-avatar" value="${escapeHtml(currentProfile.avatarUrl || "")}" placeholder="https://..."></div>
         <div class="form-field"><label>نبذة عنك</label><textarea id="pf-bio" maxlength="160">${escapeHtml(currentProfile.bio || "")}</textarea></div>
         <button type="submit" class="primary-btn" id="pf-save-btn"><i class="fas fa-save"></i> حفظ التعديلات</button>
       </form>
+      <div class="section-title"><i class="fas fa-file-alt"></i> منشوراتي</div>
+      <div id="my-posts-list" class="posts-list"></div>
       <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
     `;
-    wrap.querySelector("#prof-support-btn").addEventListener("click", () => openModal("support-modal"));
-    wrap.querySelector("#prof-dev-btn").addEventListener("click", () => openModal("support-modal"));
-    if (isAdmin) {
-      wrap.querySelector("#prof-admin-btn").addEventListener("click", () => openModal("admin-modal"));
-    }
     wrap.querySelector("#profile-form").addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لحفظ التعديلات 📶"); return; }
       const btn = $id("pf-save-btn");
       setLoading(btn, true);
-      const displayName = filterProfanity($id("pf-display-name").value.trim()) || currentProfile.username;
+      const displayName = $id("pf-display-name").value.trim() || currentProfile.username;
       const avatarUrl = $id("pf-avatar").value.trim();
-      const bio = filterProfanity($id("pf-bio").value.trim());
+      const bio = $id("pf-bio").value.trim();
       try {
         await updateDoc(doc(db, "users", currentUser.uid), { displayName, avatarUrl, bio });
         currentProfile = { ...currentProfile, displayName, avatarUrl, bio };
         showToast("تم حفظ الملف الشخصي ✅");
         paintTab("profile");
-      } catch (err) { showToast("تعذر الحفظ."); setLoading(btn, false, "حفظ التعديلات"); }
+      } catch (err) { showToast("تعذر الحفظ — تحقق من الإنترنت."); setLoading(btn, false, "حفظ التعديلات"); }
     });
     wrap.querySelector("#logout-btn").addEventListener("click", async () => {
       if (confirm("هل تريد تسجيل الخروج؟")) await signOut(auth);
+    });
+    const myListEl = wrap.querySelector("#my-posts-list");
+    const mq = query(collection(db, "posts"), where("uid", "==", currentUser.uid), orderBy("createdAt", "desc"), limit(50));
+    onSnapshot(mq, (snap) => {
+      myListEl.innerHTML = "";
+      if (snap.empty) { myListEl.innerHTML = `<div class="empty-state">لم تنشر أي شيء بعد.</div>`; return; }
+      snap.forEach(docSnap => myListEl.appendChild(renderPostCard(docSnap.id, docSnap.data())));
     });
     return wrap;
   }
@@ -1028,44 +2443,1545 @@
     document.querySelectorAll(".modal-overlay").forEach(ov => {
       ov.addEventListener("click", e => { if (e.target === ov) ov.classList.remove("show"); });
     });
+  }
 
-    $id("support-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const type = $id("support-type").value;
-      const content = $id("support-content").value.trim();
-      const btn = $id("support-submit-btn");
-      setLoading(btn, true);
+
+  async function updatePresence(online=true){if(!currentUser)return;try{await updateDoc(doc(db,"users",currentUser.uid),{online,lastSeen:serverTimestamp()})}catch(_){}
+  }
+  function startPresence(){clearInterval(presenceTimer);updatePresence(true);presenceTimer=setInterval(()=>updatePresence(true),30000);window.addEventListener("beforeunload",()=>updatePresence(false))}
+  function isOnlineUser(u){if(u.online)return true;if(!u.lastSeen)return false;const d=u.lastSeen.toDate?u.lastSeen.toDate():new Date(u.lastSeen);return Date.now()-d.getTime()<90000}
+  function presenceLabel(u){return isOnlineUser(u)?"متصل الآن":(u.lastSeen?`آخر ظهور ${timeAgo(u.lastSeen)}`:"غير متاح")}
+  async function createNotification(uid,type,text,refId=""){if(!uid||uid===currentUser.uid)return;try{await addDoc(collection(db,"notifications"),{uid,type,text,refId,fromUid:currentUser.uid,createdAt:serverTimestamp(),read:false})}catch(e){console.warn(e)}}
+  function startNotificationsListener(){if(!currentUser)return;if(notificationsUnsub)notificationsUnsub();const q=query(collection(db,"notifications"),where("uid","==",currentUser.uid),limit(40));notificationsUnsub=onSnapshot(q,snap=>{const n=snap.docs.filter(d=>!d.data().read).length,b=$id("notification-badge");if(b){b.textContent=n>99?"99+":n;b.style.display=n?"flex":"none"}})}
+  async function openNotificationsPanel(){let p=$id("notice-panel");if(!p){p=el("div","notice-panel");p.id="notice-panel";document.body.appendChild(p)}p.innerHTML='<div class="notice-head"><b>الإشعارات</b><button id="mark-all-notices" class="message-tool">تحديد الكل كمقروء</button></div><div id="notice-list" class="notice-list"></div>';p.classList.toggle("show");if(!p.classList.contains("show"))return;const q=query(collection(db,"notifications"),where("uid","==",currentUser.uid),orderBy("createdAt","desc"),limit(40)),snap=await getDocs(q),list=p.querySelector("#notice-list");list.innerHTML="";if(snap.empty){list.innerHTML='<div class="empty-state">لا توجد إشعارات 🎉</div>';return}snap.forEach(d=>{const n=d.data(),r=el("div","notice-item"+(n.read?"":" unread"));r.innerHTML=`<div class="notice-dot"></div><div class="notice-text">${escapeHtml(n.text)}<div class="notice-time">${timeAgo(n.createdAt)}</div></div>`;r.onclick=()=>{if(!n.read)updateDoc(d.ref,{read:true});r.classList.remove("unread")};list.appendChild(r)});p.querySelector("#mark-all-notices").onclick=async()=>{const b=writeBatch(db);snap.docs.filter(d=>!d.data().read).forEach(d=>b.update(d.ref,{read:true}));await b.commit();p.classList.remove("show")}}
+  document.addEventListener("click",e=>{const p=$id("notice-panel");if(p&&p.classList.contains("show")&&!e.target.closest("#notice-panel")&&!e.target.closest("#header-notifications-btn"))p.classList.remove("show")});
+
+
+  /* ================================================================
+     MODZ PRO ENGINE — REAL-TIME UX, SETTINGS, SEARCH, BOOKMARKS,
+     BROWSER NOTIFICATIONS, DRAFTS, EXPORT, FEED TOOLS AND SECURITY UX
+     ================================================================ */
+  const PRO_VERSION = "4.0.0-single-file";
+  const PRO_SETTINGS_KEY = "modz_pro_settings_v4";
+  const PRO_DRAFT_KEY = "modz_pro_draft";
+  let proSettings = loadProSettings();
+  let proGlobalSearchTimer = null;
+  let proUsersUnsub = null;
+  let proNotificationsUnsub = null;
+  let proFeedCache = [];
+  let proLastNotificationIds = new Set();
+  let proBrowserNoticeReady = false;
+
+  function loadProSettings() {
+    const defaults = {
+      theme: "dark",
+      compact: false,
+      reduceMotion: false,
+      browserNotifications: false,
+      sound: true,
+      saveDrafts: true,
+      autoRead: true,
+      enterToSend: true,
+      showOnlineStrip: true
+    };
+    try {
+      const raw = localStorage.getItem(PRO_SETTINGS_KEY);
+      return { ...defaults, ...(raw ? JSON.parse(raw) : {}) };
+    } catch (_) {
+      return defaults;
+    }
+  }
+
+  function saveProSettings() {
+    try {
+      localStorage.setItem(PRO_SETTINGS_KEY, JSON.stringify(proSettings));
+    } catch (_) {}
+    applyProSettings();
+  }
+
+  function applyProSettings() {
+    document.body.classList.toggle("pro-light", proSettings.theme === "light");
+    document.body.classList.toggle("pro-compact", !!proSettings.compact);
+    document.body.classList.toggle("reduce-motion", !!proSettings.reduceMotion);
+  }
+
+  function proEscape(value) {
+    return escapeHtml(String(value ?? ""));
+  }
+
+  function proNow() {
+    return new Date();
+  }
+
+  function proSafeUrl(value) {
+    try {
+      const url = new URL(value);
+      if (!["http:", "https:"].includes(url.protocol)) return "";
+      return url.href;
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function proDebounce(fn, wait = 350) {
+    let timer = null;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), wait);
+    };
+  }
+
+  function proDownload(filename, text, type = "application/json") {
+    const blob = new Blob([text], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1200);
+  }
+
+  function proPanel(title, icon = "fa-sparkles") {
+    const panel = el("div", "pro-panel");
+    panel.innerHTML = `
+      <div class="pro-sheet">
+        <div class="pro-panel-head">
+          <div class="pro-panel-title"><i class="fas ${icon}"></i>${proEscape(title)}</div>
+          <button type="button" class="pro-close" aria-label="إغلاق">✕</button>
+        </div>
+        <div class="pro-panel-content"></div>
+      </div>`;
+    panel.querySelector(".pro-close").onclick = () => panel.remove();
+    panel.addEventListener("click", e => {
+      if (e.target === panel) panel.remove();
+    });
+    document.body.appendChild(panel);
+    requestAnimationFrame(() => panel.classList.add("show"));
+    return panel.querySelector(".pro-panel-content");
+  }
+
+  function proLiveToast(title, text, icon = "🔔") {
+    let stack = $id("pro-toast-stack");
+    if (!stack) {
+      stack = el("div", "pro-toast-stack");
+      stack.id = "pro-toast-stack";
+      document.body.appendChild(stack);
+    }
+    const item = el("div", "pro-live-toast");
+    item.innerHTML = `
+      <div class="pro-live-toast-icon">${icon}</div>
+      <div class="pro-live-toast-body">
+        <div class="pro-live-toast-title">${proEscape(title)}</div>
+        <div class="pro-live-toast-text">${proEscape(text)}</div>
+      </div>`;
+    stack.appendChild(item);
+    setTimeout(() => {
+      item.style.opacity = "0";
+      item.style.transform = "translateX(25px)";
+      setTimeout(() => item.remove(), 300);
+    }, 5000);
+  }
+
+  function proNotifyBrowser(title, body, icon = "") {
+    if (!proSettings.browserNotifications) return;
+    if (!("Notification" in window)) return;
+    if (Notification.permission !== "granted") return;
+    try {
+      new Notification(title, {
+        body,
+        icon: icon || undefined,
+        tag: "modz-web"
+      });
+    } catch (_) {}
+  }
+
+  async function proEnableBrowserNotifications() {
+    if (!("Notification" in window)) {
+      showToast("المتصفح لا يدعم إشعارات النظام.");
+      return false;
+    }
+    const permission = await Notification.requestPermission();
+    proSettings.browserNotifications = permission === "granted";
+    saveProSettings();
+    showToast(permission === "granted" ? "تم تفعيل إشعارات الجهاز 🔔" : "لم يتم السماح بالإشعارات");
+    return permission === "granted";
+  }
+
+  function proPlaySound() {
+    if (!proSettings.sound) return;
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.value = 740;
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.035, ctx.currentTime + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.13);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.14);
+    } catch (_) {}
+  }
+
+  function proCreateFloatingUI() {
+    if ($id("pro-floating")) return;
+    const box = el("div", "pro-floating");
+    box.id = "pro-floating";
+    box.innerHTML = `
+      <button class="pro-float-btn" id="pro-float-settings" title="الإعدادات"><i class="fas fa-sliders"></i></button>
+      <button class="pro-float-btn secondary" id="pro-float-search" title="بحث شامل"><i class="fas fa-magnifying-glass"></i></button>`;
+    document.body.appendChild(box);
+    $id("pro-float-settings").onclick = openProSettings;
+    $id("pro-float-search").onclick = openProGlobalSearch;
+  }
+
+  function openProSettings() {
+    const content = proPanel("مركز التحكم والإعدادات", "fa-sliders");
+    content.innerHTML = `
+      <div class="pro-section">
+        <div class="pro-section-title">المظهر</div>
+        <div class="pro-setting">
+          <div class="pro-setting-main"><div class="pro-setting-title">الوضع الفاتح</div><div class="pro-setting-desc">تغيير مظهر المنصة إلى واجهة فاتحة.</div></div>
+          <button class="pro-switch ${proSettings.theme === "light" ? "on" : ""}" data-setting="theme"><span></span></button>
+        </div>
+        <div class="pro-setting">
+          <div class="pro-setting-main"><div class="pro-setting-title">الوضع المضغوط</div><div class="pro-setting-desc">تقليل المسافات لعرض محتوى أكثر على الهاتف.</div></div>
+          <button class="pro-switch ${proSettings.compact ? "on" : ""}" data-setting="compact"><span></span></button>
+        </div>
+        <div class="pro-setting">
+          <div class="pro-setting-main"><div class="pro-setting-title">تقليل الحركة</div><div class="pro-setting-desc">إيقاف معظم الحركات والانتقالات.</div></div>
+          <button class="pro-switch ${proSettings.reduceMotion ? "on" : ""}" data-setting="reduceMotion"><span></span></button>
+        </div>
+      </div>
+      <div class="pro-section">
+        <div class="pro-section-title">الدردشة والتنبيهات</div>
+        <div class="pro-setting">
+          <div class="pro-setting-main"><div class="pro-setting-title">إشعارات الجهاز</div><div class="pro-setting-desc">إظهار تنبيه نظام عند وصول إشعار جديد.</div></div>
+          <button class="pro-switch ${proSettings.browserNotifications ? "on" : ""}" data-setting="browserNotifications"><span></span></button>
+        </div>
+        <div class="pro-setting">
+          <div class="pro-setting-main"><div class="pro-setting-title">صوت الإشعار</div><div class="pro-setting-desc">صوت قصير عند وصول إشعار جديد.</div></div>
+          <button class="pro-switch ${proSettings.sound ? "on" : ""}" data-setting="sound"><span></span></button>
+        </div>
+        <div class="pro-setting">
+          <div class="pro-setting-main"><div class="pro-setting-title">حفظ المسودات</div><div class="pro-setting-desc">حفظ النص الذي تكتبه محلياً حتى لا يضيع.</div></div>
+          <button class="pro-switch ${proSettings.saveDrafts ? "on" : ""}" data-setting="saveDrafts"><span></span></button>
+        </div>
+        <div class="pro-setting">
+          <div class="pro-setting-main"><div class="pro-setting-title">الإرسال بـ Enter</div><div class="pro-setting-desc">اضغط Enter لإرسال الرسالة وShift+Enter لسطر جديد.</div></div>
+          <button class="pro-switch ${proSettings.enterToSend ? "on" : ""}" data-setting="enterToSend"><span></span></button>
+        </div>
+      </div>
+      <div class="pro-section">
+        <div class="pro-section-title">أدوات الحساب</div>
+        <button class="pro-action" id="pro-export-data"><span>تصدير بياناتي</span><i class="fas fa-download"></i></button>
+        <button class="pro-action" id="pro-notification-permission"><span>طلب إذن إشعارات الجهاز</span><i class="fas fa-bell"></i></button>
+        <button class="pro-action" id="pro-clear-drafts"><span>مسح المسودات المحلية</span><i class="fas fa-eraser"></i></button>
+        <button class="pro-action" id="pro-show-help"><span>دليل استخدام المنصة</span><i class="fas fa-circle-question"></i></button>
+      </div>
+      <div class="pro-section">
+        <div class="pro-section-title">حالة النظام</div>
+        <div class="pro-stat-grid">
+          <div class="pro-stat"><div class="pro-stat-value">${navigator.onLine ? "ON" : "OFF"}</div><div class="pro-stat-label">الاتصال</div></div>
+          <div class="pro-stat"><div class="pro-stat-value">${PRO_VERSION.split("-")[0]}</div><div class="pro-stat-label">الإصدار</div></div>
+          <div class="pro-stat"><div class="pro-stat-value">${currentUser ? "✓" : "—"}</div><div class="pro-stat-label">الحساب</div></div>
+        </div>
+      </div>`;
+
+    content.querySelectorAll("[data-setting]").forEach(btn => {
+      btn.onclick = async () => {
+        const key = btn.dataset.setting;
+        if (key === "theme") {
+          proSettings.theme = proSettings.theme === "dark" ? "light" : "dark";
+        } else if (key === "browserNotifications") {
+          if (!proSettings.browserNotifications) {
+            await proEnableBrowserNotifications();
+          } else {
+            proSettings.browserNotifications = false;
+            saveProSettings();
+          }
+        } else {
+          proSettings[key] = !proSettings[key];
+          saveProSettings();
+        }
+        openProSettings();
+        const panels = document.querySelectorAll(".pro-panel");
+        if (panels.length > 1) panels[panels.length - 2].remove();
+      };
+    });
+
+    content.querySelector("#pro-export-data").onclick = proExportMyData;
+    content.querySelector("#pro-notification-permission").onclick = proEnableBrowserNotifications;
+    content.querySelector("#pro-clear-drafts").onclick = () => {
+      localStorage.removeItem(PRO_DRAFT_KEY);
+      localStorage.removeItem("modz_chat_draft");
+      showToast("تم مسح المسودات المحلية 🧹");
+    };
+    content.querySelector("#pro-show-help").onclick = openProHelp;
+  }
+
+  async function proExportMyData() {
+    if (!currentUser) return;
+    try {
+      const [userSnap, postsSnap, requestsSnap, noticesSnap] = await Promise.all([
+        getDoc(doc(db, "users", currentUser.uid)),
+        getDocs(query(collection(db, "posts"), where("uid", "==", currentUser.uid), limit(200))),
+        getDocs(query(collection(db, "friendRequests"), where("from", "==", currentUser.uid), limit(200))),
+        getDocs(query(collection(db, "notifications"), where("uid", "==", currentUser.uid), limit(200)))
+      ]);
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        app: "Modz Web",
+        version: PRO_VERSION,
+        profile: userSnap.exists() ? userSnap.data() : null,
+        posts: postsSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+        friendRequests: requestsSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+        notifications: noticesSnap.docs.map(d => ({ id: d.id, ...d.data() }))
+      };
+      proDownload(`modz-web-data-${Date.now()}.json`, JSON.stringify(payload, null, 2));
+      showToast("تم تجهيز نسخة بياناتك 📦");
+    } catch (e) {
+      console.error(e);
+      showToast("تعذر تصدير البيانات");
+    }
+  }
+
+  function openProHelp() {
+    const content = proPanel("دليل Modz Web", "fa-circle-question");
+    content.innerHTML = `
+      <div class="pro-section">
+        <div class="pro-section-title">ماذا يدعم النظام؟</div>
+        <div class="pro-help-grid">
+          <div class="pro-help-card"><b>💬 الدردشة</b><span>رسائل لحظية، تعديل، حذف، رد، نسخ، تفاعلات، قراءة، بحث داخل المحادثة، مؤشر الكتابة، آخر ظهور، وروابط مرفقات.</span></div>
+          <div class="pro-help-card"><b>👥 الأصدقاء</b><span>إرسال طلبات، قبول ورفض، حالة الاتصال، وفتح المحادثة مباشرة.</span></div>
+          <div class="pro-help-card"><b>📰 المنشورات</b><span>نشر، صورة برابط، إعجاب، تعليقات، إشعارات، حذف المنشور، ومشاركة الرابط.</span></div>
+          <div class="pro-help-card"><b>🔔 الإشعارات</b><span>إشعارات Firestore داخل المنصة مع دعم إشعارات الجهاز عند السماح من المتصفح.</span></div>
+          <div class="pro-help-card"><b>📶 العمل الضعيف</b><span>تمكين كاش Firestore المحلي في الملف الأساسي، مع مراقبة حالة الإنترنت وواجهة عدم الاتصال.</span></div>
+          <div class="pro-help-card"><b>🔐 الحماية</b><span>الحماية الحقيقية تأتي من Firestore Security Rules؛ لا تعتمد على JavaScript وحده.</span></div>
+        </div>
+      </div>
+      <div class="pro-section">
+        <div class="pro-section-title">مهم بخصوص المرفقات</div>
+        <p style="font-size:12px;line-height:1.9;color:var(--text-secondary)">
+          هذه النسخة لا تستخدم Firebase Storage. لذلك يمكن حفظ صورة صغيرة داخل الرسالة كـ Data URL ضمن Firestore ضمن حد آمن، أما الفيديوهات والملفات الكبيرة فتستخدم لها روابط مباشرة. لا تضع ملفات ضخمة داخل مستند Firestore لأن لكل مستند حداً للحجم.
+        </p>
+      </div>
+      <div class="pro-section">
+        <div class="pro-section-title">اختصارات لوحة المفاتيح</div>
+        <table class="pro-table">
+          <tr><th>الاختصار</th><th>الوظيفة</th></tr>
+          <tr><td>Ctrl + K</td><td>البحث الشامل</td></tr>
+          <tr><td>Esc</td><td>إغلاق آخر نافذة</td></tr>
+          <tr><td>Enter</td><td>إرسال الرسالة عند تفعيل الإعداد</td></tr>
+          <tr><td>Shift + Enter</td><td>سطر جديد داخل الرسالة</td></tr>
+        </table>
+      </div>`;
+  }
+
+  function openProGlobalSearch() {
+    const content = proPanel("البحث الشامل", "fa-magnifying-glass");
+    content.innerHTML = `
+      <div class="pro-command-box">
+        <i class="fas fa-search"></i>
+        <input id="pro-global-search-input" placeholder="اسم مستخدم أو كلمة من المنشورات..." autocomplete="off">
+        <kbd>Ctrl K</kbd>
+      </div>
+      <div id="pro-global-search-results" class="pro-search-results" style="margin-top:12px">
+        <div class="pro-empty">اكتب كلمة للبحث.</div>
+      </div>`;
+    const input = content.querySelector("#pro-global-search-input");
+    const results = content.querySelector("#pro-global-search-results");
+    input.focus();
+    const run = async () => {
+      const term = input.value.trim().toLowerCase();
+      if (!term) {
+        results.innerHTML = '<div class="pro-empty">اكتب كلمة للبحث.</div>';
+        return;
+      }
+      results.innerHTML = '<div class="pro-empty">جارِ البحث...</div>';
       try {
-        await addDoc(collection(db, "reports"), {
-          uid: currentUser ? currentUser.uid : "anonymous",
-          type, content, createdAt: serverTimestamp()
+        const [usersSnap, postsSnap] = await Promise.all([
+          getDocs(query(collection(db, "users"), orderBy("username"), startAt(term), endAt(term + "\uf8ff"), limit(20))),
+          getDocs(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(100)))
+        ]);
+        const users = usersSnap.docs.filter(d => d.id !== currentUser?.uid);
+        const posts = postsSnap.docs.filter(d => {
+          const p = d.data();
+          return `${p.content || ""} ${p.authorName || ""}`.toLowerCase().includes(term);
+        }).slice(0, 20);
+        results.innerHTML = "";
+        if (!users.length && !posts.length) {
+          results.innerHTML = '<div class="pro-empty">لا توجد نتائج.</div>';
+          return;
+        }
+        if (users.length) {
+          const title = el("div", "pro-section-title", "المستخدمون");
+          results.appendChild(title);
+          users.forEach(d => {
+            const u = d.data();
+            const item = el("div", "pro-search-item");
+            item.innerHTML = `
+              <div class="mini-avatar">${u.avatarUrl ? `<img src="${proEscape(u.avatarUrl)}">` : avatarFallback(u.displayName)}</div>
+              <div class="pro-search-meta"><div class="pro-search-name">${proEscape(u.displayName || u.username)}</div><div class="pro-search-sub">@${proEscape(u.username || "")} · ${proEscape(presenceLabel(u))}</div></div>
+              <button class="pro-button" style="flex:0 0 auto;padding:7px 10px">فتح</button>`;
+            item.onclick = async () => {
+              document.querySelector(".pro-panel:last-of-type")?.remove();
+              const friend = (currentProfile.friends || []).includes(d.id);
+              if (friend) {
+                await startOrOpenChat({ uid: d.id, displayName: u.displayName || u.username, avatarUrl: u.avatarUrl || "", username: u.username });
+                return;
+              }
+              showToast(`@${u.username || u.displayName}`);
+            };
+            results.appendChild(item);
+          });
+        }
+        if (posts.length) {
+          const title = el("div", "pro-section-title");
+          title.style.marginTop = "16px";
+          title.textContent = "المنشورات";
+          results.appendChild(title);
+          posts.forEach(d => {
+            const p = d.data();
+            const item = el("div", "pro-search-item");
+            item.innerHTML = `<div class="mini-avatar">${p.authorAvatar ? `<img src="${proEscape(p.authorAvatar)}">` : avatarFallback(p.authorName)}</div><div class="pro-search-meta"><div class="pro-search-name">${proEscape(p.authorName || "مستخدم")}</div><div class="pro-search-sub">${proEscape((p.content || "").slice(0, 150))}</div></div><i class="fas fa-arrow-left"></i>`;
+            item.onclick = () => {
+              document.querySelector(".pro-panel:last-of-type")?.remove();
+              paintTab("feed");
+              setTimeout(() => {
+                const card = document.querySelector(`[data-post-id="${CSS.escape(d.id)}"]`);
+                if (card) {
+                  card.scrollIntoView({ behavior: "smooth", block: "center" });
+                  card.classList.add("pro-highlight");
+                  setTimeout(() => card.classList.remove("pro-highlight"), 1600);
+                }
+              }, 400);
+            };
+            results.appendChild(item);
+          });
+        }
+      } catch (e) {
+        console.error(e);
+        results.innerHTML = '<div class="pro-empty">تعذر البحث. تأكد من قواعد Firestore والفهارس.</div>';
+      }
+    };
+    input.addEventListener("input", proDebounce(run, 400));
+  }
+
+  async function proSaveBookmark(postId) {
+    if (!currentUser) return;
+    const ref = doc(db, "users", currentUser.uid, "bookmarks", postId);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      await deleteDoc(ref);
+      return false;
+    }
+    await setDoc(ref, { postId, createdAt: serverTimestamp() });
+    return true;
+  }
+
+  async function proIsBookmarked(postId) {
+    if (!currentUser) return false;
+    try {
+      return (await getDoc(doc(db, "users", currentUser.uid, "bookmarks", postId))).exists();
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function proEnhancePostCard(card, postId, post) {
+    if (!card || card.dataset.proEnhanced === "1") return;
+    card.dataset.proEnhanced = "1";
+    const actions = card.querySelector(".post-actions");
+    if (!actions) return;
+    const tools = el("div", "pro-post-tools");
+    tools.innerHTML = `
+      <button type="button" class="pro-post-tool pro-bookmark-btn"><i class="fas fa-bookmark"></i> حفظ</button>
+      <button type="button" class="pro-post-tool pro-share-btn"><i class="fas fa-share-nodes"></i> مشاركة</button>
+      <button type="button" class="pro-post-tool pro-copy-btn"><i class="fas fa-link"></i> نسخ الرابط</button>
+      ${post.uid === currentUser?.uid ? `<button type="button" class="pro-post-tool pro-edit-post"><i class="fas fa-pen"></i> تعديل</button>` : ""}`;
+    actions.parentNode.insertBefore(tools, actions.nextSibling);
+
+    const bookmark = tools.querySelector(".pro-bookmark-btn");
+    if (await proIsBookmarked(postId)) bookmark.classList.add("pro-bookmarked");
+    bookmark.onclick = async () => {
+      try {
+        const active = await proSaveBookmark(postId);
+        bookmark.classList.toggle("pro-bookmarked", active);
+        showToast(active ? "تم حفظ المنشور 🔖" : "تمت إزالة الحفظ");
+      } catch (_) {
+        showToast("تعذر حفظ المنشور");
+      }
+    };
+
+    tools.querySelector(".pro-share-btn").onclick = async () => {
+      const url = `${location.href.split("#")[0]}#post=${encodeURIComponent(postId)}`;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: "Modz Web", text: post.content || "منشور على Modz Web", url });
+        } else {
+          await navigator.clipboard.writeText(url);
+          showToast("تم نسخ رابط المنشور 📋");
+        }
+      } catch (_) {}
+    };
+
+    tools.querySelector(".pro-copy-btn").onclick = async () => {
+      const url = `${location.href.split("#")[0]}#post=${encodeURIComponent(postId)}`;
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast("تم نسخ رابط المنشور 📋");
+      } catch (_) {
+        showToast("تعذر نسخ الرابط");
+      }
+    };
+
+    const edit = tools.querySelector(".pro-edit-post");
+    if (edit) {
+      edit.onclick = async () => {
+        const next = prompt("تعديل نص المنشور:", post.content || "");
+        if (next === null) return;
+        try {
+          await updateDoc(doc(db, "posts", postId), { content: next.trim(), editedAt: serverTimestamp() });
+          showToast("تم تعديل المنشور ✏️");
+        } catch (_) {
+          showToast("تعذر تعديل المنشور");
+        }
+      };
+    }
+
+    const commentsList = card.querySelector(".comments-list");
+    if (commentsList) {
+      const observer = new MutationObserver(() => {
+        commentsList.querySelectorAll(".comment-row").forEach(row => {
+          if (row.dataset.proComment === "1") return;
+          row.dataset.proComment = "1";
         });
-        closeModal("support-modal");
-        $id("support-content").value = "";
-        showToast("تم إرسال رسالتك للمطور بنجاح 📨");
-      } catch (err) { showToast("تعذر الإرسال، حاول مجدداً."); }
-      setLoading(btn, false, "إرسال إلى المطور");
-    });
+      });
+      observer.observe(commentsList, { childList: true });
+    }
+  }
 
-    $id("admin-ban-btn").addEventListener("click", async () => {
-      const targetUid = $id("admin-target-uid").value.trim();
-      if (!targetUid) { showToast("أدخل UID المستخدم أولاً"); return; }
-      try {
-        await updateDoc(doc(db, "users", targetUid), { isBanned: true });
-        showToast("تم حظر وطرد المستخدم بنجاح 🚫");
-        closeModal("admin-modal");
-      } catch (err) { showToast("خطأ: تعذر الحظر."); }
-    });
-    $id("admin-unban-btn").addEventListener("click", async () => {
-      const targetUid = $id("admin-target-uid").value.trim();
-      if (!targetUid) { showToast("أدخل UID المستخدم أولاً"); return; }
-      try {
-        await updateDoc(doc(db, "users", targetUid), { isBanned: false });
-        showToast("تم إلغاء الحظر بنجاح ✅");
-        closeModal("admin-modal");
-      } catch (err) { showToast("خطأ: تعذر إلغاء الحظر."); }
+  function proWrapPostRenderer() {
+    if (window.__modzPostWrapped) return;
+    window.__modzPostWrapped = true;
+    const original = renderPostCard;
+    renderPostCard = function(postId, post) {
+      proFeedCache = [{ id: postId, data: post }, ...proFeedCache.filter(x => x.id !== postId)].slice(0, 120);
+      const card = original(postId, post);
+      setTimeout(() => proEnhancePostCard(card, postId, post), 0);
+      return card;
+    };
+  }
+
+  function proEnhanceFeedScreen(wrap) {
+    if (!wrap || wrap.dataset.proFeed === "1") return wrap;
+    wrap.dataset.proFeed = "1";
+    const search = wrap.querySelector("#feed-search-input");
+    if (search) {
+      search.placeholder = "ابحث في المنشورات...";
+      search.addEventListener("input", proDebounce(() => {
+        const term = search.value.trim().toLowerCase();
+        wrap.querySelectorAll(".post-card").forEach(card => {
+          card.style.display = !term || card.textContent.toLowerCase().includes(term) ? "" : "none";
+        });
+      }, 120));
+    }
+    const list = wrap.querySelector("#posts-list");
+    if (list) {
+      const observer = new MutationObserver(() => {
+        list.querySelectorAll(".post-card").forEach(card => {
+          const id = card.dataset.postId;
+          if (id) {
+            const item = proFeedCache.find(x => x.id === id);
+            if (item) proEnhancePostCard(card, id, item.data);
+          }
+        });
+      });
+      observer.observe(list, { childList: true });
+    }
+    return wrap;
+  }
+
+  function proWrapFeedRenderer() {
+    if (window.__modzFeedWrapped) return;
+    window.__modzFeedWrapped = true;
+    const original = renderFeedScreen;
+    renderFeedScreen = function() {
+      const wrap = proEnhanceFeedScreen(original());
+      setTimeout(() => proInstallFeedTools(wrap), 0);
+      return wrap;
+    };
+  }
+
+  function proInstallFeedTools(wrap) {
+    if (!wrap || wrap.querySelector(".pro-feed-tools")) return;
+    const search = wrap.querySelector("#feed-search-input");
+    if (!search) return;
+    const tools = el("div", "pro-feed-tools");
+    tools.innerHTML = `
+      <button class="pro-feed-tool active" data-filter="all">الكل</button>
+      <button class="pro-feed-tool" data-filter="mine">منشوراتي</button>
+      <button class="pro-feed-tool" data-filter="images">صور</button>
+      <button class="pro-feed-tool" data-filter="text">نصوص</button>
+      <button class="pro-feed-tool" data-filter="saved">المحفوظات</button>`;
+    search.parentElement.insertAdjacentElement("afterend", tools);
+    tools.querySelectorAll(".pro-feed-tool").forEach(btn => {
+      btn.onclick = async () => {
+        tools.querySelectorAll(".pro-feed-tool").forEach(x => x.classList.remove("active"));
+        btn.classList.add("active");
+        await proApplyFeedFilter(wrap, btn.dataset.filter);
+      };
     });
   }
+
+  async function proApplyFeedFilter(wrap, filter) {
+    const cards = [...wrap.querySelectorAll(".post-card")];
+    for (const card of cards) {
+      const id = card.dataset.postId;
+      const item = proFeedCache.find(x => x.id === id);
+      const p = item ? item.data : null;
+      let visible = true;
+      if (filter === "mine") visible = p?.uid === currentUser.uid;
+      if (filter === "images") visible = !!p?.imageUrl;
+      if (filter === "text") visible = !!p?.content && !p?.imageUrl;
+      if (filter === "saved") visible = await proIsBookmarked(id);
+      card.style.display = visible ? "" : "none";
+    }
+  }
+
+  function proWrapShell() {
+    if (window.__modzShellWrapped) return;
+    window.__modzShellWrapped = true;
+    const original = renderShell;
+    renderShell = function() {
+      original();
+      proCreateFloatingUI();
+      proInstallHeaderSearch();
+      proInstallProfileShortcut();
+      proStartRealtimeTools();
+      proInstallDraftTools();
+      applyProSettings();
+    };
+  }
+
+  function proInstallHeaderSearch() {
+    const btn = $id("header-search-btn");
+    if (!btn || btn.dataset.proBound === "1") return;
+    btn.dataset.proBound = "1";
+    btn.onclick = openProGlobalSearch;
+  }
+
+  function proInstallProfileShortcut() {
+    const header = $id("top-header");
+    if (!header || header.querySelector("#pro-profile-shortcut")) return;
+    const actions = header.querySelector(".header-actions");
+    if (!actions) return;
+    const btn = el("button", "icon-btn");
+    btn.id = "pro-profile-shortcut";
+    btn.title = "ملفي";
+    btn.innerHTML = '<i class="fas fa-user-gear"></i>';
+    btn.onclick = () => paintTab("profile");
+    actions.appendChild(btn);
+  }
+
+  function proStartRealtimeTools() {
+    if (!currentUser) return;
+    proStartBrowserNotifications();
+    proStartOnlineUsers();
+    proHandleHashRoute();
+  }
+
+  function proStartBrowserNotifications() {
+    if (proNotificationsUnsub) proNotificationsUnsub();
+    const q = query(collection(db, "notifications"), where("uid", "==", currentUser.uid), orderBy("createdAt", "desc"), limit(30));
+    let firstSnapshot = true;
+    proNotificationsUnsub = onSnapshot(q, snap => {
+      snap.docChanges().forEach(change => {
+        if (change.type !== "added") return;
+        const data = change.doc.data();
+        if (firstSnapshot) return;
+        if (proLastNotificationIds.has(change.doc.id)) return;
+        proLastNotificationIds.add(change.doc.id);
+        if (data.read) return;
+        proPlaySound();
+        proLiveToast("إشعار جديد", data.text || "لديك نشاط جديد", "🔔");
+        proNotifyBrowser("Modz Web", data.text || "لديك إشعار جديد", WEB_ICON);
+      });
+      snap.docs.forEach(d => proLastNotificationIds.add(d.id));
+      firstSnapshot = false;
+    }, err => console.warn("Pro notification listener", err));
+  }
+
+  function proStartOnlineUsers() {
+    if (proUsersUnsub) proUsersUnsub();
+    const q = query(collection(db, "users"), where("online", "==", true), limit(30));
+    proUsersUnsub = onSnapshot(q, snap => {
+      proRenderOnlineStrip(snap.docs.map(d => ({ uid: d.id, ...d.data() })));
+    }, () => {});
+  }
+
+  function proRenderOnlineStrip(users) {
+    const body = $id("screen-body");
+    if (!body || !proSettings.showOnlineStrip || currentTab !== "feed") return;
+    let strip = body.querySelector(".pro-online-strip-wrap");
+    if (!strip) {
+      strip = el("div", "pro-online-strip-wrap");
+      const first = body.firstElementChild;
+      if (first) body.insertBefore(strip, first.nextSibling);
+    }
+    const others = users.filter(u => u.uid !== currentUser.uid).slice(0, 18);
+    if (!others.length) {
+      strip.innerHTML = "";
+      return;
+    }
+    strip.innerHTML = `<div class="section-title" style="margin-top:4px"><i class="fas fa-circle" style="color:#22c55e;font-size:9px"></i> متصلون الآن</div><div class="pro-online-list"></div>`;
+    const list = strip.querySelector(".pro-online-list");
+    others.forEach(u => {
+      const item = el("div", "pro-online-user");
+      item.innerHTML = `<div class="pro-online-avatar">${u.avatarUrl ? `<img src="${proEscape(u.avatarUrl)}">` : avatarFallback(u.displayName)}</div><div class="pro-online-name">${proEscape(u.displayName || u.username || "مستخدم")}</div>`;
+      item.onclick = () => {
+        if ((currentProfile.friends || []).includes(u.uid)) {
+          startOrOpenChat({ uid: u.uid, displayName: u.displayName || u.username, avatarUrl: u.avatarUrl || "", username: u.username });
+        } else {
+          showToast(`@${u.username || u.displayName}`);
+        }
+      };
+      list.appendChild(item);
+    });
+  }
+
+  function proInstallDraftTools() {
+    if (!currentUser) return;
+    const composer = $id("composer-content");
+    if (!composer || composer.dataset.proDraft === "1") return;
+    composer.dataset.proDraft = "1";
+    if (proSettings.saveDrafts) {
+      try {
+        const draft = JSON.parse(localStorage.getItem(`${PRO_DRAFT_KEY}_${currentUser.uid}`) || "null");
+        if (draft?.content) composer.value = draft.content;
+      } catch (_) {}
+    }
+    composer.addEventListener("input", proDebounce(() => {
+      if (!proSettings.saveDrafts) return;
+      try {
+        localStorage.setItem(`${PRO_DRAFT_KEY}_${currentUser.uid}`, JSON.stringify({ content: composer.value, savedAt: Date.now() }));
+      } catch (_) {}
+    }, 300));
+  }
+
+  function proClearDraft() {
+    if (!currentUser) return;
+    localStorage.removeItem(`${PRO_DRAFT_KEY}_${currentUser.uid}`);
+  }
+
+  function proHandleHashRoute() {
+    const match = location.hash.match(/^#post=(.+)$/);
+    if (!match) return;
+    const id = decodeURIComponent(match[1]);
+    paintTab("feed");
+    setTimeout(() => {
+      const card = document.querySelector(`[data-post-id="${CSS.escape(id)}"]`);
+      if (!card) return;
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.classList.add("pro-highlight");
+      setTimeout(() => card.classList.remove("pro-highlight"), 1800);
+    }, 500);
+  }
+
+  function proKeyboardShortcuts() {
+    document.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        if (currentUser) openProGlobalSearch();
+      }
+      if (e.key === "Escape") {
+        const panels = [...document.querySelectorAll(".pro-panel.show")];
+        if (panels.length) panels[panels.length - 1].remove();
+      }
+    });
+  }
+
+  function proConnectionWatcher() {
+    const update = () => {
+      updateOnlineBanner();
+      const label = navigator.onLine ? "متصل بالإنترنت" : "أنت غير متصل";
+      if (currentUser) proLiveToast("حالة الاتصال", label, navigator.onLine ? "🟢" : "🔴");
+    };
+    window.addEventListener("online", proDebounce(update, 250));
+    window.addEventListener("offline", proDebounce(update, 250));
+  }
+
+  function proInstallPageFooter() {
+    if ($id("pro-footer")) return;
+    const footer = el("div", "pro-footer");
+    footer.id = "pro-footer";
+    footer.innerHTML = `Modz Web <strong>PRO</strong> · ${PRO_VERSION} · Firebase Firestore · واجهة عربية محسنة`;
+    document.body.appendChild(footer);
+  }
+
+  function proProfileStats() {
+    if (!currentUser || !currentProfile) return;
+    const profileScreen = document.querySelector(".profile-screen");
+    if (!profileScreen || profileScreen.querySelector(".pro-profile-banner")) return;
+    const oldCard = profileScreen.querySelector(".profile-card");
+    if (oldCard) oldCard.style.display = "none";
+    const banner = el("div", "pro-profile-banner");
+    const avatar = currentProfile.avatarUrl ? `<img src="${proEscape(currentProfile.avatarUrl)}">` : avatarFallback(currentProfile.displayName);
+    banner.innerHTML = `<div style="position:absolute;inset:0;opacity:.12;background-image:linear-gradient(45deg,transparent 25%,rgba(255,255,255,.3) 25%,rgba(255,255,255,.3) 50%,transparent 50%,transparent 75%,rgba(255,255,255,.3) 75%);background-size:36px 36px"></div>`;
+    const avatarWrap = el("div", "pro-profile-avatar-wrap");
+    avatarWrap.innerHTML = `<div class="pro-profile-avatar">${avatar}</div>`;
+    const info = el("div", "pro-profile-info");
+    info.innerHTML = `<div class="pro-profile-name">${proEscape(currentProfile.displayName || currentProfile.username)}</div><div class="pro-profile-handle">@${proEscape(currentProfile.username || "")}</div><div class="pro-profile-bio">${proEscape(currentProfile.bio || "لا توجد نبذة بعد.")}</div><div class="pro-chip-row"><span class="pro-chip"><span class="pro-status-dot online"></span> حساب نشط</span><span class="pro-chip">ID: ${proEscape(currentUser.uid.slice(0, 8))}</span></div>`;
+    profileScreen.insertBefore(banner, profileScreen.firstChild);
+    profileScreen.insertBefore(avatarWrap, banner.nextSibling);
+    profileScreen.insertBefore(info, avatarWrap.nextSibling);
+    const stats = el("div", "pro-stat-grid");
+    stats.innerHTML = `<div class="pro-stat"><div class="pro-stat-value">${(currentProfile.friends || []).length}</div><div class="pro-stat-label">الأصدقاء</div></div><div class="pro-stat"><div class="pro-stat-value" id="pro-my-post-count">—</div><div class="pro-stat-label">المنشورات</div></div><div class="pro-stat"><div class="pro-stat-value">${isOnlineUser(currentProfile) ? "🟢" : "⚪"}</div><div class="pro-stat-label">الحالة</div></div>`;
+    profileScreen.insertBefore(stats, profileScreen.querySelector(".profile-form") || null);
+    getDocs(query(collection(db, "posts"), where("uid", "==", currentUser.uid), limit(300))).then(snap => {
+      const count = $id("pro-my-post-count");
+      if (count) count.textContent = snap.size;
+    }).catch(() => {});
+  }
+
+  function proWrapProfileRenderer() {
+    if (window.__modzProfileWrapped) return;
+    window.__modzProfileWrapped = true;
+    const original = renderProfileScreen;
+    renderProfileScreen = function() {
+      const wrap = original();
+      setTimeout(() => proProfileStats(), 0);
+      return wrap;
+    };
+  }
+
+  function proInstallAuthEnhancements() {
+    const root = $id("app");
+    if (!root) return;
+    root.addEventListener("keydown", e => {
+      if (e.key !== "Enter") return;
+      const form = e.target.closest("#auth-form");
+      if (form && e.target.tagName === "INPUT") {
+        const button = form.querySelector("button[type=submit]");
+        if (button) button.focus();
+      }
+    });
+  }
+
+  function proSanitizeLegacyStorage() {
+    try {
+      const keys = Object.keys(localStorage);
+      keys.filter(k => k.startsWith("modz_temp_")).forEach(k => localStorage.removeItem(k));
+    } catch (_) {}
+  }
+
+  function proWatchVisibility() {
+    document.addEventListener("visibilitychange", () => {
+      if (!currentUser) return;
+      if (document.hidden) {
+        updatePresence(true).catch(() => {});
+      } else {
+        updatePresence(true).catch(() => {});
+      }
+    });
+  }
+
+  function proKeepPresenceFresh() {
+    setInterval(() => {
+      if (!currentUser || document.hidden) return;
+      updatePresence(true).catch(() => {});
+    }, 45000);
+  }
+
+  function proInstallChatDraftSupport() {
+    const body = $id("screen-body");
+    if (!body || body.dataset.proChatDraft === "1") return;
+    body.dataset.proChatDraft = "1";
+    const observer = new MutationObserver(() => {
+      const input = body.querySelector("#chat-input");
+      if (!input || input.dataset.proDraft === "1") return;
+      input.dataset.proDraft = "1";
+      const key = `modz_chat_draft_${currentUser?.uid}_${currentChat?.conversationId || "none"}`;
+      if (proSettings.saveDrafts) {
+        try { input.value = localStorage.getItem(key) || ""; } catch (_) {}
+      }
+      input.addEventListener("input", proDebounce(() => {
+        if (!proSettings.saveDrafts) return;
+        try { localStorage.setItem(key, input.value); } catch (_) {}
+      }, 250));
+    });
+    observer.observe(body, { childList: true, subtree: true });
+  }
+
+  function proObserveTabChanges() {
+    const body = $id("screen-body");
+    if (!body || body.dataset.proObserved === "1") return;
+    body.dataset.proObserved = "1";
+    const observer = new MutationObserver(() => {
+      if (currentTab === "profile") proProfileStats();
+      if (currentTab === "feed") {
+        proInstallFeedTools(body.querySelector(".feed-screen"));
+      }
+      if (currentTab === "messages") proInstallChatDraftSupport();
+    });
+    observer.observe(body, { childList: true, subtree: true });
+  }
+
+  function proObservePostCache() {
+    const originalOnSnapshot = onSnapshot;
+    return originalOnSnapshot;
+  }
+
+  function proCaptureFeedData() {
+    if (!currentUser) return;
+    const original = window.__modzFeedSnapshotCapture;
+    if (original) return;
+    window.__modzFeedSnapshotCapture = true;
+    const observer = new MutationObserver(() => {
+      const list = document.querySelector("#posts-list");
+      if (!list) return;
+      const cards = [...list.querySelectorAll(".post-card")];
+      proFeedCache = cards.map(card => ({
+        id: card.dataset.postId,
+        data: {
+          uid: card.querySelector(".post-delete-btn") ? currentUser.uid : "",
+          content: card.querySelector(".post-content")?.textContent || "",
+          authorName: card.querySelector(".post-author")?.textContent || ""
+        }
+      }));
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function proInstallStatusBadge() {
+    const existing = $id("pro-system-status");
+    if (existing) return;
+    const badge = el("div");
+    badge.id = "pro-system-status";
+    badge.style.cssText = "position:fixed;top:8px;left:8px;z-index:10000;font-size:9px;padding:4px 7px;border-radius:20px;background:rgba(0,0,0,.35);color:#9ca3af;pointer-events:none;opacity:.65";
+    badge.textContent = navigator.onLine ? "● ONLINE" : "● OFFLINE";
+    document.body.appendChild(badge);
+    const update = () => { badge.textContent = navigator.onLine ? "● ONLINE" : "● OFFLINE"; badge.style.color = navigator.onLine ? "#22c55e" : "#ef4444"; };
+    window.addEventListener("online", update);
+    window.addEventListener("offline", update);
+    update();
+  }
+
+  function proInstallGlobalClickGuard() {
+    document.addEventListener("click", e => {
+      const link = e.target.closest("a");
+      if (!link) return;
+      const href = link.getAttribute("href") || "";
+      if (href.startsWith("javascript:") || href.startsWith("data:text/html")) {
+        e.preventDefault();
+        showToast("الرابط غير مسموح.");
+      }
+    });
+  }
+
+  function proInstallUrlPreview() {
+    document.addEventListener("input", e => {
+      if (e.target.id !== "composer-image-url") return;
+      const value = proSafeUrl(e.target.value.trim());
+      const preview = $id("composer-preview");
+      if (!preview) return;
+      if (!value) {
+        preview.style.display = "none";
+        return;
+      }
+      preview.src = value;
+      preview.style.display = "block";
+      preview.onerror = () => { preview.style.display = "none"; };
+    });
+  }
+
+  function proInstallPostComposerDraftClear() {
+    const form = $id("composer-form");
+    if (!form || form.dataset.proClear === "1") return;
+    form.dataset.proClear = "1";
+    form.addEventListener("submit", () => setTimeout(proClearDraft, 300));
+  }
+
+  function proInstallFriendBadges() {
+    const tab = document.querySelector('.tab-item[data-tab="friends"]');
+    if (!tab || tab.querySelector(".pro-friend-badge") || !currentUser) return;
+    const badge = el("span", "pro-counter pro-friend-badge");
+    badge.style.marginInlineStart = "4px";
+    badge.style.display = "none";
+    tab.appendChild(badge);
+    const q = query(collection(db, "friendRequests"), where("to", "==", currentUser.uid), where("status", "==", "pending"), limit(30));
+    onSnapshot(q, snap => {
+      badge.textContent = snap.size > 99 ? "99+" : String(snap.size);
+      badge.style.display = snap.size ? "inline-flex" : "none";
+    }, () => {});
+  }
+
+  function proInstallNoticeBadgeWatcher() {
+    const tab = document.querySelector('.tab-item[data-tab="messages"]');
+    if (!tab || tab.querySelector(".pro-message-badge")) return;
+    const badge = el("span", "pro-counter pro-message-badge");
+    badge.style.marginInlineStart = "4px";
+    badge.style.display = "none";
+    tab.appendChild(badge);
+    const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid), limit(50));
+    onSnapshot(q, snap => {
+      const count = snap.docs.reduce((sum, d) => sum + Number(d.data().unread?.[currentUser.uid] || 0), 0);
+      badge.textContent = count > 99 ? "99+" : String(count);
+      badge.style.display = count ? "inline-flex" : "none";
+    }, () => {});
+  }
+
+  function proInstallFriendSearch() {
+    const original = renderFriendsScreen;
+    if (window.__modzFriendsWrapped) return;
+    window.__modzFriendsWrapped = true;
+    renderFriendsScreen = function() {
+      const wrap = original();
+      setTimeout(() => {
+        if (wrap.querySelector(".pro-friend-search")) return;
+        const input = el("input", "search-bar pro-friend-search");
+        input.innerHTML = "";
+        const search = document.createElement("input");
+        search.placeholder = "فلترة المستخدمين...";
+        search.style.cssText = "width:100%;border:0;outline:0;background:transparent;color:inherit";
+        input.appendChild(search);
+        const list = wrap.querySelector("#friends-list");
+        if (list) list.parentNode.insertBefore(input, list);
+        search.addEventListener("input", () => {
+          const term = search.value.trim().toLowerCase();
+          list?.querySelectorAll(".friend-row").forEach(row => {
+            row.style.display = !term || row.textContent.toLowerCase().includes(term) ? "" : "none";
+          });
+        });
+      }, 0);
+      return wrap;
+    };
+  }
+
+  function proInstallProfileSecurityNote() {
+    if (!currentUser) return;
+    const profile = document.querySelector(".profile-screen");
+    if (!profile || profile.querySelector(".pro-security-note")) return;
+    const note = el("div", "pro-section pro-security-note");
+    note.innerHTML = `<div class="pro-section-title">🔐 ملاحظة أمنية</div><div style="font-size:10px;color:var(--text-muted);line-height:1.8">لا تعتمد على إخفاء الأزرار للحماية. صلاحيات القراءة والكتابة يجب أن تكون محمية بواسطة Firestore Rules التي سنضعها في Firebase.</div>`;
+    profile.appendChild(note);
+  }
+
+  function proAfterTabPaint() {
+    if (!currentUser) return;
+    setTimeout(() => {
+      if (currentTab === "profile") {
+        proProfileStats();
+        proInstallProfileSecurityNote();
+      }
+      if (currentTab === "feed") {
+        const feed = document.querySelector(".feed-screen");
+        proInstallFeedTools(feed);
+        proCaptureFeedData();
+      }
+      if (currentTab === "friends") proInstallFriendBadges();
+      if (currentTab === "messages") proInstallNoticeBadgeWatcher();
+    }, 80);
+  }
+
+  function proWrapPaintTab() {
+    if (window.__modzPaintWrapped) return;
+    window.__modzPaintWrapped = true;
+    const original = paintTab;
+    paintTab = function(tab) {
+      original(tab);
+      proAfterTabPaint();
+    };
+  }
+
+  function proInitializeEngine() {
+    applyProSettings();
+    proWrapPostRenderer();
+    proWrapFeedRenderer();
+    proWrapProfileRenderer();
+    proWrapShell();
+    proWrapPaintTab();
+    proInstallAuthEnhancements();
+    proKeyboardShortcuts();
+    proConnectionWatcher();
+    proInstallPageFooter();
+    proSanitizeLegacyStorage();
+    proWatchVisibility();
+    proKeepPresenceFresh();
+    proInstallGlobalClickGuard();
+    proInstallUrlPreview();
+    proInstallPostComposerDraftClear();
+    proInstallStatusBadge();
+    proInstallFriendSearch();
+    proSettingsObserver();
+    proGlobalPanelObserver();
+  }
+
+
+  /* ================================================================
+     FIRESTORE DATA CONTRACT
+     هذا التعريف داخل الملف حتى يبقى شكل البيانات واضحاً أثناء التطوير.
+     لا يقوم بإنشاء البيانات تلقائياً؛ القواعد الرسمية ستكون في firestore.rules.
+     ================================================================ */
+  const MODZ_DATA_CONTRACT = {
+    users: {
+      description: "ملف المستخدم والحضور والعلاقات الأساسية",
+      fields: {
+        username: "string",
+        displayName: "string",
+        avatarUrl: "string",
+        bio: "string",
+        friends: "string[]",
+        online: "boolean",
+        lastSeen: "timestamp",
+        createdAt: "timestamp"
+      },
+      subcollections: {
+        bookmarks: {
+          fields: {
+            postId: "string",
+            createdAt: "timestamp"
+          }
+        }
+      }
+    },
+    posts: {
+      description: "منشورات المستخدمين",
+      fields: {
+        uid: "string",
+        authorName: "string",
+        authorAvatar: "string",
+        content: "string",
+        imageUrl: "string",
+        createdAt: "timestamp",
+        editedAt: "timestamp?"
+      },
+      subcollections: {
+        likes: {
+          documentId: "uid",
+          fields: {
+            createdAt: "timestamp"
+          }
+        },
+        comments: {
+          fields: {
+            uid: "string",
+            authorName: "string",
+            authorAvatar: "string",
+            content: "string",
+            createdAt: "timestamp"
+          }
+        }
+      }
+    },
+    conversations: {
+      description: "محادثة ثنائية بين مستخدمين",
+      documentId: "sortedUidA_sortedUidB",
+      fields: {
+        participants: "string[]",
+        participantNames: "map<string,string>",
+        participantAvatars: "map<string,string>",
+        lastMessage: "string",
+        lastMessageAt: "timestamp",
+        lastSenderId: "string",
+        unread: "map<string,number>",
+        pinnedFor: "string[]?",
+        typing: "map<string,timestamp|null>?",
+        createdAt: "timestamp"
+      },
+      subcollections: {
+        messages: {
+          fields: {
+            senderId: "string",
+            text: "string",
+            fileUrl: "string",
+            fileName: "string",
+            fileType: "string",
+            createdAt: "timestamp",
+            readAt: "timestamp|null",
+            editedAt: "timestamp|null",
+            deleted: "boolean",
+            deletedAt: "timestamp|null",
+            reactions: "map<string,string>",
+            replyTo: "map|null"
+          }
+        }
+      }
+    },
+    friendRequests: {
+      description: "طلبات الصداقة",
+      fields: {
+        from: "string",
+        to: "string",
+        status: "pending|accepted|rejected",
+        fromName: "string",
+        fromUsername: "string",
+        fromAvatar: "string",
+        createdAt: "timestamp",
+        respondedAt: "timestamp?"
+      }
+    },
+    notifications: {
+      description: "إشعارات المستخدم",
+      fields: {
+        uid: "string",
+        type: "string",
+        text: "string",
+        refId: "string",
+        fromUid: "string",
+        read: "boolean",
+        createdAt: "timestamp"
+      }
+    }
+  };
+
+  const MODZ_COLLECTION_LIMITS = {
+    users: 100,
+    posts: 60,
+    notifications: 40,
+    friendRequests: 50,
+    conversations: 50,
+    messagesPerOpenChat: 200,
+    commentsPerPost: 200
+  };
+
+  const MODZ_FIELD_LIMITS = {
+    usernameMin: 3,
+    usernameMax: 30,
+    displayNameMax: 40,
+    bioMax: 160,
+    postTextMax: 1000,
+    commentMax: 300,
+    messageMax: 2000,
+    smallImageBytes: 650 * 1024,
+    safeFirestoreDocumentBytes: 850 * 1024
+  };
+
+  function proValidateText(value, min, max) {
+    const text = String(value || "").trim();
+    if (text.length < min) return { ok: false, reason: `الحد الأدنى ${min}` };
+    if (text.length > max) return { ok: false, reason: `الحد الأقصى ${max}` };
+    return { ok: true, value: text };
+  }
+
+  function proValidateUsername(value) {
+    const result = proValidateText(value, MODZ_FIELD_LIMITS.usernameMin, MODZ_FIELD_LIMITS.usernameMax);
+    if (!result.ok) return result;
+    if (!/^[a-z0-9_.]+$/i.test(result.value)) return { ok: false, reason: "استخدم حروفاً وأرقاماً و_ و . فقط" };
+    return result;
+  }
+
+  function proValidatePost(value) {
+    return proValidateText(value, 0, MODZ_FIELD_LIMITS.postTextMax);
+  }
+
+  function proValidateComment(value) {
+    return proValidateText(value, 1, MODZ_FIELD_LIMITS.commentMax);
+  }
+
+  function proValidateMessage(value) {
+    return proValidateText(value, 0, MODZ_FIELD_LIMITS.messageMax);
+  }
+
+  function proValidateMediaUrl(value) {
+    if (!value) return { ok: true, value: "" };
+    const safe = proSafeUrl(value.trim());
+    if (!safe) return { ok: false, reason: "الرابط يجب أن يبدأ بـ http أو https" };
+    return { ok: true, value: safe };
+  }
+
+  function proValidateImageSize(file) {
+    if (!file) return { ok: true };
+    if (!file.type.startsWith("image/")) return { ok: false, reason: "الملف ليس صورة" };
+    if (file.size > MODZ_FIELD_LIMITS.smallImageBytes) return { ok: false, reason: "الصورة أكبر من 650KB" };
+    return { ok: true };
+  }
+
+  function proDataContractSummary() {
+    return Object.entries(MODZ_DATA_CONTRACT).map(([name, info]) => ({
+      collection: name,
+      description: info.description,
+      fields: Object.keys(info.fields || {}),
+      subcollections: Object.keys(info.subcollections || {})
+    }));
+  }
+
+  function openProDatabaseGuide() {
+    const content = proPanel("مخطط قاعدة Firestore", "fa-database");
+    content.innerHTML = `
+      <div class="pro-section">
+        <div class="pro-section-title">المجموعات الرئيسية</div>
+        <table class="pro-table">
+          <tr><th>Collection</th><th>الغرض</th><th>الحقول</th></tr>
+          ${proDataContractSummary().map(item => `<tr><td>${proEscape(item.collection)}</td><td>${proEscape(item.description)}</td><td>${proEscape(item.fields.join(", "))}</td></tr>`).join("")}
+        </table>
+      </div>
+      <div class="pro-section">
+        <div class="pro-section-title">ملاحظة Storage</div>
+        <p style="font-size:11px;color:var(--text-secondary);line-height:1.9">لا توجد أي عملية Storage في هذا الإصدار. لا تحتاج إلى Storage Rules. الروابط الخارجية لا تمنح الموقع صلاحية رفع ملفات إلى Firebase.</p>
+      </div>
+      <div class="pro-section">
+        <div class="pro-section-title">الحدود المهمة</div>
+        <table class="pro-table">
+          <tr><th>العنصر</th><th>الحد</th></tr>
+          <tr><td>النص في المنشور</td><td>${MODZ_FIELD_LIMITS.postTextMax}</td></tr>
+          <tr><td>التعليق</td><td>${MODZ_FIELD_LIMITS.commentMax}</td></tr>
+          <tr><td>الرسالة</td><td>${MODZ_FIELD_LIMITS.messageMax}</td></tr>
+          <tr><td>الصورة المحلية</td><td>650KB</td></tr>
+          <tr><td>رسائل المحادثة في الاستعلام</td><td>${MODZ_COLLECTION_LIMITS.messagesPerOpenChat}</td></tr>
+        </table>
+      </div>`;
+  }
+
+  function proInstallDatabaseGuideButton() {
+    const settings = document.querySelector("#pro-export-data")?.parentElement;
+    if (!settings || settings.querySelector("#pro-database-guide")) return;
+    const button = document.createElement("button");
+    button.className = "pro-action";
+    button.id = "pro-database-guide";
+    button.innerHTML = `<span>مخطط قاعدة Firestore</span><i class="fas fa-database"></i>`;
+    button.onclick = openProDatabaseGuide;
+    settings.appendChild(button);
+  }
+
+  function proRuntimeHealth() {
+    const checks = [];
+    checks.push({ name: "Firebase config", ok: !!firebaseConfig?.projectId });
+    checks.push({ name: "Auth", ok: !!auth });
+    checks.push({ name: "Firestore", ok: !!db });
+    checks.push({ name: "IndexedDB", ok: "indexedDB" in window });
+    checks.push({ name: "Online", ok: navigator.onLine });
+    checks.push({ name: "Notifications API", ok: "Notification" in window });
+    return checks;
+  }
+
+  function proHealthPanel() {
+    const content = proPanel("فحص النظام", "fa-heart-pulse");
+    const checks = proRuntimeHealth();
+    content.innerHTML = `<div class="pro-section"><div class="pro-section-title">الفحص اللحظي</div>${checks.map(check => `<div class="pro-setting"><div class="pro-setting-main"><div class="pro-setting-title">${proEscape(check.name)}</div></div><strong class="${check.ok ? "pro-success" : "pro-danger"}">${check.ok ? "OK" : "تنبيه"}</strong></div>`).join("")}</div>`;
+  }
+
+  function proInstallHealthButton() {
+    const settings = document.querySelector("#pro-export-data")?.parentElement;
+    if (!settings || settings.querySelector("#pro-health-button")) return;
+    const button = document.createElement("button");
+    button.className = "pro-action";
+    button.id = "pro-health-button";
+    button.innerHTML = `<span>فحص النظام الآن</span><i class="fas fa-heart-pulse"></i>`;
+    button.onclick = proHealthPanel;
+    settings.appendChild(button);
+  }
+
+  function proAddSettingsExtras() {
+    const panels = document.querySelectorAll(".pro-panel");
+    const current = panels[panels.length - 1];
+    if (!current) return;
+    const content = current.querySelector(".pro-panel-content");
+    if (!content || content.dataset.proExtras === "1") return;
+    content.dataset.proExtras = "1";
+    proInstallDatabaseGuideButton();
+    proInstallHealthButton();
+  }
+
+  function proSettingsObserver() {
+    const observer = new MutationObserver(() => {
+      if (document.querySelector(".pro-panel")) proAddSettingsExtras();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+
+
+  /* ================================================================
+     INDEX CONTRACT — هذه الفهارس هي الأكثر فائدة للاستعلامات الحالية.
+     Firebase قد يطلب فهرساً إضافياً تلقائياً عند أول تشغيل لاستعلام جديد.
+     ================================================================ */
+  const MODZ_INDEX_CONTRACT = [
+    {
+      collection: "posts",
+      fields: ["createdAt DESC"]
+    },
+    {
+      collection: "posts",
+      fields: ["uid ASC", "createdAt DESC"]
+    },
+    {
+      collection: "posts/{postId}/comments",
+      fields: ["createdAt ASC"]
+    },
+    {
+      collection: "conversations",
+      fields: ["participants ARRAY", "lastMessageAt DESC"]
+    },
+    {
+      collection: "conversations/{conversationId}/messages",
+      fields: ["createdAt DESC"]
+    },
+    {
+      collection: "friendRequests",
+      fields: ["to ASC", "status ASC"]
+    },
+    {
+      collection: "friendRequests",
+      fields: ["from ASC", "to ASC", "status ASC"]
+    },
+    {
+      collection: "notifications",
+      fields: ["uid ASC", "createdAt DESC"]
+    },
+    {
+      collection: "users",
+      fields: ["username ASC"]
+    },
+    {
+      collection: "users",
+      fields: ["online ASC"]
+    }
+  ];
+
+  function openProIndexGuide() {
+    const content = proPanel("الفهارس المطلوبة", "fa-list-check");
+    content.innerHTML = `
+      <div class="pro-section">
+        <div class="pro-section-title">الفهارس المستخدمة</div>
+        <table class="pro-table">
+          <tr><th>المجموعة</th><th>الحقول</th></tr>
+          ${MODZ_INDEX_CONTRACT.map(index => `<tr><td>${proEscape(index.collection)}</td><td>${proEscape(index.fields.join(" · "))}</td></tr>`).join("")}
+        </table>
+      </div>
+      <div class="pro-section">
+        <div class="pro-section-title">إذا ظهر رابط Create Index</div>
+        <p style="font-size:11px;color:var(--text-secondary);line-height:1.9">اضغط الرابط الذي يعرضه Firebase Console لإنشاء الفهرس المطلوب. لا تعتبر رسالة Missing Index خطأ في الكود؛ معناها أن Firestore يريد فهرساً مركباً للاستعلام.</p>
+      </div>`;
+  }
+
+  function proInstallIndexGuideButton() {
+    const settings = document.querySelector("#pro-export-data")?.parentElement;
+    if (!settings || settings.querySelector("#pro-index-guide")) return;
+    const button = document.createElement("button");
+    button.className = "pro-action";
+    button.id = "pro-index-guide";
+    button.innerHTML = `<span>عرض مخطط الفهارس</span><i class="fas fa-list-check"></i>`;
+    button.onclick = openProIndexGuide;
+    settings.appendChild(button);
+  }
+
+  function proInstallDeveloperInfo() {
+    const settings = document.querySelector("#pro-export-data")?.parentElement;
+    if (!settings || settings.querySelector("#pro-developer-info")) return;
+    const button = document.createElement("button");
+    button.className = "pro-action";
+    button.id = "pro-developer-info";
+    button.innerHTML = `<span>معلومات المطور والبنية</span><i class="fas fa-code"></i>`;
+    button.onclick = () => {
+      const content = proPanel("معلومات تقنية", "fa-code");
+      content.innerHTML = `
+        <div class="pro-section">
+          <div class="pro-section-title">البنية</div>
+          <table class="pro-table">
+            <tr><td>Frontend</td><td>HTML + CSS + JavaScript</td></tr>
+            <tr><td>Authentication</td><td>Firebase Authentication</td></tr>
+            <tr><td>Database</td><td>Cloud Firestore</td></tr>
+            <tr><td>Storage</td><td>غير مستخدم</td></tr>
+            <tr><td>Offline cache</td><td>IndexedDB / Firestore persistence</td></tr>
+            <tr><td>Realtime</td><td>Firestore onSnapshot</td></tr>
+            <tr><td>Presence</td><td>users.online + users.lastSeen</td></tr>
+            <tr><td>Messages</td><td>conversations/{id}/messages</td></tr>
+            <tr><td>Notifications</td><td>notifications</td></tr>
+          </table>
+        </div>
+        <div class="pro-section">
+          <div class="pro-section-title">قواعد مهمة</div>
+          <p style="font-size:11px;color:var(--text-secondary);line-height:1.9">أي تطبيق ويب يعمل مع Firestore يجب أن يعتمد على Security Rules لحماية البيانات. لا تضع Service Account داخل HTML، ولا تعتبر Firebase API Key سراً.</p>
+        </div>`;
+    };
+    settings.appendChild(button);
+  }
+
+  function proSettingsExtrasFinalizer() {
+    const panels = document.querySelectorAll(".pro-panel");
+    const panel = panels[panels.length - 1];
+    if (!panel) return;
+    const title = panel.querySelector(".pro-panel-title")?.textContent || "";
+    if (!title.includes("مركز التحكم")) return;
+    proInstallIndexGuideButton();
+    proInstallDeveloperInfo();
+  }
+
+  function proGlobalPanelObserver() {
+    const observer = new MutationObserver(() => proSettingsExtrasFinalizer());
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+
+
+  /* MODZ PRO RELEASE CHECKLIST */
+  const MODZ_PRO_FEATURES = [
+    "Firebase Authentication",
+    "Firestore realtime feed",
+    "Firestore offline persistence",
+    "Realtime presence",
+    "Last seen",
+    "Friend requests",
+    "Friend request notifications",
+    "Post notifications",
+    "Post likes",
+    "Post comments",
+    "Post delete",
+    "Post edit",
+    "Post share",
+    "Post bookmark",
+    "Global search",
+    "User prefix search",
+    "Conversation list",
+    "Realtime messages",
+    "Message edit",
+    "Message delete",
+    "Soft delete",
+    "Message reply",
+    "Message copy",
+    "Message reactions",
+    "Read receipts",
+    "Typing indicator",
+    "Chat search",
+    "Pinned conversations",
+    "Small image data URLs",
+    "Remote media URLs",
+    "Browser notifications",
+    "Notification sound",
+    "Local post drafts",
+    "Local chat drafts",
+    "Theme switching",
+    "Compact mode",
+    "Reduced motion",
+    "Data export",
+    "System health check",
+    "Firestore data contract",
+    "Firestore index contract",
+    "Security guidance",
+    "Connection monitor",
+    "Mobile responsive layout",
+    "Arabic RTL interface",
+    "Keyboard shortcuts",
+    "Safe URL validation",
+    "Text length validation",
+    "Image size validation",
+    "XSS-safe message rendering",
+    "External-link protection",
+    "Realtime unread counters",
+    "Online users strip",
+    "Profile statistics",
+    "Developer diagnostics",
+    "No Firebase Storage dependency",
+    "No Storage Rules dependency"
+  ];
+
+  proInitializeEngine();
+
 
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
@@ -1077,37 +3993,21 @@
       return;
     }
     try {
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-      if (snap.exists()) {
-        currentProfile = snap.data();
-        if (currentProfile.isBanned) {
-          alert("تم طردك وحظرك من استخدام التطبيق لسوء الاستخدام.");
-          await signOut(auth);
-          return;
-        }
-      } else {
-        // إنشاء ملف المستند تلقائياً إذا كانت القاعدة فارغة جديدة
-        currentProfile = {
-          username: user.displayName || user.email.split('@')[0],
-          displayName: user.displayName || "مستخدم جديد",
-          avatarUrl: "",
-          bio: "",
-          isBanned: false,
-          isAdmin: false,
-          createdAt: serverTimestamp()
-        };
-        await setDoc(userRef, currentProfile);
-      }
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists()) currentProfile = snap.data();
+      else currentProfile = { username: user.displayName || "user", displayName: user.displayName || "مستخدم", avatarUrl: "", bio: "", friends: [] };
     } catch (e) {
-      currentProfile = { username: user.displayName || "user", displayName: user.displayName || "مستخدم", avatarUrl: "", bio: "", isBanned: false, isAdmin: false };
+      currentProfile = { username: user.displayName || "user", displayName: user.displayName || "مستخدم", avatarUrl: "", bio: "", friends: [] };
     }
     document.body.classList.add("app-active");
+    startPresence();
     renderShell();
   });
 
+  updateOnlineBanner();
   wireComposer();
   wireModals();
+  wireNewChatModal();
 </script>
 
 <script>
@@ -1118,5 +4018,46 @@
   obs.observe(document.body, { attributes: true, attributeFilter: ["class"] });
 </script>
 
+
+<!--
+  MODZ WEB PRO — LIVE DATABASE CONTRACT
+  هذا القسم جزء من الملف الواحد لتوثيق البنية المستخدمة فعلياً في Firestore.
+  users/{uid}: profile, friends, online, lastSeen.
+  users/{uid}/bookmarks/{postId}: saved post reference.
+  posts/{postId}: feed content, media URLs, author snapshot and timestamps.
+  posts/{postId}/likes/{uid}: one like document per authenticated user.
+  posts/{postId}/comments/{commentId}: comments and author snapshot.
+  friendRequests/{id}: sender, recipient, status and request metadata.
+  conversations/{id}: exactly two participants, names, avatars, unread counters.
+  conversations/{id}/messages/{id}: text, optional attachment, read state and reactions.
+  notifications/{id}: recipient, sender, type, reference and read flag.
+  No Firebase Storage SDK is loaded by this version.
+  Small local image attachments are encoded as Data URLs before being written to Firestore.
+  Large media should be represented by a direct HTTPS URL so Firestore document limits are respected.
+  The Firebase Web configuration in this file is intended for client initialization; security is provided by Rules.
+  Never place a service-account JSON, private key, or Admin SDK credentials in this HTML file.
+  Authentication must be enabled with Email/Password in Firebase Authentication.
+  Firestore Rules should be deployed before opening the production site to untrusted users.
+  Indexes are supplied separately for the compound queries used by the app.
+  Presence uses a heartbeat timestamp and a lastSeen fallback rather than a privileged server.
+  Notifications are written by the authenticated actor and read by the recipient.
+  Message deletion is sender-scoped; read receipts can be updated by the conversation participant.
+  Post editing and deletion are owner-scoped.
+  Like documents are keyed by UID to make duplicate likes impossible.
+  Friend request creation is sender-scoped and response is recipient-scoped.
+  Conversation IDs are deterministic from the two participant UIDs.
+  Offline persistence is enabled when the browser supports IndexedDB persistence.
+  The UI unsubscribes realtime listeners when switching tabs to reduce unnecessary reads.
+  Search uses username prefix queries and bounded recent-post scanning.
+  Browser notifications remain optional and require explicit permission.
+  Local theme and draft settings use localStorage and do not require additional Firestore collections.
+  This contract intentionally avoids Storage Rules because Storage is not used by the current build.
+  If you later add Firebase Storage, create separate Storage Rules before enabling uploads.
+  If Firestore reports a missing index, use the supplied firestore.indexes.json or the generated Firebase link.
+  The schema is intentionally simple so the app can be hosted as one static HTML file.
+  The app is designed for mobile-first usage but remains responsive on larger screens.
+  Security Rules must remain the source of truth for authorization; client-side checks are only UX.
+  End of live database contract.
+-->
 </body>
 </html>
