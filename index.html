@@ -1759,12 +1759,17 @@
     wrap.querySelector("#new-chat-btn").addEventListener("click", openNewChatModal);
     const listEl = wrap.querySelector("#convos-list");
     const emptyEl = wrap.querySelector("#convos-empty");
-    const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid), orderBy("lastMessageAt", "desc"), limit(50));
+    const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid), limit(50));
     convosUnsub = onSnapshot(q, (snap) => {
       listEl.innerHTML = "";
       if (snap.empty) { emptyEl.style.display = "block"; return; }
       emptyEl.style.display = "none";
-      snap.forEach(docSnap => {
+      const docs = [...snap.docs].sort((a, b) => {
+        const ta = a.data().lastMessageAt?.toMillis ? a.data().lastMessageAt.toMillis() : 0;
+        const tb = b.data().lastMessageAt?.toMillis ? b.data().lastMessageAt.toMillis() : 0;
+        return tb - ta;
+      });
+      docs.forEach(docSnap => {
         const conv = docSnap.data();
         const otherUid = conv.participants.find(p => p !== currentUser.uid);
         if (!otherUid) return;
@@ -1848,7 +1853,7 @@
         });
       }
       openChat(convId, otherUser);
-    } catch (err) { showToast("تعذر بدء المحادثة — تحقق من الإنترنت."); }
+    } catch (err) { console.error("startOrOpenChat", err); showToast(err?.code === "permission-denied" ? "صلاحيات الدردشة مرفوضة — انشر Firestore Rules الجديدة" : "تعذر بدء المحادثة — تحقق من الإنترنت."); }
   }
 
   async function openChat(conversationId, otherUser) {
@@ -2387,7 +2392,7 @@
     friendsUnsub=()=>{reqUnsub();userUnsub()}; return wrap;
   }
   async function sendFriendRequest(to,u){try{const q=query(collection(db,"friendRequests"),where("from","==",currentUser.uid),where("to","==",to),where("status","==","pending"));if(!(await getDocs(q)).empty){showToast("الطلب موجود بالفعل");return}await addDoc(collection(db,"friendRequests"),{from:currentUser.uid,to,status:"pending",fromName:currentProfile.displayName||currentProfile.username,fromUsername:currentProfile.username,fromAvatar:currentProfile.avatarUrl||"",createdAt:serverTimestamp()});await createNotification(to,"friend_request",`${currentProfile.displayName||currentProfile.username} أرسل لك طلب صداقة`);showToast("تم إرسال طلب الصداقة 🤝")}catch(e){showToast("تعذر إرسال الطلب")}}
-  async function handleFriendRequest(id,r,status){try{await updateDoc(doc(db,"friendRequests",id),{status,respondedAt:serverTimestamp()});if(status==="accepted"){const batch=writeBatch(db);batch.update(doc(db,"users",currentUser.uid),{friends:arrayUnion(r.from)});batch.update(doc(db,"users",r.from),{friends:arrayUnion(currentUser.uid)});await batch.commit();await createNotification(r.from,"friend_accept",`${currentProfile.displayName||currentProfile.username} قبل طلب صداقتك`);showToast("تمت إضافة الصديق 🎉")}else showToast("تم رفض الطلب")}catch(e){showToast("تعذر تنفيذ الطلب")}}
+  async function handleFriendRequest(id,r,status){try{if(!r||!r.from||r.to!==currentUser.uid){showToast("طلب الصداقة غير صالح");return}const requestRef=doc(db,"friendRequests",id);const meRef=doc(db,"users",currentUser.uid);const fromRef=doc(db,"users",r.from);const batch=writeBatch(db);batch.update(requestRef,{status,respondedAt:serverTimestamp()});if(status==="accepted"){batch.set(meRef,{friends:arrayUnion(r.from)},{merge:true});batch.set(fromRef,{friends:arrayUnion(currentUser.uid)},{merge:true})}await batch.commit();if(status==="accepted"){currentProfile={...currentProfile,friends:Array.from(new Set([...(currentProfile.friends||[]),r.from]))};await createNotification(r.from,"friend_accept",`${currentProfile.displayName||currentProfile.username} قبل طلب صداقتك`);showToast("تمت إضافة الصديق 🎉")}else showToast("تم رفض الطلب")}catch(e){console.error("handleFriendRequest",e);showToast("تعذر تنفيذ الطلب — تحقق من قواعد Firestore")}}
 
   function renderProfileScreen() {
     const wrap = el("div", "profile-screen");
@@ -2453,7 +2458,7 @@
   function presenceLabel(u){return isOnlineUser(u)?"متصل الآن":(u.lastSeen?`آخر ظهور ${timeAgo(u.lastSeen)}`:"غير متاح")}
   async function createNotification(uid,type,text,refId=""){if(!uid||uid===currentUser.uid)return;try{await addDoc(collection(db,"notifications"),{uid,type,text,refId,fromUid:currentUser.uid,createdAt:serverTimestamp(),read:false})}catch(e){console.warn(e)}}
   function startNotificationsListener(){if(!currentUser)return;if(notificationsUnsub)notificationsUnsub();const q=query(collection(db,"notifications"),where("uid","==",currentUser.uid),limit(40));notificationsUnsub=onSnapshot(q,snap=>{const n=snap.docs.filter(d=>!d.data().read).length,b=$id("notification-badge");if(b){b.textContent=n>99?"99+":n;b.style.display=n?"flex":"none"}})}
-  async function openNotificationsPanel(){let p=$id("notice-panel");if(!p){p=el("div","notice-panel");p.id="notice-panel";document.body.appendChild(p)}p.innerHTML='<div class="notice-head"><b>الإشعارات</b><button id="mark-all-notices" class="message-tool">تحديد الكل كمقروء</button></div><div id="notice-list" class="notice-list"></div>';p.classList.toggle("show");if(!p.classList.contains("show"))return;const q=query(collection(db,"notifications"),where("uid","==",currentUser.uid),orderBy("createdAt","desc"),limit(40)),snap=await getDocs(q),list=p.querySelector("#notice-list");list.innerHTML="";if(snap.empty){list.innerHTML='<div class="empty-state">لا توجد إشعارات 🎉</div>';return}snap.forEach(d=>{const n=d.data(),r=el("div","notice-item"+(n.read?"":" unread"));r.innerHTML=`<div class="notice-dot"></div><div class="notice-text">${escapeHtml(n.text)}<div class="notice-time">${timeAgo(n.createdAt)}</div></div>`;r.onclick=()=>{if(!n.read)updateDoc(d.ref,{read:true});r.classList.remove("unread")};list.appendChild(r)});p.querySelector("#mark-all-notices").onclick=async()=>{const b=writeBatch(db);snap.docs.filter(d=>!d.data().read).forEach(d=>b.update(d.ref,{read:true}));await b.commit();p.classList.remove("show")}}
+  async function openNotificationsPanel(){let p=$id("notice-panel");if(!p){p=el("div","notice-panel");p.id="notice-panel";document.body.appendChild(p)}p.innerHTML='<div class="notice-head"><b>الإشعارات</b><button id="mark-all-notices" class="message-tool">تحديد الكل كمقروء</button></div><div id="notice-list" class="notice-list"></div>';p.classList.toggle("show");if(!p.classList.contains("show"))return;const q=query(collection(db,"notifications"),where("uid","==",currentUser.uid),limit(40)),snap=await getDocs(q),list=p.querySelector("#notice-list");list.innerHTML="";if(snap.empty){list.innerHTML='<div class="empty-state">لا توجد إشعارات 🎉</div>';return}[...snap.docs].sort((a,b)=>{const ta=a.data().createdAt?.toMillis?a.data().createdAt.toMillis():0;const tb=b.data().createdAt?.toMillis?b.data().createdAt.toMillis():0;return tb-ta}).forEach(d=>{const n=d.data(),r=el("div","notice-item"+(n.read?"":" unread"));r.innerHTML=`<div class="notice-dot"></div><div class="notice-text">${escapeHtml(n.text)}<div class="notice-time">${timeAgo(n.createdAt)}</div></div>`;r.onclick=()=>{if(!n.read)updateDoc(d.ref,{read:true});r.classList.remove("unread")};list.appendChild(r)});p.querySelector("#mark-all-notices").onclick=async()=>{const b=writeBatch(db);snap.docs.filter(d=>!d.data().read).forEach(d=>b.update(d.ref,{read:true}));await b.commit();p.classList.remove("show")}}
   document.addEventListener("click",e=>{const p=$id("notice-panel");if(p&&p.classList.contains("show")&&!e.target.closest("#notice-panel")&&!e.target.closest("#header-notifications-btn"))p.classList.remove("show")});
 
 
