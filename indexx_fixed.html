@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Modz Web | منصة التواصل والتسوق</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a2234;
+      --bg-elevated: #1f2a3f;
+      --accent-purple: #8b5cf6;
+      --accent-blue: #3b82f6;
+      --accent-pink: #ec4899;
+      --accent-gold: #f59e0b;
+      --accent-green: #10b981;
+      --danger: #ef4444;
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --border-light: rgba(255, 255, 255, 0.05);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --gradient-primary: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      --gradient-accent: linear-gradient(135deg, #ec4899, #8b5cf6);
+      --gradient-gold: linear-gradient(135deg, #f59e0b, #ef4444);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 50px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Tajawal', 'Cairo', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-bottom: 80px;
+    }
+    h1, h2, h3, h4, h5, h6, .brand, .auth-title, .section-title { font-family: 'Cairo', sans-serif; }
+    button, input, textarea, select { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-purple); }
+
+    #offline-banner {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: var(--gradient-gold);
+      color: #fff;
+      text-align: center;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      animation: slideDown 0.5s ease;
+      box-shadow: var(--shadow-lg);
+    }
+    #offline-banner.show { display: block; }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    #top-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(10, 14, 26, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .brand {
+      font-weight: 900;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
+      -webkit-text-fill-color: initial;
+      border: 2px solid var(--accent-purple);
+    }
+    .header-actions { display: flex; gap: 10px; }
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: var(--transition);
+    }
+    .icon-btn:hover { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); }
+
+    #app { max-width: 720px; margin: 0 auto; position: relative; }
+    #screen-body { padding: 16px 14px 30px; }
+
+    .auth-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 18px;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a2234 50%, #0a0e1a 100%);
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(165deg, var(--bg-card), var(--bg-secondary));
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 40px 30px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .auth-logo-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 24px;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+    .auth-title {
+      font-weight: 900;
+      font-size: 32px;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      z-index: 1;
+    }
+    .auth-sub {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-top: 6px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-full);
+      padding: 4px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .auth-tab.active {
+      background: var(--gradient-primary);
+      color: #fff;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: right;
+      position: relative;
+      z-index: 1;
+    }
+    .auth-error {
+      color: var(--danger);
+      font-size: 13px;
+      min-height: 18px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .auth-note {
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-field label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .form-field input,
+    .form-field textarea,
+    .form-field select {
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+      transition: var(--transition);
+    }
+    .form-field textarea { min-height: 90px; resize: vertical; }
+    .form-field input:focus,
+    .form-field textarea:focus,
+    .form-field select:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+    .primary-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4); }
+    .primary-btn:active { transform: translateY(0); }
+    .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .composer-teaser {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .composer-teaser:hover {
+      border-color: var(--accent-purple);
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+    }
+    .teaser-text { flex: 1; color: var(--text-muted); font-size: 14px; }
+    .teaser-icon { font-size: 18px; color: var(--accent-purple); }
+
+    .mini-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 18px;
+      border: 2px solid var(--accent-purple);
+    }
+    .mini-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .mini-avatar.small { width: 32px; height: 32px; font-size: 13px; border-width: 1px; }
+
+    .posts-list { display: flex; flex-direction: column; gap: 16px; }
+    .post-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      transition: var(--transition);
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .post-card:hover { border-color: rgba(139, 92, 246, 0.4); box-shadow: var(--shadow-md); }
+    .post-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .post-head-text { flex: 1; }
+    .post-author { font-weight: 800; font-size: 15px; color: var(--text-primary); }
+    .post-time { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .post-delete-btn { background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; padding: 4px; transition: var(--transition); }
+    .post-delete-btn:hover { color: var(--danger); }
+    .post-content { font-size: 15px; line-height: 1.9; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; }
+    .post-image { margin-top: 14px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); max-height: 450px; }
+    .post-image img { width: 100%; height: 100%; object-fit: cover; }
+    .post-actions { display: flex; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border-light); }
+    .post-action {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .post-action:hover { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+    .like-btn[data-liked="1"] { color: var(--accent-pink); background: rgba(236, 72, 153, 0.15); }
+    .comments-section { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
+    .comments-list { display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; margin-bottom: 12px; }
+    .comment-row { display: flex; gap: 8px; align-items: flex-start; }
+    .comment-bubble { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 10px 14px; flex: 1; }
+    .comment-author { font-size: 12px; font-weight: 700; color: var(--accent-purple); }
+    .comment-text { font-size: 13px; color: var(--text-secondary); margin-top: 2px; line-height: 1.7; }
+    .comment-form { display: flex; gap: 8px; }
+    .comment-form input {
+      flex: 1;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 10px 16px;
+      color: var(--text-primary);
+      font-size: 13px;
+      outline: none;
+    }
+    .comment-form input:focus { border-color: var(--accent-purple); }
+    .comment-form button {
+      padding: 10px 20px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .comment-form button:hover { transform: translateY(-2px); }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      padding: 60px 20px;
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+    }
+
+    .messages-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .new-chat-btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--accent-purple);
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--accent-purple);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .new-chat-btn:hover { background: var(--accent-purple); color: #fff; }
+    .convos-list { display: flex; flex-direction: column; gap: 10px; }
+    .convo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .convo-row:hover { border-color: var(--accent-purple); background: var(--bg-elevated); }
+    .convo-mid { flex: 1; min-width: 0; }
+    .convo-name { font-weight: 700; font-size: 14px; color: var(--text-primary); }
+    .convo-preview { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .convo-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+    .search-results { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; max-height: 360px; overflow-y: auto; }
+
+    .chat-screen { display: flex; flex-direction: column; height: calc(100vh - 140px); margin: -16px -14px 0; }
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .chat-back-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: var(--transition);
+    }
+    .chat-back-btn:hover { background: var(--accent-purple); }
+    .chat-header-name { font-weight: 700; font-size: 15px; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .chat-bubble-row { display: flex; }
+    .chat-bubble-row.mine { justify-content: flex-end; }
+    .chat-bubble-row.theirs { justify-content: flex-start; }
+    .chat-bubble {
+      max-width: 75%;
+      padding: 12px 18px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.7;
+      word-break: break-word;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+    .chat-bubble-row.mine .chat-bubble {
+      background: var(--gradient-primary);
+      border-color: transparent;
+      color: #fff;
+    }
+    .chat-input-form { display: flex; gap: 10px; padding: 16px; background: var(--bg-secondary); border-top: 1px solid var(--border-color); }
+    .chat-input-form input {
+      flex: 1;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 12px 18px;
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+    }
+    .chat-input-form input:focus { border-color: var(--accent-purple); }
+    .chat-input-form button {
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .chat-input-form button:hover { transform: translateY(-2px); }
+
+    .profile-card { text-align: center; padding: 24px 0 30px; }
+    .profile-avatar-big {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-weight: 900;
+      font-size: 36px;
+      border: 4px solid var(--accent-purple);
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+    }
+    .profile-avatar-big img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-username { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+    .profile-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+    .section-title {
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title i { color: var(--accent-purple); }
+    .logout-btn {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .logout-btn:hover { background: var(--danger); color: #fff; }
+
+    .tab-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 90;
+      display: flex;
+      padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+      background: rgba(10, 14, 26, 0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-color);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .tab-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 2px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+    .tab-item .tab-ic { font-size: 22px; }
+    .tab-item.active { color: var(--accent-purple); }
+    .tab-item.compose-tab .tab-ic {
+      background: var(--gradient-primary);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      margin: -20px auto 0;
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+      font-size: 20px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    @media(min-width: 640px) { .modal-overlay { align-items: center; padding: 20px; } }
+    .modal-overlay.show { opacity: 1; pointer-events: all; }
+    .modal {
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 24px 24px 0 0;
+      padding: 28px 24px 32px;
+      position: relative;
+      transform: translateY(40px);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    @media(min-width: 640px) { .modal { border-radius: 24px; transform: translateY(20px) scale(0.95); } }
+    .modal-overlay.show .modal { transform: translateY(0) scale(1); }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: var(--transition);
+    }
+    .modal-close:hover { background: var(--danger); color: #fff; }
+    .modal-title {
+      text-align: center;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 22px;
+      color: var(--accent-purple);
+    }
+    .composer-form { display: flex; flex-direction: column; gap: 16px; }
+    #composer-content { min-height: 120px; }
+    .composer-preview {
+      display: none;
+      width: 100%;
+      border-radius: var(--radius-md);
+      margin-top: 6px;
+      max-height: 240px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-elevated);
+      border: 1px solid var(--accent-purple);
+      color: var(--text-primary);
+      padding: 14px 22px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      z-index: 300;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      text-align: center;
+      max-width: 90vw;
+      box-shadow: var(--shadow-lg);
+      font-weight: 600;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .friends-section { margin-bottom: 24px; }
+    .friend-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      transition: var(--transition);
+    }
+    .friend-row:hover { border-color: var(--accent-purple); }
+    .friend-info { flex: 1; }
+    .friend-name { font-weight: 700; font-size: 14px; }
+    .friend-username { font-size: 12px; color: var(--text-muted); }
+    .message-friend-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--accent-purple);
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--accent-purple);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .message-friend-btn:hover { background: var(--accent-purple); color: #fff; }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+    }
+    .search-bar input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+    }
+    .search-bar i { color: var(--text-muted); }
+
+    .developer-card,.admin-card{background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(59,130,246,.10));border:1px solid rgba(139,92,246,.35);border-radius:20px;padding:22px;text-align:center}
+    .developer-name{font-size:20px;font-weight:900}.developer-phone{margin:8px 0 18px;color:#a78bfa;font-size:18px;font-weight:800;direction:ltr}
+    .developer-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.developer-actions .primary-btn{display:flex;align-items:center;justify-content:center;gap:8px}
+    .admin-tools{display:grid;gap:12px}.admin-user-row{display:flex;align-items:center;gap:12px;background:var(--bg-card);border:1px solid var(--border-color);padding:12px;border-radius:16px;margin-bottom:8px}.admin-user-row .admin-user-info{flex:1;min-width:0}.admin-user-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.admin-user-actions button{border:1px solid var(--border-color);background:var(--bg-elevated);color:#fff;border-radius:10px;padding:7px 10px;cursor:pointer;font-weight:700}.admin-user-actions .danger{background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)}.admin-user-actions .success{background:rgba(16,185,129,.15);color:#34d399;border-color:rgba(16,185,129,.3)}
+    .request-card{display:flex;align-items:center;gap:12px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:14px;margin-bottom:9px}.request-info{flex:1}.request-actions{display:flex;gap:7px}.request-actions button{border:0;border-radius:999px;padding:8px 13px;font-weight:800;cursor:pointer}.accept-request{background:#10b981;color:#fff} .reject-request{background:rgba(239,68,68,.16);color:#f87171}.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#6b7280;margin-left:5px}.status-dot.online{background:#10b981;box-shadow:0 0 8px #10b981}.chat-status{font-size:11px;color:var(--text-muted);margin-top:-3px}.message-menu{display:flex;gap:5px;margin-top:4px}.message-menu button{border:0;background:transparent;color:var(--text-muted);font-size:10px;cursor:pointer}.notification-item{padding:12px;border-bottom:1px solid var(--border-color);cursor:pointer}.notification-item.unread{background:rgba(139,92,246,.08)}.notification-time{font-size:10px;color:var(--text-muted);margin-top:3px}
+  </style>
+</head>
+<body>
+
+<div id="offline-banner">
+  <i class="fas fa-wifi"></i> أنت غير متصل بالإنترنت — سيتم الحفظ محلياً والمزامنة عند عودة الاتصال
+</div>
+
+<div id="app"></div>
+
+<nav class="tab-bar" id="main-tabbar" style="display:none;">
+  <button class="tab-item" data-tab="feed"><span class="tab-ic">🏠</span>الرئيسية</button>
+  <button class="tab-item" data-tab="messages"><span class="tab-ic">💬</span>الرسائل</button>
+  <button class="tab-item compose-tab" data-tab="compose"><span class="tab-ic">＋</span></button>
+  <button class="tab-item" data-tab="friends"><span class="tab-ic">👥</span>الأصدقاء</button>
+  <button class="tab-item" data-tab="profile"><span class="tab-ic">👤</span>حسابي</button>
+</nav>
+
+<div class="modal-overlay" id="composer-modal">
+  <div class="modal">
+    <div class="modal-close" data-close>✕</div>
+    <div class="modal-title">إنشاء منشور جديد</div>
+    <form id="composer-form" class="composer-form">
+      <div class="form-field">
+        <textarea id="composer-content" placeholder="بم تفكر الآن؟" maxlength="1000"></textarea>
+      </div>
+      <div class="form-field">
+        <label>رابط صورة (اختياري)</label>
+        <input type="text" id="composer-image-url" placeholder="https://...">
+        <img id="composer-preview" class="composer-preview">
+      </div>
+      <button type="submit" class="primary-btn" id="composer-submit-btn">
+        <i class="fas fa-paper-plane"></i> نشر
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="new-chat-modal">
+  <div class="modal">
+    <div class="modal-close" data-close>✕</div>
+    <div class="modal-title">محادثة جديدة</div>
+    <div class="form-field">
+      <input type="text" id="search-username-input" placeholder="ابحث باسم المستخدم...">
+    </div>
+    <div id="search-results" class="search-results"></div>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="developer-modal">
+  <div class="modal">
+    <div class="modal-close" data-close>✕</div>
+    <div class="modal-title">تواصل مع المطور 👨‍💻</div>
+    <div class="developer-card">
+      <div class="developer-name">Modz Web Developer</div>
+      <div class="developer-phone">01103286334</div>
+      <div class="developer-actions">
+        <a class="primary-btn" href="tel:01103286334"><i class="fas fa-phone"></i> اتصال</a>
+        <a class="primary-btn" href="https://wa.me/201103286334?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%20%D9%8A%D8%A7%20%D9%85%D8%B9%D8%A7%D8%B0%20%F0%9F%96%A4%0A%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20Modz%20Web" target="_blank"><i class="fab fa-whatsapp"></i> واتساب</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="admin-login-modal">
+  <div class="modal">
+    <div class="modal-close" data-close>✕</div>
+    <div class="modal-title">دخول الإدارة 🔐</div>
+    <form id="admin-login-form" class="composer-form">
+      <div class="form-field"><label>رقم المدير</label><input id="admin-phone" type="tel" inputmode="numeric" placeholder="01103286334" required></div>
+      <div class="form-field"><label>كلمة المرور</label><input id="admin-password" type="password" placeholder="••••••••" required></div>
+      <p class="auth-error" id="admin-login-error"></p>
+      <button class="primary-btn" type="submit">دخول لوحة الإدارة</button>
+    </form>
+    <p class="auth-note">ملاحظة: تسجيل الدخول الظاهري ليس بديلاً عن صلاحيات Firebase الحقيقية. الصلاحيات الفعلية تعتمد على مجموعة admins في Firestore.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, deleteDoc, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp, where, getDocs, startAt, endAt, arrayUnion, arrayRemove, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCfPtxGjvMhlR0vOILq1PXajM3V5Xgnxsc",
+    authDomain: "modz-aec01.firebaseapp.com",
+    projectId: "modz-aec01",
+    storageBucket: "modz-aec01.firebasestorage.app",
+    messagingSenderId: "828089759139",
+    appId: "1:828089759139:web:c2829c23d461ee81d89616"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const WEB_ICON = "data:image/jpeg;base64,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";
+
+  let currentUser = null;
+  let currentProfile = null;
+  let feedUnsub = null;
+  let currentTab = "feed";
+  let composerImagePreview = "";
+  let convosUnsub = null;
+  let messagesUnsub = null;
+  let currentChat = null;
+  let friendsUnsub = null;
+
+  function conversationIdFor(uidA, uidB) { return [uidA, uidB].sort().join("_"); }
+  function $(sel) { return document.querySelector(sel); }
+  function $id(id) { return document.getElementById(id); }
+  function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
+  function escapeHtml(s) { return (s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+  function timeAgo(ts) { if (!ts) return "الآن"; const date = ts.toDate ? ts.toDate() : new Date(ts); const diff = Math.floor((Date.now() - date.getTime()) / 1000); if (diff < 60) return "الآن"; if (diff < 3600) return `منذ ${Math.floor(diff / 60)} د`; if (diff < 86400) return `منذ ${Math.floor(diff / 3600)} س`; if (diff < 2592000) return `منذ ${Math.floor(diff / 86400)} يوم`; return date.toLocaleDateString("ar-EG"); }
+  function showToast(msg) { const t = $id("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(showToast._t); showToast._t = setTimeout(() => t.classList.remove("show"), 3000); }
+  function setLoading(btn, loading, labelDefault) { if (loading) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = "..."; } else { btn.disabled = false; btn.textContent = labelDefault || btn.dataset.label || btn.textContent; } }
+  function avatarFallback(name) { return (name || "؟").trim().charAt(0).toUpperCase(); }
+  function updateOnlineBanner() { const b = $id("offline-banner"); if (!navigator.onLine) { b.classList.add("show"); } else { b.classList.remove("show"); } }
+  window.addEventListener("online", updateOnlineBanner);
+  window.addEventListener("offline", updateOnlineBanner);
+
+  let authMode = "login";
+  function renderAuthScreen() {
+    const root = $id("app");
+    root.innerHTML = `
+      <div class="auth-wrap">
+        <div class="auth-card">
+          <img class="auth-logo-img" src="${WEB_ICON}" alt="Modz Web">
+          <h1 class="auth-title">Modz Web</h1>
+          <p class="auth-sub">منصة التواصل الاجتماعي والتسوق</p>
+          <div class="auth-tabs">
+            <button class="auth-tab ${authMode === "login" ? "active" : ""}" data-mode="login">تسجيل الدخول</button>
+            <button class="auth-tab ${authMode === "signup" ? "active" : ""}" data-mode="signup">حساب جديد</button>
+          </div>
+          <form id="auth-form" class="auth-form">
+            <div class="form-field" id="field-username" style="display:${authMode === "signup" ? "block" : "none"}">
+              <label>اسم المستخدم</label>
+              <input type="text" id="auth-username" placeholder="مثال: sara_2026" ${authMode === "signup" ? "required" : ""}>
+            </div>
+            <div class="form-field">
+              <label>البريد الإلكتروني</label>
+              <input type="email" id="auth-email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-field">
+              <label>كلمة المرور</label>
+              <input type="password" id="auth-password" placeholder="••••••••" required minlength="6">
+            </div>
+            <p class="auth-error" id="auth-error"></p>
+            <button type="submit" class="primary-btn" id="auth-submit-btn">${authMode === "login" ? "دخول" : "إنشاء الحساب"}</button>
+          </form>
+          <p class="auth-note">بالمتابعة أنت توافق على الالتزام بآداب المجتمع داخل المنصة.</p>
+        </div>
+      </div>
+    `;
+    root.querySelectorAll(".auth-tab").forEach(t => { t.addEventListener("click", () => { authMode = t.dataset.mode; renderAuthScreen(); }); });
+    $id("auth-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = $id("auth-email").value.trim();
+      const password = $id("auth-password").value;
+      const username = authMode === "signup" ? $id("auth-username").value.trim().toLowerCase().replace(/[^a-z0-9_\.]/g, "") : "";
+      const errBox = $id("auth-error");
+      const btn = $id("auth-submit-btn");
+      errBox.textContent = "";
+      if (!navigator.onLine) { errBox.textContent = "لا يوجد اتصال بالإنترنت — يرجى تفعيل الإنترنت والمحاولة مجددًا."; return; }
+      setLoading(btn, true);
+      try {
+        if (authMode === "signup") {
+          if (!username || username.length < 3) throw { message: "اسم المستخدم لازم يكون 3 حروف على الأقل." };
+          const q = query(collection(db, "users"), where("username", "==", username));
+          const existing = await getDocs(q);
+          if (!existing.empty) throw { message: "اسم المستخدم ده مستخدم بالفعل." };
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await updateProfile(cred.user, { displayName: username });
+          await setDoc(doc(db, "users", cred.user.uid), { username, displayName: username, avatarUrl: "", bio: "", friends: [], createdAt: serverTimestamp() });
+          showToast("تم إنشاء الحساب بنجاح 🎉");
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+          showToast("أهلاً بعودتك 👋");
+        }
+      } catch (err) {
+        errBox.textContent = translateAuthError(err);
+        setLoading(btn, false, authMode === "login" ? "دخول" : "إنشاء الحساب");
+      }
+    });
+  }
+
+  function translateAuthError(err) {
+    const msg = (err && err.message) || "";
+    if (msg) return msg;
+    const code = err && err.code;
+    const map = {
+      "auth/email-already-in-use": "هذا البريد الإلكتروني مستخدم بالفعل.",
+      "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
+      "auth/weak-password": "كلمة المرور ضعيفة، يجب أن تكون 6 أحرف على الأقل.",
+      "auth/user-not-found": "لا يوجد حساب بهذا البريد الإلكتروني.",
+      "auth/wrong-password": "كلمة المرور غير صحيحة.",
+      "auth/invalid-credential": "بيانات الدخول غير صحيحة.",
+      "auth/network-request-failed": "تعذر الاتصال — تأكد أن الإنترنت مفعّل لديك."
+    };
+    return map[code] || "حدث خطأ غير متوقع، حاول مرة أخرى.";
+  }
+
+
+  const DEVELOPER_PHONE = "01103286334";
+  const ADMIN_PASSWORD = "12347890";
+  let adminVerified = false;
+
+  function normalizePhone(v){ return String(v||"").replace(/\D/g, "").replace(/^20/, "0"); }
+  function isAdminRole(profile){ return profile && (profile.role === "admin" || profile.role === "superadmin"); }
+  async function refreshAdminState(){
+    if(!currentUser) return false;
+    try { const a=await getDoc(doc(db,"admins",currentUser.uid)); adminVerified = a.exists() && a.data().enabled !== false; return adminVerified || isAdminRole(currentProfile); }
+    catch(e){ adminVerified=isAdminRole(currentProfile); return adminVerified; }
+  }
+  async function createNotification(uid,type,text,fromUid=""){
+    if(!uid || uid===currentUser?.uid) return;
+    try{ await addDoc(collection(db,"notifications"),{uid,type,text,fromUid,read:false,createdAt:serverTimestamp()}); }catch(e){ console.warn("notification",e); }
+  }
+  async function sendFriendRequest(targetUid,targetProfile){
+    if(!currentUser || targetUid===currentUser.uid) return;
+    try{
+      const existing = await getDocs(query(collection(db,"friendRequests"),where("fromUid","==",currentUser.uid),where("toUid","==",targetUid),where("status","==","pending"),limit(1)));
+      if(!existing.empty){ showToast("طلب الصداقة موجود بالفعل."); return; }
+      const reverse = await getDocs(query(collection(db,"friendRequests"),where("fromUid","==",targetUid),where("toUid","==",currentUser.uid),where("status","==","pending"),limit(1)));
+      if(!reverse.empty){ showToast("لديك طلب صداقة من هذا المستخدم، اذهب لطلبات الصداقة."); return; }
+      await addDoc(collection(db,"friendRequests"),{fromUid:currentUser.uid,toUid:targetUid,fromName:currentProfile.displayName||currentProfile.username,fromAvatar:currentProfile.avatarUrl||"",toName:targetProfile.displayName||targetProfile.username,status:"pending",createdAt:serverTimestamp()});
+      await createNotification(targetUid,"friend_request",`${currentProfile.displayName||currentProfile.username} أرسل لك طلب صداقة`,currentUser.uid);
+      showToast("تم إرسال طلب الصداقة ✅");
+    }catch(e){console.error(e);showToast("تعذر إرسال طلب الصداقة — تحقق من قواعد Firestore.");}
+  }
+  async function acceptFriendRequest(requestId,requestData){
+    try{
+      // لا نكتب حقول المحادثة داخل نفس batch؛ لأن تحديث محادثة موجودة
+      // مسموح به فقط للـ lastMessage/lastMessageAt في قواعد Firestore.
+      const batch=writeBatch(db);
+      batch.update(doc(db,"friendRequests",requestId),{status:"accepted",respondedAt:serverTimestamp()});
+      batch.set(doc(db,"users",currentUser.uid),{friends:arrayUnion(requestData.fromUid)},{merge:true});
+      batch.set(doc(db,"users",requestData.fromUid),{friends:arrayUnion(currentUser.uid)},{merge:true});
+      await batch.commit();
+      await createNotification(requestData.fromUid,"friend_accept",`${currentProfile.displayName||currentProfile.username} قبل طلب صداقتك`,currentUser.uid);
+      currentProfile={...currentProfile,friends:Array.from(new Set([...(currentProfile.friends||[]),requestData.fromUid]))};
+      showToast("تم قبول طلب الصداقة ✅"); paintTab("friends");
+    }catch(e){
+      console.error("acceptFriendRequest", e);
+      showToast(e?.code === "permission-denied" ? "تم رفض العملية من Firestore — انشر Rules الجديدة." : "تعذر قبول طلب الصداقة — افتح Console لمعرفة الخطأ.");
+    }
+  }
+  async function rejectFriendRequest(requestId,requestData){
+    try{await updateDoc(doc(db,"friendRequests",requestId),{status:"rejected",respondedAt:serverTimestamp()});await createNotification(requestData.fromUid,"friend_reject",`${currentProfile.displayName||currentProfile.username} رفض طلب الصداقة`,currentUser.uid);showToast("تم رفض الطلب.");paintTab("friends");}catch(e){showToast("تعذر رفض الطلب.");}}
+  function openDeveloperModal(){openModal("developer-modal");}
+  function openAdminLogin(){openModal("admin-login-modal");}
+  async function openAdminPanel(){
+    const ok=await refreshAdminState();
+    if(!ok){openAdminLogin();return;}
+    const body=$id("screen-body"); body.innerHTML="";
+    const wrap=el("div","profile-screen");
+    wrap.innerHTML=`<div class="section-title"><i class="fas fa-shield-alt"></i> لوحة الإدارة</div><div class="admin-card"><b>صلاحيات الإدارة</b><div style="color:var(--text-muted);font-size:12px;margin-top:6px">يمكنك حظر المستخدمين، إلغاء الحظر، تعديل الرتبة وحذف بيانات الحساب من Firestore.</div></div><div class="admin-tools"><div class="search-bar"><i class="fas fa-search"></i><input id="admin-user-search" placeholder="ابحث باسم المستخدم..."></div><div id="admin-users"></div></div>`;
+    body.appendChild(wrap);
+    const list=wrap.querySelector("#admin-users"),search=wrap.querySelector("#admin-user-search");
+    const q=query(collection(db,"users"),limit(200));
+    onSnapshot(q,snap=>{const term=search.value.trim().toLowerCase();list.innerHTML="";snap.docs.filter(d=>d.id!==currentUser.uid).filter(d=>{const u=d.data();return !term||String(u.username||"").toLowerCase().includes(term)||String(u.displayName||"").toLowerCase().includes(term)}).forEach(d=>{
+      const u=d.data(),row=el("div","admin-user-row"); const banned=u.status==="banned";
+      row.innerHTML=`<div class="mini-avatar">${u.avatarUrl?`<img src="${escapeHtml(u.avatarUrl)}">`:avatarFallback(u.displayName)}</div><div class="admin-user-info"><b>${escapeHtml(u.displayName||u.username||"مستخدم")}</b><div style="font-size:11px;color:var(--text-muted)">@${escapeHtml(u.username||"")} · ${escapeHtml(u.role||"user")} · ${banned?"محظور":"نشط"}</div></div><div class="admin-user-actions"><button class="${banned?'success':''}" data-ban>${banned?'فك الحظر':'حظر'}</button><button data-role>رتبة</button><button class="danger" data-del>حذف</button></div>`;
+      row.querySelector("[data-ban]").onclick=async()=>{try{await updateDoc(doc(db,"users",d.id),{status:banned?"active":"banned",bannedAt:banned?null:serverTimestamp(),bannedBy:currentUser.uid});showToast(banned?"تم فك الحظر":"تم حظر المستخدم");}catch(e){showToast("تعذر تغيير حالة المستخدم");}};
+      row.querySelector("[data-role]").onclick=async()=>{const role=prompt("اكتب الرتبة: user أو moderator أو admin",u.role||"user");if(!["user","moderator","admin"].includes(role||""))return;try{await updateDoc(doc(db,"users",d.id),{role});await setDoc(doc(db,"admins",d.id),{enabled:role==="admin",role,updatedAt:serverTimestamp(),updatedBy:currentUser.uid},{merge:true});showToast("تم تحديث الصلاحية");}catch(e){showToast("تعذر تحديث الصلاحية");}};
+      row.querySelector("[data-del]").onclick=async()=>{if(!confirm("حذف ملف المستخدم من Firestore؟ لا يؤدي ذلك وحده لحذف حساب Firebase Authentication."))return;try{await deleteDoc(doc(db,"users",d.id));showToast("تم حذف ملف المستخدم");}catch(e){showToast("تعذر الحذف");}};
+      list.appendChild(row);
+    });});
+  }
+
+  function renderShell() {
+    const root = $id("app");
+    root.innerHTML = `
+      <div id="top-header">
+        <div class="brand"><img class="brand-icon" src="${WEB_ICON}" alt="Modz Web">Modz Web</div>
+        <div class="header-actions">
+          <button id="developer-btn" class="icon-btn" title="المطور"><i class="fas fa-code"></i></button>
+          <button id="admin-btn" class="icon-btn" title="الإدارة"><i class="fas fa-shield-alt"></i></button>
+          <button id="header-search-btn" class="icon-btn" title="بحث"><i class="fas fa-search"></i></button>
+          <button id="header-notice-btn" class="icon-btn" title="الشبكة"><i class="fas fa-wifi"></i></button>
+        </div>
+      </div>
+      <div id="screen-body"></div>
+    `;
+    paintTab(currentTab);
+    $id("developer-btn").addEventListener("click", openDeveloperModal);
+    $id("admin-btn").addEventListener("click", openAdminPanel);
+    $id("header-notice-btn").addEventListener("click", () => { showToast(navigator.onLine ? "أنت متصل بالإنترنت ✅" : "لا يوجد اتصال بالإنترنت حالياً 📶"); });
+    $id("header-search-btn").addEventListener("click", () => { showToast("خاصية البحث قادمة قريباً 🔍"); });
+  }
+
+  function paintTab(tab) {
+    currentTab = tab;
+    currentChat = null;
+    document.querySelectorAll(".tab-item").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
+    const body = $id("screen-body");
+    if (!body) return;
+    body.innerHTML = "";
+    if (feedUnsub) { feedUnsub(); feedUnsub = null; }
+    if (convosUnsub) { convosUnsub(); convosUnsub = null; }
+    if (messagesUnsub) { messagesUnsub(); messagesUnsub = null; }
+    if (friendsUnsub) { friendsUnsub(); friendsUnsub = null; }
+    if (tab === "feed") body.appendChild(renderFeedScreen());
+    else if (tab === "profile") body.appendChild(renderProfileScreen());
+    else if (tab === "messages") body.appendChild(renderMessagesScreen());
+    else if (tab === "friends") body.appendChild(renderFriendsScreen());
+  }
+
+  document.addEventListener("click", (e) => {
+    const tabBtn = e.target.closest(".tab-item");
+    if (tabBtn) {
+      if (tabBtn.dataset.tab === "compose") { openComposer(); return; }
+      paintTab(tabBtn.dataset.tab);
+    }
+  });
+
+  function renderFeedScreen() {
+    const wrap = el("div", "feed-screen");
+    wrap.innerHTML = `
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="feed-search-input" placeholder="ابحث عن منشورات...">
+      </div>
+      <div class="composer-teaser" id="composer-teaser">
+        <div class="mini-avatar">${currentProfile && currentProfile.avatarUrl ? `<img src="${escapeHtml(currentProfile.avatarUrl)}">` : avatarFallback(currentProfile && currentProfile.displayName)}</div>
+        <div class="teaser-text">بم تفكر الآن؟</div>
+        <div class="teaser-icon"><i class="fas fa-pen"></i></div>
+      </div>
+      <div id="posts-list" class="posts-list"></div>
+      <div id="feed-empty" class="empty-state" style="display:none;">لا توجد منشورات بعد — كن أول من ينشر! ✨</div>
+    `;
+    wrap.querySelector("#composer-teaser").addEventListener("click", openComposer);
+    const listEl = wrap.querySelector("#posts-list");
+    const emptyEl = wrap.querySelector("#feed-empty");
+    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(60));
+    feedUnsub = onSnapshot(q, (snap) => {
+      listEl.innerHTML = "";
+      if (snap.empty) { emptyEl.style.display = "block"; return; }
+      emptyEl.style.display = "none";
+      snap.forEach(docSnap => listEl.appendChild(renderPostCard(docSnap.id, docSnap.data())));
+    }, (err) => { console.error(err); emptyEl.style.display = "block"; emptyEl.textContent = "تعذر تحميل المنشورات — تأكد من اتصالك بالإنترنت."; });
+    return wrap;
+  }
+
+  function renderPostCard(postId, post) {
+    const card = el("div", "post-card");
+    card.dataset.postId = postId;
+    const isOwner = currentUser && post.uid === currentUser.uid;
+    card.innerHTML = `
+      <div class="post-head">
+        <div class="mini-avatar">${post.authorAvatar ? `<img src="${escapeHtml(post.authorAvatar)}">` : avatarFallback(post.authorName)}</div>
+        <div class="post-head-text">
+          <div class="post-author">${escapeHtml(post.authorName || "مستخدم")}</div>
+          <div class="post-time">${timeAgo(post.createdAt)}</div>
+        </div>
+        ${isOwner ? `<button class="post-delete-btn" title="حذف"><i class="fas fa-trash"></i></button>` : ""}
+      </div>
+      <div class="post-content">${escapeHtml(post.content || "")}</div>
+      ${post.imageUrl ? `<div class="post-image"><img src="${escapeHtml(post.imageUrl)}" loading="lazy"></div>` : ""}
+      <div class="post-actions">
+        <button class="post-action like-btn"><span class="like-ic">🤍</span><span class="like-count">0</span></button>
+        <button class="post-action comment-btn"><i class="fas fa-comment"></i><span class="comment-count">0</span></button>
+      </div>
+      <div class="comments-section" style="display:none;">
+        <div class="comments-list"></div>
+        <form class="comment-form">
+          <input type="text" placeholder="اكتب تعليقاً..." class="comment-input" maxlength="300">
+          <button type="submit"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    `;
+    if (isOwner) {
+      card.querySelector(".post-delete-btn").addEventListener("click", async () => {
+        if (confirm("هل تريد حذف هذا المنشور؟")) {
+          try { await deleteDoc(doc(db, "posts", postId)); showToast("تم حذف المنشور"); }
+          catch (e) { showToast("تعذر الحذف — تحقق من الإنترنت."); }
+        }
+      });
+    }
+    const likesCol = collection(db, "posts", postId, "likes");
+    const likeBtn = card.querySelector(".like-btn");
+    const likeIc = card.querySelector(".like-ic");
+    const likeCountEl = card.querySelector(".like-count");
+    onSnapshot(likesCol, (snap) => {
+      likeCountEl.textContent = snap.size;
+      const likedByMe = currentUser && snap.docs.some(d => d.id === currentUser.uid);
+      likeIc.textContent = likedByMe ? "❤️" : "🤍";
+      likeBtn.dataset.liked = likedByMe ? "1" : "0";
+    });
+    likeBtn.addEventListener("click", async () => {
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت للتفاعل 📶"); return; }
+      const likeRef = doc(db, "posts", postId, "likes", currentUser.uid);
+      try {
+        if (likeBtn.dataset.liked === "1") await deleteDoc(likeRef);
+        else await setDoc(likeRef, { createdAt: serverTimestamp() });
+      } catch (e) { showToast("تعذر تسجيل الإعجاب."); }
+    });
+    const commentsCol = collection(db, "posts", postId, "comments");
+    const commentCountEl = card.querySelector(".comment-count");
+    const commentsSection = card.querySelector(".comments-section");
+    const commentsListEl = card.querySelector(".comments-list");
+    const cq = query(commentsCol, orderBy("createdAt", "asc"), limit(200));
+    let commentsOpen = false;
+    onSnapshot(cq, (snap) => {
+      commentCountEl.textContent = snap.size;
+      if (commentsOpen) {
+        commentsListEl.innerHTML = "";
+        snap.forEach(c => {
+          const cd = c.data();
+          const row = el("div", "comment-row");
+          row.innerHTML = `
+            <div class="mini-avatar small">${cd.authorAvatar ? `<img src="${escapeHtml(cd.authorAvatar)}">` : avatarFallback(cd.authorName)}</div>
+            <div class="comment-bubble">
+              <div class="comment-author">${escapeHtml(cd.authorName || "مستخدم")}</div>
+              <div class="comment-text">${escapeHtml(cd.content || "")}</div>
+            </div>
+          `;
+          commentsListEl.appendChild(row);
+        });
+        commentsListEl.scrollTop = commentsListEl.scrollHeight;
+      }
+    });
+    card.querySelector(".comment-btn").addEventListener("click", () => {
+      commentsOpen = !commentsOpen;
+      commentsSection.style.display = commentsOpen ? "block" : "none";
+    });
+    card.querySelector(".comment-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لإرسال التعليق 📶"); return; }
+      const input = card.querySelector(".comment-input");
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+      try {
+        await addDoc(commentsCol, {
+          uid: currentUser.uid,
+          authorName: currentProfile.displayName || currentProfile.username,
+          authorAvatar: currentProfile.avatarUrl || "",
+          content: text,
+          createdAt: serverTimestamp()
+        });
+      } catch (err) { showToast("تعذر إرسال التعليق."); }
+    });
+    return card;
+  }
+
+  function openComposer() {
+    composerImagePreview = "";
+    $id("composer-content").value = "";
+    $id("composer-image-url").value = "";
+    $id("composer-preview").style.display = "none";
+    openModal("composer-modal");
+    setTimeout(() => $id("composer-content").focus(), 200);
+  }
+
+  function wireComposer() {
+    $id("composer-image-url").addEventListener("input", (e) => {
+      const val = e.target.value.trim();
+      const prev = $id("composer-preview");
+      if (val) { prev.src = val; prev.style.display = "block"; }
+      else prev.style.display = "none";
+    });
+    $id("composer-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لنشر المنشور 📶"); return; }
+      const content = $id("composer-content").value.trim();
+      const imageUrl = $id("composer-image-url").value.trim();
+      if (!content && !imageUrl) { showToast("اكتب شيئاً أولاً ✍️"); return; }
+      const btn = $id("composer-submit-btn");
+      setLoading(btn, true);
+      try {
+        await addDoc(collection(db, "posts"), {
+          uid: currentUser.uid,
+          authorName: currentProfile.displayName || currentProfile.username,
+          authorAvatar: currentProfile.avatarUrl || "",
+          content, imageUrl: imageUrl || "",
+          createdAt: serverTimestamp()
+        });
+        closeModal("composer-modal");
+        showToast("تم النشر بنجاح ✅");
+      } catch (err) { showToast("تعذر النشر — تحقق من الإنترنت."); }
+      setLoading(btn, false, "نشر");
+    });
+  }
+
+  function renderMessagesScreen() {
+    const wrap = el("div", "messages-screen");
+    wrap.innerHTML = `
+      <div class="messages-top">
+        <div class="section-title"><i class="fas fa-comments"></i> الرسائل</div>
+        <button class="new-chat-btn" id="new-chat-btn"><i class="fas fa-plus"></i> محادثة جديدة</button>
+      </div>
+      <div id="convos-list" class="convos-list"></div>
+      <div id="convos-empty" class="empty-state" style="display:none;">لا توجد محادثات بعد — ابدأ محادثة جديدة ✉️</div>
+    `;
+    wrap.querySelector("#new-chat-btn").addEventListener("click", openNewChatModal);
+    const listEl = wrap.querySelector("#convos-list");
+    const emptyEl = wrap.querySelector("#convos-empty");
+    const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid), orderBy("lastMessageAt", "desc"), limit(50));
+    convosUnsub = onSnapshot(q, (snap) => {
+      listEl.innerHTML = "";
+      if (snap.empty) { emptyEl.style.display = "block"; return; }
+      emptyEl.style.display = "none";
+      snap.forEach(docSnap => {
+        const conv = docSnap.data();
+        const otherUid = conv.participants.find(p => p !== currentUser.uid);
+        if (!otherUid) return;
+        const otherName = (conv.participantNames && conv.participantNames[otherUid]) || "مستخدم";
+        const otherAvatar = (conv.participantAvatars && conv.participantAvatars[otherUid]) || "";
+        const row = el("div", "convo-row");
+        row.innerHTML = `
+          <div class="mini-avatar">${otherAvatar ? `<img src="${escapeHtml(otherAvatar)}">` : avatarFallback(otherName)}</div>
+          <div class="convo-mid">
+            <div class="convo-name">${escapeHtml(otherName)}</div>
+            <div class="convo-preview">${escapeHtml(conv.lastMessage || "")}</div>
+          </div>
+          <div class="convo-time">${timeAgo(conv.lastMessageAt)}</div>
+        `;
+        row.addEventListener("click", () => openChat(docSnap.id, { uid: otherUid, displayName: otherName, avatarUrl: otherAvatar }));
+        listEl.appendChild(row);
+      });
+    }, (err) => {
+      console.error("conversations", err);
+      emptyEl.style.display = "block";
+      emptyEl.textContent = err?.code === "failed-precondition" ? "المحادثات تحتاج إنشاء Firestore Index." : err?.code === "permission-denied" ? "صلاحيات Firestore تمنع تحميل المحادثات." : "تعذر تحميل المحادثات.";
+    });
+    return wrap;
+  }
+
+  function openNewChatModal() {
+    $id("search-username-input").value = "";
+    $id("search-results").innerHTML = "";
+    openModal("new-chat-modal");
+    setTimeout(() => $id("search-username-input").focus(), 200);
+  }
+
+  function wireNewChatModal() {
+    const input = $id("search-username-input");
+    const results = $id("search-results");
+    let searchTimer = null;
+    input.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      const term = input.value.trim().toLowerCase();
+      if (!term) { results.innerHTML = ""; return; }
+      if (!navigator.onLine) { results.innerHTML = `<div class="empty-state">محتاج اتصال بالإنترنت للبحث 📶</div>`; return; }
+      searchTimer = setTimeout(async () => {
+        results.innerHTML = `<div class="empty-state">جارِ البحث...</div>`;
+        try {
+          const q = query(collection(db, "users"), orderBy("username"), startAt(term), endAt(term + "\uf8ff"), limit(15));
+          const snap = await getDocs(q);
+          results.innerHTML = "";
+          const matches = snap.docs.filter(d => d.id !== currentUser.uid);
+          if (matches.length === 0) { results.innerHTML = `<div class="empty-state">لا يوجد مستخدم بهذا الاسم.</div>`; return; }
+          matches.forEach(d => {
+            const u = d.data();
+            const row = el("div", "convo-row");
+            row.innerHTML = `
+              <div class="mini-avatar">${u.avatarUrl ? `<img src="${escapeHtml(u.avatarUrl)}">` : avatarFallback(u.displayName)}</div>
+              <div class="convo-mid">
+                <div class="convo-name">${escapeHtml(u.displayName || u.username)}</div>
+                <div class="convo-preview">@${escapeHtml(u.username)}</div>
+              </div>
+            `;
+            row.addEventListener("click", async () => {
+              closeModal("new-chat-modal");
+              await startOrOpenChat({ uid: d.id, displayName: u.displayName || u.username, avatarUrl: u.avatarUrl || "", username: u.username });
+            });
+            results.appendChild(row);
+          });
+        } catch (err) { results.innerHTML = `<div class="empty-state">تعذر البحث — حاول مجدداً.</div>`; }
+      }, 350);
+    });
+  }
+
+  async function startOrOpenChat(otherUser) {
+    const convId = conversationIdFor(currentUser.uid, otherUser.uid);
+    const convRef = doc(db, "conversations", convId);
+    try {
+      const snap = await getDoc(convRef);
+      if (!snap.exists()) {
+        await setDoc(convRef, {
+          participants: [currentUser.uid, otherUser.uid],
+          participantNames: { [currentUser.uid]: currentProfile.displayName || currentProfile.username, [otherUser.uid]: otherUser.displayName },
+          participantAvatars: { [currentUser.uid]: currentProfile.avatarUrl || "", [otherUser.uid]: otherUser.avatarUrl || "" },
+          lastMessage: "", lastMessageAt: serverTimestamp(), createdAt: serverTimestamp()
+        });
+      }
+      openChat(convId, otherUser);
+    } catch (err) { showToast("تعذر بدء المحادثة — تحقق من الإنترنت."); }
+  }
+
+  function openChat(conversationId, otherUser) {
+    currentChat = { conversationId, otherUser };
+    if (convosUnsub) { convosUnsub(); convosUnsub = null; }
+    const body = $id("screen-body");
+    body.innerHTML = "";
+    body.appendChild(renderChatScreen(conversationId, otherUser));
+  }
+
+  function closeChat() { currentChat = null; paintTab("messages"); }
+
+  function renderChatScreen(conversationId, otherUser) {
+    const wrap = el("div", "chat-screen");
+    wrap.innerHTML = `
+      <div class="chat-header">
+        <button class="chat-back-btn" id="chat-back-btn"><i class="fas fa-arrow-right"></i></button>
+        <div class="mini-avatar">${otherUser.avatarUrl ? `<img src="${escapeHtml(otherUser.avatarUrl)}">` : avatarFallback(otherUser.displayName)}</div>
+        <div class="chat-header-name">${escapeHtml(otherUser.displayName)}</div>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <form class="chat-input-form" id="chat-input-form">
+        <input type="text" id="chat-input" placeholder="اكتب رسالة..." maxlength="1000" autocomplete="off">
+        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    `;
+    wrap.querySelector("#chat-back-btn").addEventListener("click", closeChat);
+    const msgsEl = wrap.querySelector("#chat-messages");
+    const mq = query(collection(db, "conversations", conversationId, "messages"), orderBy("createdAt", "asc"), limit(500));
+    messagesUnsub = onSnapshot(mq, (snap) => {
+      msgsEl.innerHTML = "";
+      snap.forEach(d => {
+        const m = d.data();
+        const mine = m.senderId === currentUser.uid;
+        const bubble = el("div", "chat-bubble-row " + (mine ? "mine" : "theirs"));
+        bubble.innerHTML = `<div class="chat-bubble">${escapeHtml(m.deleted ? "تم حذف هذه الرسالة" : m.text)}</div>`;
+        if(mine){ const menu=el("div","message-menu"); menu.innerHTML=`<button data-edit>تعديل</button><button data-delete>حذف</button>`; menu.querySelector("[data-edit]").onclick=async()=>{const v=prompt("تعديل الرسالة",m.text||"");if(v===null)return;const text=v.trim();if(!text)return;try{await updateDoc(doc(db,"conversations",conversationId,"messages",d.id),{text,edited:true,editedAt:serverTimestamp()});}catch(e){showToast("تعذر تعديل الرسالة");}};menu.querySelector("[data-delete]").onclick=async()=>{if(!confirm("حذف الرسالة؟"))return;try{await updateDoc(doc(db,"conversations",conversationId,"messages",d.id),{deleted:true,text:"تم حذف هذه الرسالة"});}catch(e){showToast("تعذر حذف الرسالة");}};bubble.appendChild(menu); }
+        msgsEl.appendChild(bubble);
+      });
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+    }, (err) => {
+      console.error("chat messages", err);
+      const code = err?.code || "";
+      msgsEl.innerHTML = `<div class="empty-state">${code === "failed-precondition" ? "المحادثة تحتاج إنشاء Firestore Index." : code === "permission-denied" ? "صلاحيات Firestore تمنع فتح المحادثة." : "تعذر تحميل الرسائل — تحقق من الاتصال."}</div>`;
+    });
+    wrap.querySelector("#chat-input-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لإرسال الرسالة 📶"); return; }
+      const input = wrap.querySelector("#chat-input");
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+      try {
+        await addDoc(collection(db, "conversations", conversationId, "messages"), { senderId: currentUser.uid, text, createdAt: serverTimestamp() });
+        await updateDoc(doc(db, "conversations", conversationId), { lastMessage: text, lastMessageAt: serverTimestamp() });
+      } catch (err) { showToast("تعذر إرسال الرسالة."); }
+    });
+    return wrap;
+  }
+
+  function renderFriendsScreen() {
+    const wrap=el("div","friends-screen");
+    wrap.innerHTML=`<div class="section-title"><i class="fas fa-user-friends"></i> الأصدقاء وطلبات الصداقة</div><div id="requests-box"></div><div class="section-title" style="margin-top:22px"><i class="fas fa-users"></i> المستخدمون</div><div id="friends-list" class="friends-list"></div>`;
+    const requestsBox=wrap.querySelector("#requests-box"), listEl=wrap.querySelector("#friends-list");
+    const rq=query(collection(db,"friendRequests"),where("toUid","==",currentUser.uid),where("status","==","pending"),orderBy("createdAt","desc"),limit(50));
+    const rqUnsub=onSnapshot(rq,snap=>{requestsBox.innerHTML="";if(snap.empty){requestsBox.innerHTML=`<div class="empty-state">لا توجد طلبات صداقة جديدة.</div>`;return;}const title=el("div","section-title");title.innerHTML=`<i class="fas fa-user-plus"></i> الطلبات الجديدة (${snap.size})`;requestsBox.appendChild(title);snap.forEach(ds=>{const r=ds.data(),card=el("div","request-card");card.innerHTML=`<div class="mini-avatar">${r.fromAvatar?`<img src="${escapeHtml(r.fromAvatar)}">`:avatarFallback(r.fromName)}</div><div class="request-info"><b>${escapeHtml(r.fromName||"مستخدم")}</b><div style="font-size:11px;color:var(--text-muted)">يريد إضافتك كصديق</div></div><div class="request-actions"><button class="accept-request">قبول</button><button class="reject-request">رفض</button></div>`;card.querySelector(".accept-request").onclick=()=>acceptFriendRequest(ds.id,r);card.querySelector(".reject-request").onclick=()=>rejectFriendRequest(ds.id,r);requestsBox.appendChild(card);});},e=>{
+      console.error("friendRequests",e);
+      requestsBox.innerHTML=`<div class="empty-state">${e?.code === "failed-precondition" ? "طلبات الصداقة تحتاج إنشاء Firestore Index." : e?.code === "permission-denied" ? "صلاحيات Firestore تمنع تحميل الطلبات." : "تعذر تحميل الطلبات."}</div>`;
+    });
+    const uq=query(collection(db,"users"),limit(200));
+    friendsUnsub=onSnapshot(uq,snap=>{listEl.innerHTML="";snap.docs.filter(d=>d.id!==currentUser.uid).forEach(d=>{const u=d.data(),isFriend=(currentProfile.friends||[]).includes(d.id),row=el("div","friend-row");row.innerHTML=`<div class="mini-avatar">${u.avatarUrl?`<img src="${escapeHtml(u.avatarUrl)}">`:avatarFallback(u.displayName)}</div><div class="friend-info"><div class="friend-name">${escapeHtml(u.displayName||u.username||"مستخدم")}</div><div class="friend-username"><span class="status-dot ${u.online?'online':''}"></span>${u.online?'متصل الآن':u.lastSeen?'آخر ظهور '+timeAgo(u.lastSeen):'غير متاح'} · @${escapeHtml(u.username||"")}</div></div>${isFriend?`<button class="message-friend-btn"><i class="fas fa-comment"></i> مراسلة</button>`:`<button class="message-friend-btn add-friend"><i class="fas fa-user-plus"></i> إضافة صديق</button>`}`;if(isFriend)row.querySelector(".message-friend-btn").onclick=()=>startOrOpenChat({uid:d.id,displayName:u.displayName||u.username,avatarUrl:u.avatarUrl||"",username:u.username});else row.querySelector(".add-friend").onclick=()=>sendFriendRequest(d.id,u);listEl.appendChild(row);});},e=>console.error(e));
+    const oldUnsub=wrap._unsub; wrap._unsub=()=>{rqUnsub();if(friendsUnsub)friendsUnsub();};
+    return wrap;
+  }
+
+  function renderProfileScreen() {
+    const wrap = el("div", "profile-screen");
+    wrap.innerHTML = `
+      <div class="profile-card">
+        <div class="profile-avatar-big">${currentProfile.avatarUrl ? `<img src="${escapeHtml(currentProfile.avatarUrl)}">` : avatarFallback(currentProfile.displayName)}</div>
+        <div class="profile-username">@${escapeHtml(currentProfile.username || "")}</div>
+      </div>
+      <form id="profile-form" class="profile-form">
+        <div class="form-field"><label>الاسم الظاهر</label><input type="text" id="pf-display-name" value="${escapeHtml(currentProfile.displayName || "")}" maxlength="40"></div>
+        <div class="form-field"><label>رابط الصورة الشخصية</label><input type="text" id="pf-avatar" value="${escapeHtml(currentProfile.avatarUrl || "")}" placeholder="https://..."></div>
+        <div class="form-field"><label>نبذة عنك</label><textarea id="pf-bio" maxlength="160">${escapeHtml(currentProfile.bio || "")}</textarea></div>
+        <button type="submit" class="primary-btn" id="pf-save-btn"><i class="fas fa-save"></i> حفظ التعديلات</button>
+      </form>
+      <div class="section-title"><i class="fas fa-file-alt"></i> منشوراتي</div>
+      <div id="my-posts-list" class="posts-list"></div>
+      <button class="primary-btn" id="profile-developer-btn"><i class="fas fa-code"></i> تواصل مع المطور</button>
+      <button class="primary-btn" id="profile-admin-btn"><i class="fas fa-shield-alt"></i> لوحة الإدارة</button>
+      <button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+    `;
+    wrap.querySelector("#profile-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!navigator.onLine) { showToast("محتاج اتصال بالإنترنت لحفظ التعديلات 📶"); return; }
+      const btn = $id("pf-save-btn");
+      setLoading(btn, true);
+      const displayName = $id("pf-display-name").value.trim() || currentProfile.username;
+      const avatarUrl = $id("pf-avatar").value.trim();
+      const bio = $id("pf-bio").value.trim();
+      try {
+        await updateDoc(doc(db, "users", currentUser.uid), { displayName, avatarUrl, bio });
+        currentProfile = { ...currentProfile, displayName, avatarUrl, bio };
+        showToast("تم حفظ الملف الشخصي ✅");
+        paintTab("profile");
+      } catch (err) { showToast("تعذر الحفظ — تحقق من الإنترنت."); setLoading(btn, false, "حفظ التعديلات"); }
+    });
+    wrap.querySelector("#profile-developer-btn").addEventListener("click",openDeveloperModal);
+    wrap.querySelector("#profile-admin-btn").addEventListener("click",openAdminPanel);
+    wrap.querySelector("#logout-btn").addEventListener("click", async () => {
+      if (confirm("هل تريد تسجيل الخروج؟")) await signOut(auth);
+    });
+    const myListEl = wrap.querySelector("#my-posts-list");
+    const mq = query(collection(db, "posts"), where("uid", "==", currentUser.uid), orderBy("createdAt", "desc"), limit(50));
+    onSnapshot(mq, (snap) => {
+      myListEl.innerHTML = "";
+      if (snap.empty) { myListEl.innerHTML = `<div class="empty-state">لم تنشر أي شيء بعد.</div>`; return; }
+      snap.forEach(docSnap => myListEl.appendChild(renderPostCard(docSnap.id, docSnap.data())));
+    });
+    return wrap;
+  }
+
+  function openModal(id) { $id(id).classList.add("show"); }
+  function closeModal(id) { $id(id).classList.remove("show"); }
+  function wireModals() {
+    document.querySelectorAll("[data-close]").forEach(elx => {
+      elx.addEventListener("click", () => elx.closest(".modal-overlay").classList.remove("show"));
+    });
+    document.querySelectorAll(".modal-overlay").forEach(ov => {
+      ov.addEventListener("click", e => { if (e.target === ov) ov.classList.remove("show"); });
+    });
+  }
+
+
+  $id("admin-login-form").addEventListener("submit",async(e)=>{e.preventDefault();const phone=normalizePhone($id("admin-phone").value),pass=$id("admin-password").value,err=$id("admin-login-error");err.textContent="";if(phone!==normalizePhone(DEVELOPER_PHONE)||pass!==ADMIN_PASSWORD){err.textContent="بيانات الإدارة غير صحيحة.";return;}const ok=await refreshAdminState();if(!ok){err.textContent="هذا الحساب غير مضاف كمدير في Firestore. أنشئ admins/{UID} أولاً.";return;}closeModal("admin-login-modal");openAdminPanel();});
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (!user) {
+      currentProfile = null;
+      authMode = "login";
+      renderAuthScreen();
+      document.body.classList.remove("app-active");
+      return;
+    }
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists()) currentProfile = snap.data();
+      else currentProfile = { username: user.displayName || "user", displayName: user.displayName || "مستخدم", avatarUrl: "", bio: "", friends: [] };
+    } catch (e) {
+      currentProfile = { username: user.displayName || "user", displayName: user.displayName || "مستخدم", avatarUrl: "", bio: "", friends: [] };
+    }
+    if (currentProfile && currentProfile.status === "banned") { await signOut(auth); alert("هذا الحساب محظور من المنصة."); return; }
+    try { await setDoc(doc(db,"users",user.uid),{online:true,lastSeen:serverTimestamp()},{merge:true}); } catch(e) {}
+    window.addEventListener("pagehide",()=>{ try { setDoc(doc(db,"users",user.uid),{online:false,lastSeen:serverTimestamp()},{merge:true}); } catch(e){} });
+    document.body.classList.add("app-active");
+    renderShell();
+  });
+
+  updateOnlineBanner();
+  wireComposer();
+  wireModals();
+  wireNewChatModal();
+</script>
+
+<script>
+  const obs = new MutationObserver(() => {
+    document.getElementById("main-tabbar").style.display =
+      document.body.classList.contains("app-active") ? "flex" : "none";
+  });
+  obs.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+</script>
+
+</body>
+</html>
