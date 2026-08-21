@@ -41,7 +41,11 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--bg-primary);
+      background:
+        radial-gradient(900px circle at 15% -10%, rgba(139,92,246,0.12), transparent 55%),
+        radial-gradient(700px circle at 100% 10%, rgba(236,72,153,0.08), transparent 50%),
+        var(--bg-primary);
+      background-attachment: fixed;
       color: var(--text-primary);
       font-family: 'Tajawal', 'Cairo', sans-serif;
       min-height: 100vh;
@@ -127,7 +131,24 @@
       font-size: 16px;
       transition: var(--transition);
     }
-    .icon-btn:hover { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); }
+    .icon-btn:hover { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); transform: translateY(-1px); }
+    .notif-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: var(--gradient-gold);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-primary);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+    }
 
     #app { max-width: 720px; margin: 0 auto; position: relative; }
     #screen-body { padding: 16px 14px 30px; }
@@ -332,7 +353,7 @@
       animation: fadeIn 0.4s ease;
     }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    .post-card:hover { border-color: rgba(139, 92, 246, 0.4); box-shadow: var(--shadow-md); }
+    .post-card:hover { border-color: rgba(139, 92, 246, 0.4); box-shadow: var(--shadow-md); transform: translateY(-2px); }
     .post-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
     .post-head-text { flex: 1; }
     .post-author { font-weight: 800; font-size: 15px; color: var(--text-primary); }
@@ -585,8 +606,9 @@
       border-radius: var(--radius-md);
       transition: var(--transition);
     }
-    .tab-item .tab-ic { font-size: 22px; }
+    .tab-item .tab-ic { font-size: 22px; transition: var(--transition); }
     .tab-item.active { color: var(--accent-purple); }
+    .tab-item.active .tab-ic { filter: drop-shadow(0 0 6px rgba(139,92,246,0.6)); transform: translateY(-1px); }
     .tab-item.compose-tab .tab-ic {
       background: var(--gradient-primary);
       width: 44px;
@@ -703,10 +725,14 @@
       margin-bottom: 8px;
       transition: var(--transition);
     }
-    .friend-row:hover { border-color: var(--accent-purple); }
-    .friend-info { flex: 1; }
-    .friend-name { font-weight: 700; font-size: 14px; }
+    .friend-row:hover { border-color: var(--accent-purple); box-shadow: 0 4px 16px rgba(139,92,246,0.15); }
+    .friend-info { flex: 1; min-width: 0; }
+    .friend-name { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+    .friend-tag { font-size: 10px; font-weight: 800; background: rgba(16,185,129,0.15); color: var(--accent-green); padding: 2px 8px; border-radius: var(--radius-full); border: 1px solid rgba(16,185,129,0.3); }
     .friend-username { font-size: 12px; color: var(--text-muted); }
+    .friend-row-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .unfriend-btn { width: 36px; height: 36px; font-size: 13px; }
+    .unfriend-btn:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
     .message-friend-btn {
       padding: 8px 16px;
       border-radius: var(--radius-full);
@@ -794,6 +820,14 @@
   </div>
 </div>
 
+
+<div class="modal-overlay" id="notif-modal">
+  <div class="modal">
+    <div class="modal-close" data-close>✕</div>
+    <div class="modal-title">الإشعارات 🔔</div>
+    <div id="notif-list" class="search-results"></div>
+  </div>
+</div>
 
 <div class="modal-overlay" id="developer-modal">
   <div class="modal">
@@ -980,11 +1014,18 @@
   }
   async function acceptFriendRequest(requestId,requestData){
     try{
+      const convId=conversationIdFor(currentUser.uid,requestData.fromUid);
+      const convRef=doc(db,"conversations",convId);
+      const convSnap=await getDoc(convRef);
       const batch=writeBatch(db);
       batch.update(doc(db,"friendRequests",requestId),{status:"accepted",respondedAt:serverTimestamp()});
       batch.set(doc(db,"users",currentUser.uid),{friends:arrayUnion(requestData.fromUid)},{merge:true});
       batch.set(doc(db,"users",requestData.fromUid),{friends:arrayUnion(currentUser.uid)},{merge:true});
-      batch.set(doc(db,"conversations",conversationIdFor(currentUser.uid,requestData.fromUid)),{participants:[currentUser.uid,requestData.fromUid],participantNames:{[currentUser.uid]:currentProfile.displayName||currentProfile.username,[requestData.fromUid]:requestData.fromName},participantAvatars:{[currentUser.uid]:currentProfile.avatarUrl||"",[requestData.fromUid]:requestData.fromAvatar||""},lastMessage:"",lastMessageAt:serverTimestamp(),createdAt:serverTimestamp()},{merge:true});
+      if(!convSnap.exists()){
+        batch.set(convRef,{participants:[currentUser.uid,requestData.fromUid].sort(),participantNames:{[currentUser.uid]:currentProfile.displayName||currentProfile.username,[requestData.fromUid]:requestData.fromName},participantAvatars:{[currentUser.uid]:currentProfile.avatarUrl||"",[requestData.fromUid]:requestData.fromAvatar||""},lastMessage:"",lastMessageAt:serverTimestamp(),createdAt:serverTimestamp()});
+      }else{
+        batch.update(convRef,{[`participantNames.${currentUser.uid}`]:currentProfile.displayName||currentProfile.username,[`participantAvatars.${currentUser.uid}`]:currentProfile.avatarUrl||""});
+      }
       await batch.commit();
       await createNotification(requestData.fromUid,"friend_accept",`${currentProfile.displayName||currentProfile.username} قبل طلب صداقتك`,currentUser.uid);
       currentProfile={...currentProfile,friends:Array.from(new Set([...(currentProfile.friends||[]),requestData.fromUid]))};
@@ -993,6 +1034,17 @@
   }
   async function rejectFriendRequest(requestId,requestData){
     try{await updateDoc(doc(db,"friendRequests",requestId),{status:"rejected",respondedAt:serverTimestamp()});await createNotification(requestData.fromUid,"friend_reject",`${currentProfile.displayName||currentProfile.username} رفض طلب الصداقة`,currentUser.uid);showToast("تم رفض الطلب.");paintTab("friends");}catch(e){showToast("تعذر رفض الطلب.");}}
+  async function removeFriend(otherUid){
+    if(!confirm("هل تريد إلغاء صداقة هذا الشخص؟"))return;
+    try{
+      const batch=writeBatch(db);
+      batch.set(doc(db,"users",currentUser.uid),{friends:arrayRemove(otherUid)},{merge:true});
+      batch.set(doc(db,"users",otherUid),{friends:arrayRemove(currentUser.uid)},{merge:true});
+      await batch.commit();
+      currentProfile={...currentProfile,friends:(currentProfile.friends||[]).filter(f=>f!==otherUid)};
+      showToast("تم إلغاء الصداقة"); paintTab("friends");
+    }catch(e){console.error("removeFriend",e);showToast("تعذر إلغاء الصداقة.");}
+  }
   function openDeveloperModal(){openModal("developer-modal");}
   function openAdminLogin(){openModal("admin-login-modal");}
   async function openAdminPanel(){
@@ -1020,9 +1072,9 @@
       <div id="top-header">
         <div class="brand"><img class="brand-icon" src="${WEB_ICON}" alt="Modz Web">Modz Web</div>
         <div class="header-actions">
+          <button id="notif-btn" class="icon-btn" title="الإشعارات" style="position:relative"><i class="fas fa-bell"></i><span id="notif-badge" class="notif-badge" style="display:none">0</span></button>
           <button id="developer-btn" class="icon-btn" title="المطور"><i class="fas fa-code"></i></button>
           <button id="admin-btn" class="icon-btn" title="الإدارة"><i class="fas fa-shield-alt"></i></button>
-          <button id="header-search-btn" class="icon-btn" title="بحث"><i class="fas fa-search"></i></button>
           <button id="header-notice-btn" class="icon-btn" title="الشبكة"><i class="fas fa-wifi"></i></button>
         </div>
       </div>
@@ -1031,8 +1083,44 @@
     paintTab(currentTab);
     $id("developer-btn").addEventListener("click", openDeveloperModal);
     $id("admin-btn").addEventListener("click", openAdminPanel);
+    $id("notif-btn").addEventListener("click", openNotifPanel);
     $id("header-notice-btn").addEventListener("click", () => { showToast(navigator.onLine ? "أنت متصل بالإنترنت ✅" : "لا يوجد اتصال بالإنترنت حالياً 📶"); });
-    $id("header-search-btn").addEventListener("click", () => { showToast("خاصية البحث قادمة قريباً 🔍"); });
+    wireNotifBadge();
+  }
+
+  let notifBadgeUnsub = null;
+  function wireNotifBadge() {
+    if (notifBadgeUnsub) { notifBadgeUnsub(); notifBadgeUnsub = null; }
+    const nq = query(collection(db, "notifications"), where("uid", "==", currentUser.uid), where("read", "==", false), limit(50));
+    notifBadgeUnsub = onSnapshot(nq, (snap) => {
+      const badge = $id("notif-badge");
+      if (!badge) return;
+      if (snap.size > 0) { badge.textContent = snap.size > 9 ? "9+" : String(snap.size); badge.style.display = "flex"; }
+      else { badge.style.display = "none"; }
+    }, (e) => console.error(e));
+  }
+
+  const NOTIF_ICON = { friend_request: "fa-user-plus", friend_accept: "fa-user-check", friend_reject: "fa-user-xmark" };
+  function openNotifPanel() {
+    const list = $id("notif-list");
+    list.innerHTML = `<div class="empty-state">جارِ التحميل...</div>`;
+    openModal("notif-modal");
+    const nq = query(collection(db, "notifications"), where("uid", "==", currentUser.uid), orderBy("createdAt", "desc"), limit(40));
+    getDocs(nq).then(snap => {
+      list.innerHTML = "";
+      if (snap.empty) { list.innerHTML = `<div class="empty-state">لا توجد إشعارات بعد 🔔</div>`; return; }
+      snap.forEach(d => {
+        const n = d.data();
+        const row = el("div", "notification-item" + (n.read ? "" : " unread"));
+        row.innerHTML = `<div style="display:flex;align-items:center;gap:10px"><i class="fas ${NOTIF_ICON[n.type] || 'fa-bell'}" style="color:var(--accent-purple)"></i><div style="flex:1"><div>${escapeHtml(n.text || "")}</div><div class="notification-time">${timeAgo(n.createdAt)}</div></div></div>`;
+        row.addEventListener("click", async () => {
+          closeModal("notif-modal");
+          if (!n.read) { try { await updateDoc(doc(db, "notifications", d.id), { read: true }); } catch (e) {} }
+          if (n.type === "friend_request" || n.type === "friend_accept") paintTab("friends");
+        });
+        list.appendChild(row);
+      });
+    }).catch(e => { console.error(e); list.innerHTML = `<div class="empty-state">تعذر تحميل الإشعارات.</div>`; });
   }
 
   function paintTab(tab) {
@@ -1321,7 +1409,7 @@
       const snap = await getDoc(convRef);
       if (!snap.exists()) {
         await setDoc(convRef, {
-          participants: [currentUser.uid, otherUser.uid],
+          participants: [currentUser.uid, otherUser.uid].sort(),
           participantNames: { [currentUser.uid]: currentProfile.displayName || currentProfile.username, [otherUser.uid]: otherUser.displayName },
           participantAvatars: { [currentUser.uid]: currentProfile.avatarUrl || "", [otherUser.uid]: otherUser.avatarUrl || "" },
           lastMessage: "", lastMessageAt: serverTimestamp(), createdAt: serverTimestamp()
@@ -1392,7 +1480,7 @@
     const rq=query(collection(db,"friendRequests"),where("toUid","==",currentUser.uid),where("status","==","pending"),orderBy("createdAt","desc"),limit(50));
     const rqUnsub=onSnapshot(rq,snap=>{requestsBox.innerHTML="";if(snap.empty){requestsBox.innerHTML=`<div class="empty-state">لا توجد طلبات صداقة جديدة.</div>`;return;}const title=el("div","section-title");title.innerHTML=`<i class="fas fa-user-plus"></i> الطلبات الجديدة (${snap.size})`;requestsBox.appendChild(title);snap.forEach(ds=>{const r=ds.data(),card=el("div","request-card");card.innerHTML=`<div class="mini-avatar">${r.fromAvatar?`<img src="${escapeHtml(r.fromAvatar)}">`:avatarFallback(r.fromName)}</div><div class="request-info"><b>${escapeHtml(r.fromName||"مستخدم")}</b><div style="font-size:11px;color:var(--text-muted)">يريد إضافتك كصديق</div></div><div class="request-actions"><button class="accept-request">قبول</button><button class="reject-request">رفض</button></div>`;card.querySelector(".accept-request").onclick=()=>acceptFriendRequest(ds.id,r);card.querySelector(".reject-request").onclick=()=>rejectFriendRequest(ds.id,r);requestsBox.appendChild(card);});},e=>{console.error(e);requestsBox.innerHTML=`<div class="empty-state">تعذر تحميل الطلبات.</div>`;});
     const uq=query(collection(db,"users"),limit(200));
-    friendsUnsub=onSnapshot(uq,snap=>{listEl.innerHTML="";snap.docs.filter(d=>d.id!==currentUser.uid).forEach(d=>{const u=d.data(),isFriend=(currentProfile.friends||[]).includes(d.id),row=el("div","friend-row");row.innerHTML=`<div class="mini-avatar">${u.avatarUrl?`<img src="${escapeHtml(u.avatarUrl)}">`:avatarFallback(u.displayName)}</div><div class="friend-info"><div class="friend-name">${escapeHtml(u.displayName||u.username||"مستخدم")}</div><div class="friend-username"><span class="status-dot ${u.online?'online':''}"></span>${u.online?'متصل الآن':u.lastSeen?'آخر ظهور '+timeAgo(u.lastSeen):'غير متاح'} · @${escapeHtml(u.username||"")}</div></div>${isFriend?`<button class="message-friend-btn"><i class="fas fa-comment"></i> مراسلة</button>`:`<button class="message-friend-btn add-friend"><i class="fas fa-user-plus"></i> إضافة صديق</button>`}`;if(isFriend)row.querySelector(".message-friend-btn").onclick=()=>startOrOpenChat({uid:d.id,displayName:u.displayName||u.username,avatarUrl:u.avatarUrl||"",username:u.username});else row.querySelector(".add-friend").onclick=()=>sendFriendRequest(d.id,u);listEl.appendChild(row);});},e=>console.error(e));
+    friendsUnsub=onSnapshot(uq,snap=>{listEl.innerHTML="";snap.docs.filter(d=>d.id!==currentUser.uid).forEach(d=>{const u=d.data(),isFriend=(currentProfile.friends||[]).includes(d.id),row=el("div","friend-row");row.innerHTML=`<div class="mini-avatar">${u.avatarUrl?`<img src="${escapeHtml(u.avatarUrl)}">`:avatarFallback(u.displayName)}</div><div class="friend-info"><div class="friend-name">${escapeHtml(u.displayName||u.username||"مستخدم")}${isFriend?' <span class="friend-tag">صديق</span>':''}</div><div class="friend-username"><span class="status-dot ${u.online?'online':''}"></span>${u.online?'متصل الآن':u.lastSeen?'آخر ظهور '+timeAgo(u.lastSeen):'غير متاح'} · @${escapeHtml(u.username||"")}</div></div><div class="friend-row-actions">${isFriend?`<button class="message-friend-btn"><i class="fas fa-comment"></i> مراسلة</button><button class="icon-btn unfriend-btn" title="إلغاء الصداقة"><i class="fas fa-user-minus"></i></button>`:`<button class="message-friend-btn add-friend"><i class="fas fa-user-plus"></i> إضافة صديق</button>`}</div>`;if(isFriend){row.querySelector(".message-friend-btn").onclick=()=>startOrOpenChat({uid:d.id,displayName:u.displayName||u.username,avatarUrl:u.avatarUrl||"",username:u.username});row.querySelector(".unfriend-btn").onclick=()=>removeFriend(d.id);}else row.querySelector(".add-friend").onclick=()=>sendFriendRequest(d.id,u);listEl.appendChild(row);});},e=>console.error(e));
     const oldUnsub=wrap._unsub; wrap._unsub=()=>{rqUnsub();if(friendsUnsub)friendsUnsub();};
     return wrap;
   }
@@ -1458,7 +1546,7 @@
   }
 
 
-  $id("admin-login-form").addEventListener("submit",async(e)=>{e.preventDefault();const phone=normalizePhone($id("admin-phone").value),pass=$id("admin-password").value,err=$id("admin-login-error");err.textContent="";if(phone!==normalizePhone(DEVELOPER_PHONE)||pass!==ADMIN_PASSWORD){err.textContent="بيانات الإدارة غير صحيحة.";return;}const ok=await refreshAdminState();if(!ok){err.textContent="هذا الحساب غير مضاف كمدير في Firestore. أنشئ admins/{UID} أولاً.";return;}closeModal("admin-login-modal");openAdminPanel();});
+  $id("admin-login-form").addEventListener("submit",async(e)=>{e.preventDefault();if(!currentUser){$id("admin-login-error").textContent="سجّل الدخول بحسابك أولاً.";return;}const phone=normalizePhone($id("admin-phone").value),pass=$id("admin-password").value,err=$id("admin-login-error");err.textContent="";if(phone!==normalizePhone(DEVELOPER_PHONE)||pass!==ADMIN_PASSWORD){err.textContent="بيانات الإدارة غير صحيحة.";return;}const ok=await refreshAdminState();if(!ok){err.innerHTML=`هذا الحساب غير مضاف كمدير في Firestore بعد.<br>لتفعيله: افتح Firestore Console وأنشئ مستند في مجموعة <b>admins</b> بمعرّف (Document ID) يساوي:<br><span style="direction:ltr;display:inline-block;background:var(--bg-elevated);padding:4px 10px;border-radius:8px;margin-top:6px;font-size:11px;user-select:all">${currentUser.uid}</span><br>وضَع بداخله الحقل <b>enabled = true</b> (Boolean)، ثم أعد المحاولة.`;return;}closeModal("admin-login-modal");openAdminPanel();});
 
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
